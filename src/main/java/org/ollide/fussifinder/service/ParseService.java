@@ -61,7 +61,7 @@ public class ParseService {
                     String date = matchRow.select("td.column-date").text();
                     date = DateUtil.normalizeDate(date, lastDate.get());
                     lastDate.set(date);
-                    m.setDate(date);
+                    m.setDate(DateUtil.parseLocalDateTime(date));
 
                     m.setTeamType(matchRow.select("td.column-team").text());
                     m.setLeague(matchRow.select("td.column-league").text());

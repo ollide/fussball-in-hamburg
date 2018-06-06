@@ -5,11 +5,13 @@
     <h1 class="title">Fußball in Hamburg</h1>
     <p class="subtitle">work in progress.</p>
 
+    <#list matchDays as matchDay>
+    <h2 class="subtitle">${matchDay.formattedDay()}</h2>
     <table class="table">
         <tbody>
-        <#list matches as match>
         <tr>
-            <td>${match.date}</td>
+        <#list matchDay.matches as match>
+            <td>${match.formattedTime()}</td>
             <td>${match.clubHome}</td>
             <td>${match.clubAway}</td>
             <td>${match.league}</td>
@@ -19,6 +21,7 @@
         </#list>
         </tbody>
     </table>
+    </#list>
 </div>
 
 </@layout.default>

@@ -1,12 +1,12 @@
 package org.ollide.fussifinder.service;
 
 import org.ollide.fussifinder.model.Match;
+import org.ollide.fussifinder.util.DateUtil;
 import org.ollide.fussifinder.zip.Hamburg;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -14,7 +14,10 @@ import java.util.stream.Collectors;
 @Service
 public class MatchService {
 
-    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    /**
+     * Teams who only play with 7 players are usually marked with ' 7er' at the end of the team name.
+     */
+    private static final String MATCH_7_PLAYERS = " 7er";
 
     private final MatchCrawlService matchCrawlService;
     private final ParseService parseService;
@@ -25,10 +28,14 @@ public class MatchService {
         this.parseService = parseService;
     }
 
+    private static boolean isNotSpecialClass7Players(Match match) {
+        return !(match.getClubHome().endsWith(MATCH_7_PLAYERS) || match.getClubAway().endsWith(MATCH_7_PLAYERS));
+    }
+
     public List<Match> getMatches() {
         LocalDate now = LocalDate.now();
-        String dateFrom = DATE_TIME_FORMATTER.format(now);
-        String dateTo = DATE_TIME_FORMATTER.format(now.plusDays(6));
+        String dateFrom = DateUtil.formatLocalDateForAPI(now);
+        String dateTo = DateUtil.formatLocalDateForAPI(now.plusDays(6));
 
         return Hamburg.getAllZIP3().stream()
                 .map((zip3) -> matchCrawlService.getMatchCalendar(dateFrom, dateTo, zip3))
@@ -37,6 +44,7 @@ public class MatchService {
                 .map((zip5) -> matchCrawlService.getMatchCalendar(dateFrom, dateTo, zip5))
                 .map(parseService::parseMatchesForZip)
                 .flatMap(Collection::stream)
+                .filter(MatchService::isNotSpecialClass7Players)
                 .sorted()
                 .collect(Collectors.toList());
     }

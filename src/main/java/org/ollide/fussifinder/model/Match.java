@@ -1,19 +1,28 @@
 package org.ollide.fussifinder.model;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 public class Match implements Comparable<Match> {
 
-    private String date;
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
+
+    private LocalDateTime date;
     private String teamType;
     private String league;
     private String clubHome;
     private String clubAway;
     private String url;
 
-    public String getDate() {
+    public String formattedTime() {
+        return FORMATTER.format(date);
+    }
+
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 
