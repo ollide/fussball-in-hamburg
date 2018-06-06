@@ -19,6 +19,8 @@ public class MatchService {
      */
     private static final String MATCH_7_PLAYERS = " 7er";
 
+    private static final String MATCH_CANCELLED = "Absetzung";
+
     private final MatchCrawlService matchCrawlService;
     private final ParseService parseService;
 
@@ -26,10 +28,6 @@ public class MatchService {
     public MatchService(MatchCrawlService matchCrawlService, ParseService parseService) {
         this.matchCrawlService = matchCrawlService;
         this.parseService = parseService;
-    }
-
-    private static boolean isNotSpecialClass7Players(Match match) {
-        return !(match.getClubHome().endsWith(MATCH_7_PLAYERS) || match.getClubAway().endsWith(MATCH_7_PLAYERS));
     }
 
     public List<Match> getMatches() {
@@ -45,8 +43,17 @@ public class MatchService {
                 .map(parseService::parseMatchesForZip)
                 .flatMap(Collection::stream)
                 .filter(MatchService::isNotSpecialClass7Players)
+                .filter(MatchService::isNotCancelled)
                 .sorted()
                 .collect(Collectors.toList());
+    }
+
+    private static boolean isNotSpecialClass7Players(Match match) {
+        return !(match.getClubHome().endsWith(MATCH_7_PLAYERS) || match.getClubAway().endsWith(MATCH_7_PLAYERS));
+    }
+
+    private static boolean isNotCancelled(Match match) {
+        return !match.getScore().equals(MATCH_CANCELLED);
     }
 
 }

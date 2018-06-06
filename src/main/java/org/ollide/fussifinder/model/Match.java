@@ -12,6 +12,7 @@ public class Match implements Comparable<Match> {
     private String league;
     private String clubHome;
     private String clubAway;
+    private String score;
     private String url;
 
     public String formattedTime() {
@@ -56,6 +57,14 @@ public class Match implements Comparable<Match> {
 
     public void setClubAway(String clubAway) {
         this.clubAway = clubAway;
+    }
+
+    public void setScore(String score) {
+        this.score = score;
+    }
+
+    public String getScore() {
+        return score;
     }
 
     public String getUrl() {
