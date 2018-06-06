@@ -5,8 +5,8 @@ import java.util.regex.Pattern;
 
 public final class DateUtil {
 
-    private static final Pattern DATE_PATTERN =Pattern.compile(".*([0-9]{2}\\.[0-9]{2}\\.[0-9]{2}).*");
-    private static final Pattern HOUR_PATTERN =Pattern.compile(".*([0-9]{2}:[0-9]{2})$");
+    private static final Pattern DATE_PATTERN = Pattern.compile(".*([0-9]{2}\\.[0-9]{2}\\.[0-9]{2}).*");
+    private static final Pattern HOUR_PATTERN = Pattern.compile(".*([0-9]{2}:[0-9]{2}).*");
 
     private DateUtil() {
         // do not instantiate
