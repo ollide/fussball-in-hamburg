@@ -5,7 +5,7 @@
     <h1 class="title">Fußball in Hamburg</h1>
     <p class="subtitle">die spiele der nächsten woche.</p>
 
-    <table class="table">
+    <table class="table matches">
         <tbody>
         <#list matchDays as matchDay>
         <tr>

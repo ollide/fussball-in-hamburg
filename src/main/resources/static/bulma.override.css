@@ -4,3 +4,10 @@ nav .navbar-item img {
     margin-top: -0.5rem;
     margin-right: 0.5rem;
 }
+
+table.matches a {
+    color: #9C3;
+}
+table.matches a:hover {
+    color: #336600;
+}
