@@ -26,7 +26,7 @@
 
 </section>
 
-    <#--<#include "footer.ftl"/>-->
+    <#include "footer.ftl"/>
 
 </body>
 </html>
