@@ -20,7 +20,11 @@
                 <td>${match.clubAway}</td>
                 <td>${match.league}</td>
                 <td>${match.teamType}</td>
-                <td><a href="${match.url}" target="_blank"><i class="fas fa-external-link-alt"></i></a></td>
+                <td>
+                    <a href="${match.url}" target="_blank" rel="noreferrer">
+                        <i class="fas fa-external-link-alt"></i>
+                    </a>
+                </td>
             </tr>
             </#list>
         </#list>
