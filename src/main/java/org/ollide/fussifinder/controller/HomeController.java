@@ -8,8 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Controller
@@ -31,27 +31,18 @@ public class HomeController {
     }
 
     private List<MatchDay> splitIntoMatchDays(List<Match> matches) {
-        if (matches.isEmpty()) {
-            return Collections.emptyList();
-        }
-
         List<MatchDay> matchDayList = new ArrayList<>();
-
-        MatchDay matchDay = new MatchDay();
-        matchDayList.add(matchDay);
-        matchDay.setDay(matches.get(0).getDate().toLocalDate());
+        MatchDay matchDay = null;
 
         for (Match match : matches) {
-            if (match.getDate().toLocalDate().equals(matchDay.getDay())) {
-                matchDay.getMatches().add(match);
-            } else {
+            LocalDate matchDate = match.getDate().toLocalDate();
+            if (matchDay == null || !matchDate.equals(matchDay.getDay())) {
                 matchDay = new MatchDay();
+                matchDay.setDay(matchDate);
                 matchDayList.add(matchDay);
-                matchDay.setDay(match.getDate().toLocalDate());
-                matchDay.getMatches().add(match);
             }
+            matchDay.getMatches().add(match);
         }
-
         return matchDayList;
     }
 
