@@ -3,7 +3,7 @@
 
 <div class="container">
     <h1 class="title">Fußball in Hamburg</h1>
-    <p class="subtitle">work in progress.</p>
+    <p class="subtitle">die spiele der nächsten woche.</p>
 
     <table class="table">
         <tbody>
@@ -20,7 +20,7 @@
                 <td>${match.clubAway}</td>
                 <td>${match.league}</td>
                 <td>${match.teamType}</td>
-                <td><a href="${match.url}" target="_blank">Zum Spiel</a></td>
+                <td><a href="${match.url}" target="_blank"><i class="fas fa-external-link-alt"></i></a></td>
             </tr>
             </#list>
         </#list>
