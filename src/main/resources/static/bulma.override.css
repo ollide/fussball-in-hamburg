@@ -12,6 +12,17 @@ table.matches a:hover {
     color: #336600;
 }
 
+.hidden-by-type, .hidden-by-league {
+    display: none;
+}
+
+.button.is-active-filter {
+    background-color: #9C3;
+    border-color: #336600;
+    color: #fff;
+    z-index: 2;
+}
+
 .error-page {
     white-space: pre-wrap;
     font-family: monospace;
