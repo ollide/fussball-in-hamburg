@@ -11,3 +11,9 @@ table.matches a {
 table.matches a:hover {
     color: #336600;
 }
+
+.error-page {
+    white-space: pre-wrap;
+    font-family: monospace;
+    line-height: initial;
+}
