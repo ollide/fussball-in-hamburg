@@ -1,6 +1,6 @@
 <#macro default title="FussiFinder Hamburg">
 <!DOCTYPE html>
-<html>
+<html lang="de">
 <head>
     <meta http-equiv="content-type" content="text/html;charset=UTF-8">
     <meta charset="UTF-8">
