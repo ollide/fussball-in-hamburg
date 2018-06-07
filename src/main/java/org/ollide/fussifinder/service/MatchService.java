@@ -42,10 +42,33 @@ public class MatchService {
                 .map((zip5) -> matchCrawlService.getMatchCalendar(dateFrom, dateTo, zip5))
                 .map(parseService::parseMatchesForZip)
                 .flatMap(Collection::stream)
+                // Run required filters
                 .filter(MatchService::isNotSpecialClass7Players)
                 .filter(MatchService::isNotCancelled)
+                // Beautify/shorten some things
+                .map(this::shortenLeague)
+                // sort and collect
                 .sorted()
                 .collect(Collectors.toList());
+    }
+
+    protected Match shortenLeague(Match match) {
+        String shortenedLeague;
+        switch (match.getLeague()) {
+            case "Landesfreundschaftsspiele":
+                shortenedLeague = "L-FS";
+                break;
+            case "Bezirksfreundschaftsspiele":
+                shortenedLeague = "B-FS";
+                break;
+            case "Kreisfreundschaftsspiele":
+                shortenedLeague = "K-FS";
+                break;
+            default:
+                shortenedLeague = match.getLeague();
+        }
+        match.setLeague(shortenedLeague);
+        return match;
     }
 
     private static boolean isNotSpecialClass7Players(Match match) {
