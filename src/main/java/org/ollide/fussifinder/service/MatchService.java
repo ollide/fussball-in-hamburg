@@ -18,6 +18,7 @@ public class MatchService {
      * Teams who only play with 7 players are usually marked with ' 7er' at the end of the team name.
      */
     private static final String MATCH_7_PLAYERS = " 7er";
+    private static final String MATCH_FUTSAL = "Futsal";
 
     private static final String MATCH_CANCELLED = "Absetzung";
 
@@ -44,6 +45,7 @@ public class MatchService {
                 .flatMap(Collection::stream)
                 // Run required filters
                 .filter(MatchService::isNotSpecialClass7Players)
+                .filter(MatchService::isNotFutsal)
                 .filter(MatchService::isNotCancelled)
                 // Beautify/shorten some things
                 .map(this::shortenLeague)
@@ -73,6 +75,10 @@ public class MatchService {
 
     private static boolean isNotSpecialClass7Players(Match match) {
         return !(match.getClubHome().endsWith(MATCH_7_PLAYERS) || match.getClubAway().endsWith(MATCH_7_PLAYERS));
+    }
+
+    private static boolean isNotFutsal(Match match) {
+        return !match.getLeague().contains(MATCH_FUTSAL);
     }
 
     private static boolean isNotCancelled(Match match) {
