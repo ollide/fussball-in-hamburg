@@ -9,6 +9,7 @@
     <packaging>jar</packaging>
 
     <name>fussifinder</name>
+    <description>Fußball in Hamburg</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
