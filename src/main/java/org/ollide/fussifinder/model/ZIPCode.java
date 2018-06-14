@@ -4,6 +4,14 @@ public class ZIPCode {
 
     private String plz;
 
+    public ZIPCode() {
+        // default constructor
+    }
+
+    public ZIPCode(String plz) {
+        this.plz = plz;
+    }
+
     public String getPlz() {
         return plz;
     }

@@ -50,6 +50,10 @@ public final class DateUtil {
         return MATCH_DATE_TIME_FORMATTER.format(dateTime);
     }
 
+    public static LocalDate parseAPIDate(String date) {
+        return LocalDate.parse(date, API_DATE_FORMATTER);
+    }
+
     public static String formatLocalDateForAPI(LocalDate date) {
         return API_DATE_FORMATTER.format(date);
     }
