@@ -34,7 +34,6 @@ public class ParseService {
         List<String> zipsWithMatches = new ArrayList<>();
 
         for (Element district : districtsWithMatches) {
-            // {'plz':'20251'}
             String plzJson = district.attr("data-ajax-forced");
             ZIPCode zipCode;
             try {

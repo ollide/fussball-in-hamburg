@@ -42,10 +42,10 @@ public class MatchService {
         String dateTo = DateUtil.formatLocalDateForAPI(now.plusDays(6));
 
         return Hamburg.getAllZIP3().stream()
-                .map((zip3) -> matchCrawlService.getMatchCalendar(dateFrom, dateTo, zip3))
+                .map(zip3 -> matchCrawlService.getMatchCalendar(dateFrom, dateTo, zip3))
                 .map(parseService::parseZipsWithMatches)
                 .flatMap(Collection::stream)
-                .map((zip5) -> matchCrawlService.getMatchCalendar(dateFrom, dateTo, zip5))
+                .map(zip5 -> matchCrawlService.getMatchCalendar(dateFrom, dateTo, zip5))
                 .map(parseService::parseMatchesForZip)
                 .flatMap(Collection::stream)
                 // Run required filters

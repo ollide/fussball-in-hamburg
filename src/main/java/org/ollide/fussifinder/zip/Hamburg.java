@@ -14,6 +14,10 @@ public class Hamburg {
                 "220", "221", "222", "223", "224", "225", "226", "227"));
     }
 
+    private Hamburg() {
+        // do not instantiate
+    }
+
     public static Set<String> getAllZIP3() {
         return new HashSet<>(ZIP_3);
     }
