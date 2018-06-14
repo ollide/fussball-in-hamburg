@@ -1,4 +1,4 @@
-package org.oliide.fussifinder;
+package org.ollide.fussifinder;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
