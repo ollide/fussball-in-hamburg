@@ -2,10 +2,12 @@ package org.ollide.fussifinder.model;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 public class Match implements Comparable<Match> {
 
-    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
+    private static final DateTimeFormatter FORMATTER_TIME = DateTimeFormatter.ofPattern("HH:mm", Locale.GERMANY);
+    private static final DateTimeFormatter FORMATTER_DATE = DateTimeFormatter.ofPattern("E, dd.MM.yy | HH:mm", Locale.GERMANY);
 
     private LocalDateTime date;
     private String teamType;
@@ -16,7 +18,11 @@ public class Match implements Comparable<Match> {
     private String url;
 
     public String formattedTime() {
-        return FORMATTER.format(date);
+        return FORMATTER_TIME.format(date);
+    }
+
+    public String formattedDateTime() {
+        return FORMATTER_DATE.format(date);
     }
 
     public LocalDateTime getDate() {

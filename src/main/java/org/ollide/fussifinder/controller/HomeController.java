@@ -1,7 +1,9 @@
 package org.ollide.fussifinder.controller;
 
+import org.ollide.fussifinder.model.League;
 import org.ollide.fussifinder.model.Match;
 import org.ollide.fussifinder.model.MatchDay;
+import org.ollide.fussifinder.model.Team;
 import org.ollide.fussifinder.service.MatchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,7 +26,14 @@ public class HomeController {
 
     @RequestMapping("/")
     public String home(Model model) {
-        List<MatchDay> matchDayList = splitIntoMatchDays(matchService.getMatches());
+
+        model.addAttribute("teams", Team.getAllTeams());
+        model.addAttribute("leagues", League.getAllLeagues());
+
+        List<Match> matches = matchService.getMatches();
+        model.addAttribute("stats", matchService.getMatchStats(matches));
+
+        List<MatchDay> matchDayList = splitIntoMatchDays(matches);
         model.addAttribute("matchDays", matchDayList);
 
         return "home";

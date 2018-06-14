@@ -3,22 +3,26 @@
 
 <div class="container">
     <h1 class="title">Fußball in Hamburg</h1>
-    <p class="subtitle">die spiele der nächsten woche.</p>
+    <p class="subtitle">die ${stats.numberOfMatches} spiele der nächsten woche.</p>
 
     <div class="buttons has-addons team-type-filter">
-        <span class="button is-active-filter" onclick="toggleTeamTypeFilter(this)">Herren</span>
-        <span class="button is-active-filter" onclick="toggleTeamTypeFilter(this)">Frauen</span>
-        <span class="button" onclick="toggleTeamTypeFilter(this)">A-Junioren</span>
-        <span class="button" onclick="toggleTeamTypeFilter(this)">A-Juniorinnen</span>
+    <#list teams as type>
+        <#assign name = type.getName() />
+        <span class="button <#if type.isActive()>is-active-filter</#if>"
+              onclick="toggleTeamTypeFilter(this)" data-filter-name="${name}">
+            ${name}
+        </span>
+    </#list>
     </div>
 
     <div class="buttons has-addons league-filter">
-        <span class="button is-active-filter" onclick="toggleLeagueFilter(this)">Verbandsliga</span>
-        <span class="button is-active-filter" onclick="toggleLeagueFilter(this)">Landesliga</span>
-        <span class="button is-active-filter" onclick="toggleLeagueFilter(this)">Bezirksliga</span>
-        <span class="button" onclick="toggleLeagueFilter(this)">Kreisliga</span>
-        <span class="button" onclick="toggleLeagueFilter(this)">Kreisklasse</span>
-        <span class="button is-active-filter" onclick="toggleLeagueFilter(this)">FS</span>
+    <#list leagues as league>
+        <#assign name = league.getName() />
+        <span class="button <#if league.isActive()>is-active-filter</#if>"
+              onclick="toggleLeagueFilter(this)" data-filter-name="${name}">
+            ${name}
+        </span>
+    </#list>
     </div>
 
     <table class="table matches">
@@ -49,6 +53,7 @@
 </div>
 
 <script type="application/javascript">
+    DATA_FILTER_NAME = 'data-filter-name';
     ACTIVE_FILTER = 'is-active-filter';
 
     function init() {
@@ -57,7 +62,7 @@
         for (var i = 0; i < teamTypeFilterBtns.length; i++) {
             var teamTypeFilterBtn = teamTypeFilterBtns[i];
             if (!teamTypeFilterBtn.classList.contains(ACTIVE_FILTER)) {
-                toggleByTeamType(false, teamTypeFilterBtn.innerText);
+                toggleByTeamType(false, teamTypeFilterBtn.getAttribute(DATA_FILTER_NAME));
             }
         }
 
@@ -66,7 +71,7 @@
         for (var j = 0; j < leagueFilterBtns.length; j++) {
             var leagueFilterBtn = leagueFilterBtns[j];
             if (!leagueFilterBtn.classList.contains(ACTIVE_FILTER)) {
-                toggleByLeague(false, leagueFilterBtn.innerText);
+                toggleByLeague(false, leagueFilterBtn.getAttribute(DATA_FILTER_NAME));
             }
         }
     }
@@ -74,7 +79,7 @@
 
     function toggleTeamTypeFilter(btn) {
         var active = btn.classList.toggle(ACTIVE_FILTER);
-        var type = btn.innerText;
+        var type = btn.getAttribute(DATA_FILTER_NAME);
         toggleByTeamType(active, type);
     }
 
@@ -91,7 +96,7 @@
 
     function toggleLeagueFilter(btn) {
         var active = btn.classList.toggle(ACTIVE_FILTER);
-        var type = btn.innerText;
+        var type = btn.getAttribute(DATA_FILTER_NAME);
         toggleByLeague(active, type);
     }
 

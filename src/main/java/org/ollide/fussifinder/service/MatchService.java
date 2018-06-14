@@ -1,6 +1,9 @@
 package org.ollide.fussifinder.service;
 
+import org.ollide.fussifinder.model.League;
 import org.ollide.fussifinder.model.Match;
+import org.ollide.fussifinder.model.MatchStats;
+import org.ollide.fussifinder.model.Team;
 import org.ollide.fussifinder.util.DateUtil;
 import org.ollide.fussifinder.zip.Hamburg;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +11,9 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -52,6 +57,25 @@ public class MatchService {
                 // sort and collect
                 .sorted()
                 .collect(Collectors.toList());
+    }
+
+    public MatchStats getMatchStats(List<Match> matches) {
+        Set<String> types = new HashSet<>();
+        types.addAll(League.getLeagueNames());
+        types.addAll(Team.getTeamTypeNames());
+
+        MatchStats matchStats = new MatchStats();
+        matchStats.setNumberOfMatches(matches.size());
+        for (String type : types) {
+            matchStats.setType(type, matchesForType(type, matches));
+        }
+        return matchStats;
+    }
+
+    protected int matchesForType(String type, List<Match> matches) {
+        return (int) matches.stream()
+                .filter((match -> (match.getLeague().endsWith(type)) || match.getTeamType().equals(type)))
+                .count();
     }
 
     protected Match shortenLeague(Match match) {
