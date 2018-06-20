@@ -28,3 +28,17 @@ table.matches a:hover {
     font-family: monospace;
     line-height: initial;
 }
+
+/* Mobile styles with smaller margins */
+@media only screen and (max-width: 480px) {
+    .section {
+        padding: 2rem 1rem;
+    }
+    .button {
+        padding-left: .5em;
+        padding-right: .5em;
+    }
+    table.matches {
+        margin-left: -1rem;
+    }
+}
