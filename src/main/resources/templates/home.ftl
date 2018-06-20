@@ -42,7 +42,7 @@
                 <td class="team-type">${match.teamType}</td>
                 <td>
                     <a href="${match.url}" target="_blank" rel="noreferrer">
-                        <i class="fas fa-external-link-alt"></i>
+                        <i class="icon-link-ext"></i>
                     </a>
                 </td>
             </tr>
