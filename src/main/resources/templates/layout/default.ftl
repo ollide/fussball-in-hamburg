@@ -9,13 +9,11 @@
     <meta name="keywords" content="Fußball,Amateurfußball,Football,Groundhopping,Groundhopper,Hamburg">
     <meta name="Description" content="Fußballspiele der nächsten Woche in Hamburg">
 
-    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="icon" type="image/png" href="/favicon.png">
 
-    <noscript>
-        <link href="bulma.min.css" rel="stylesheet" type="text/css"/>
-        <link href="bulma.override.css" rel="stylesheet" type="text/css"/>
-        <link href="iconfont.css" rel="stylesheet" type="text/css"/>
-    </noscript>
+    <link href="/bulma.min.css" rel="stylesheet" type="text/css"/>
+    <link href="/bulma.override.css" rel="stylesheet" type="text/css"/>
+    <link href="/iconfont.css" rel="stylesheet" type="text/css"/>
 
     <title>${title}</title>
 </head>
@@ -31,8 +29,6 @@
 </section>
 
     <#include "footer.ftl"/>
-
-    <#include "deferred_css.ftl"/>
 
 </body>
 </html>
