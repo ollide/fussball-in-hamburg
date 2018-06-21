@@ -11,7 +11,6 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
@@ -45,8 +44,8 @@ public class ZipService {
 
     protected List<String> readZipsFromResources(String fileName) {
         try {
-            File file = new ClassPathResource(fileName).getFile();
-            MappingIterator<String> readValues = stringReader.readValues(file);
+            ClassPathResource resource = new ClassPathResource(fileName);
+            MappingIterator<String> readValues = stringReader.readValues(resource.getInputStream());
             return readValues.readAll();
         } catch (IOException e) {
             LOG.error("Error occurred while loading ZIPs from " + fileName, e);
