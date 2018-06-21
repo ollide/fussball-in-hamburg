@@ -66,8 +66,8 @@ public class ZipService {
 
     protected List<Region> getOverview(String type) {
         try {
-            File file = new ClassPathResource(type + "_.txt").getFile();
-            MappingIterator<Region> readValues = regionReader.readValues(file);
+            ClassPathResource resource = new ClassPathResource(type + "_.txt");
+            MappingIterator<Region> readValues = regionReader.readValues(resource.getInputStream());
             return readValues.readAll();
         } catch (IOException e) {
             LOG.error("Error occurred while loading overview from " + type + "_.txt", e);
