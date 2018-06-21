@@ -90,6 +90,9 @@ public class MatchService {
             case "Kreisfreundschaftsspiele":
                 shortenedLeague = "K-FS";
                 break;
+            case "regionale Freundschaftsspiele":
+                shortenedLeague = "r-FS";
+                break;
             default:
                 shortenedLeague = match.getLeague();
         }

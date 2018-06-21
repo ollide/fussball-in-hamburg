@@ -30,6 +30,10 @@ public class MatchServiceTest {
         lFS.setLeague("Landesfreundschaftsspiele");
         assertEquals("L-FS", matchService.shortenLeague(lFS).getLeague());
 
+        Match rFS = new Match();
+        rFS.setLeague("regionale Freundschaftsspiele");
+        assertEquals("r-FS", matchService.shortenLeague(rFS).getLeague());
+
         Match verbandsliga = new Match();
         verbandsliga.setLeague("Verbandsliga");
         assertEquals("Verbandsliga", matchService.shortenLeague(verbandsliga).getLeague());
