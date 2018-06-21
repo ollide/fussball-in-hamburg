@@ -13,7 +13,8 @@ public class MatchServiceTest {
 
     @Before
     public void setUp() {
-        matchService = new MatchService(mock(MatchCrawlService.class), mock(ParseService.class));
+        matchService = new MatchService(mock(MatchCrawlService.class), mock(ParseService.class),
+                mock(ZipService.class));
     }
 
     @Test

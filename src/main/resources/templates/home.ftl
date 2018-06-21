@@ -2,7 +2,7 @@
 <@layout.default>
 
 <div class="container">
-    <h1 class="title">Fußball in Hamburg</h1>
+    <h1 class="title">Fußball in ${city!"Hamburg"}</h1>
     <p class="subtitle">die ${stats.numberOfMatches} spiele der nächsten woche.</p>
 
     <div class="buttons has-addons team-type-filter">

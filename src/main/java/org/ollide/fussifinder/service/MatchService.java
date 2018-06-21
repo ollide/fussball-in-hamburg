@@ -1,11 +1,7 @@
 package org.ollide.fussifinder.service;
 
-import org.ollide.fussifinder.model.League;
-import org.ollide.fussifinder.model.Match;
-import org.ollide.fussifinder.model.MatchStats;
-import org.ollide.fussifinder.model.Team;
+import org.ollide.fussifinder.model.*;
 import org.ollide.fussifinder.util.DateUtil;
-import org.ollide.fussifinder.zip.Hamburg;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,22 +25,33 @@ public class MatchService {
 
     private final MatchCrawlService matchCrawlService;
     private final ParseService parseService;
+    private final ZipService zipService;
 
     @Autowired
-    public MatchService(MatchCrawlService matchCrawlService, ParseService parseService) {
+    public MatchService(MatchCrawlService matchCrawlService, ParseService parseService, ZipService zipService) {
         this.matchCrawlService = matchCrawlService;
         this.parseService = parseService;
+        this.zipService = zipService;
     }
 
-    public List<Match> getMatches() {
+    public List<Match> getMatches(String region, RegionType type) {
         LocalDate now = LocalDate.now();
         String dateFrom = DateUtil.formatLocalDateForAPI(now);
         String dateTo = DateUtil.formatLocalDateForAPI(now.plusDays(6));
 
-        return Hamburg.getAllZIP3().stream()
+        List<String> zips;
+        if (type == RegionType.CITY) {
+            zips = zipService.getZipsForCity(region);
+        } else {
+            zips = zipService.getZipsForDistrict(region);
+        }
+
+        return zips.stream()
+                .map(zip5 -> zip5.substring(0, 3)).distinct()
                 .map(zip3 -> matchCrawlService.getMatchCalendar(dateFrom, dateTo, zip3))
                 .map(parseService::parseZipsWithMatches)
                 .flatMap(Collection::stream)
+                .filter(zips::contains)
                 .map(zip5 -> matchCrawlService.getMatchCalendar(dateFrom, dateTo, zip5))
                 .map(parseService::parseMatchesForZip)
                 .flatMap(Collection::stream)
