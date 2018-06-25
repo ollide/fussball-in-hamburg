@@ -1,5 +1,7 @@
 key,name
+berlin,Berlin
 hamburg,Hamburg
 kiel,Kiel
 lübeck,Lübeck
 lüneburg,Lüneburg
+münchen,München
