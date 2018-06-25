@@ -3,6 +3,8 @@ package org.ollide.fussifinder.service;
 import org.ollide.fussifinder.model.*;
 import org.ollide.fussifinder.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -10,6 +12,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 
 @Service
@@ -34,7 +37,8 @@ public class MatchService {
         this.zipService = zipService;
     }
 
-    public List<Match> getMatches(String region, RegionType type) {
+    @Async
+    public Future<List<Match>> getMatches(String region, RegionType type) {
         LocalDate now = LocalDate.now();
         String dateFrom = DateUtil.formatLocalDateForAPI(now);
         String dateTo = DateUtil.formatLocalDateForAPI(now.plusDays(6));
@@ -46,7 +50,7 @@ public class MatchService {
             zips = zipService.getZipsForDistrict(region);
         }
 
-        return zips.stream()
+        return new AsyncResult<>(zips.stream()
                 .map(zip5 -> zip5.substring(0, 3)).distinct()
                 .map(zip3 -> matchCrawlService.getMatchCalendar(dateFrom, dateTo, zip3))
                 .map(parseService::parseZipsWithMatches)
@@ -63,7 +67,7 @@ public class MatchService {
                 .map(this::shortenLeague)
                 // sort and collect
                 .sorted()
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()));
     }
 
     public MatchStats getMatchStats(List<Match> matches) {

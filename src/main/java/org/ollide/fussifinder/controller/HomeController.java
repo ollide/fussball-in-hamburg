@@ -2,7 +2,10 @@ package org.ollide.fussifinder.controller;
 
 import org.ollide.fussifinder.model.*;
 import org.ollide.fussifinder.service.MatchService;
+import org.ollide.fussifinder.util.AsyncUtil;
 import org.ollide.fussifinder.util.StringUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,9 +15,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 @Controller
 public class HomeController {
+
+    private static final Logger LOG = LoggerFactory.getLogger(HomeController.class);
 
     private static final String DEFAULT_CITY = "Hamburg";
 
@@ -27,32 +34,39 @@ public class HomeController {
 
     @RequestMapping("/")
     public String home(Model model) {
-        populateModel(model, DEFAULT_CITY, RegionType.CITY);
-        return "home";
+        return populateModel(model, DEFAULT_CITY, RegionType.CITY);
     }
 
     @RequestMapping("/kreis/{district}")
     public String matchesForDistrict(Model model, @PathVariable(name = "district") String district) {
-        populateModel(model, district, RegionType.DISTRICT);
-        return "home";
+        return populateModel(model, district, RegionType.DISTRICT);
     }
 
     @RequestMapping("/stadt/{city}")
     public String matchesForCity(Model model, @PathVariable(name = "city") String city) {
-        populateModel(model, city, RegionType.CITY);
-        return "home";
+        return populateModel(model, city, RegionType.CITY);
     }
 
-    private void populateModel(Model model, String regionName, RegionType type) {
+    private String populateModel(Model model, String regionName, RegionType type) {
         model.addAttribute("city", StringUtil.capitalizeFirstLetter(regionName));
         model.addAttribute("teams", Team.getAllTeams());
         model.addAttribute("leagues", League.getAllLeagues());
 
-        List<Match> matches = matchService.getMatches(regionName, type);
-        model.addAttribute("stats", matchService.getMatchStats(matches));
+        Future<List<Match>> asyncMatches = matchService.getMatches(regionName, type);
 
-        List<MatchDay> matchDayList = splitIntoMatchDays(matches);
-        model.addAttribute("matchDays", matchDayList);
+        AsyncUtil.waitMaxQuietly(asyncMatches, 1000);
+        if (asyncMatches.isDone()) {
+            try {
+                List<Match> matches = asyncMatches.get();
+                model.addAttribute("stats", matchService.getMatchStats(matches));
+                List<MatchDay> matchDayList = splitIntoMatchDays(matches);
+                model.addAttribute("matchDays", matchDayList);
+            } catch (InterruptedException | ExecutionException e) {
+                LOG.error("Error retrieving matches", e);
+            }
+            return "home";
+        }
+        return "wait";
     }
 
     private List<MatchDay> splitIntoMatchDays(List<Match> matches) {
