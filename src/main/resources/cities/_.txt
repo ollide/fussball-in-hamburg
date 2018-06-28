@@ -1,7 +1,10 @@
 key,name
 berlin,Berlin
+bremen,Bremen
 hamburg,Hamburg
 kiel,Kiel
 lübeck,Lübeck
 lüneburg,Lüneburg
 münchen,München
+norderstedt,Norderstedt
+potsdam,Potsdam
