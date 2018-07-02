@@ -111,15 +111,15 @@ public class MatchService {
         return match;
     }
 
-    private static boolean isNotSpecialClass7Players(Match match) {
+    protected static boolean isNotSpecialClass7Players(Match match) {
         return !(match.getClubHome().endsWith(MATCH_7_PLAYERS) || match.getClubAway().endsWith(MATCH_7_PLAYERS));
     }
 
-    private static boolean isNotFutsal(Match match) {
+    protected static boolean isNotFutsal(Match match) {
         return !match.getLeague().contains(MATCH_FUTSAL);
     }
 
-    private static boolean isNotCancelled(Match match) {
+    protected static boolean isNotCancelled(Match match) {
         return !match.getScore().equals(MATCH_CANCELLED);
     }
 

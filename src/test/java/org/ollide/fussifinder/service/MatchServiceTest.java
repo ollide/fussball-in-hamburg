@@ -2,9 +2,12 @@ package org.ollide.fussifinder.service;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.ollide.fussifinder.model.League;
 import org.ollide.fussifinder.model.Match;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 
 public class MatchServiceTest {
@@ -39,4 +42,40 @@ public class MatchServiceTest {
         verbandsliga.setLeague("Verbandsliga");
         assertEquals("Verbandsliga", matchService.shortenLeague(verbandsliga).getLeague());
     }
+
+    @Test
+    public void isNotSpecialClass7Players() {
+        Match normalMatch = new Match();
+        normalMatch.setClubHome("TUS Altertal");
+        normalMatch.setClubAway("SC Victoria");
+        assertTrue(MatchService.isNotSpecialClass7Players(normalMatch));
+
+        Match match7Players = new Match();
+        match7Players.setClubHome("TUS Altertal 7er");
+        match7Players.setClubAway("SC Victoria 7er");
+        assertFalse(MatchService.isNotSpecialClass7Players(match7Players));
+    }
+
+    @Test
+    public void isNotFutsal() {
+        Match normalMatch = new Match();
+        normalMatch.setLeague(League.VERBANDSLIGA.getName());
+        assertTrue(MatchService.isNotFutsal(normalMatch));
+
+        Match futsalMatch = new Match();
+        futsalMatch.setLeague("Futsal Regionalliga");
+        assertFalse(MatchService.isNotFutsal(futsalMatch));
+    }
+
+    @Test
+    public void isNotCancelled() {
+        Match normalMatch = new Match();
+        normalMatch.setScore("");
+        assertTrue(MatchService.isNotCancelled(normalMatch));
+
+        Match cancelledMatch = new Match();
+        cancelledMatch.setScore("Absetzung");
+        assertFalse(MatchService.isNotCancelled(cancelledMatch));
+    }
+
 }
