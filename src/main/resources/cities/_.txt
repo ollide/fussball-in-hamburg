@@ -1,7 +1,9 @@
 key,name
 berlin,Berlin
 bremen,Bremen
+flensburg,Flensburg
 hamburg,Hamburg
+hannover,Hannover
 kiel,Kiel
 lübeck,Lübeck
 lüneburg,Lüneburg
