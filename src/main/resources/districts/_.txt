@@ -1,4 +1,6 @@
 key,name
+harburg,Harburg
 nienburg,Nienburg (Weser)
 pinneberg,Pinneberg
+stade,Stade
 stormarn,Stormarn
