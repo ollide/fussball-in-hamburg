@@ -9,6 +9,7 @@ kiel,Kiel
 lübeck,Lübeck
 lüneburg,Lüneburg
 münchen,München
+neumünster,Neumünster
 norderstedt,Norderstedt
 oldenburg,Oldenburg
 potsdam,Potsdam
