@@ -1,6 +1,7 @@
 key,name
 berlin,Berlin
 bremen,Bremen
+dortmund,Dortmund
 flensburg,Flensburg
 hamburg,Hamburg
 hannover,Hannover
@@ -9,4 +10,6 @@ lübeck,Lübeck
 lüneburg,Lüneburg
 münchen,München
 norderstedt,Norderstedt
+oldenburg,Oldenburg
 potsdam,Potsdam
+wiesbaden,Wiesbaden
