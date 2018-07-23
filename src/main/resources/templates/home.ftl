@@ -113,7 +113,7 @@
     }
 
     function isFSfilter(filter, matchLeague) {
-        return filter === 'FS' && matchLeague.match(/[rLBK]-FS/);
+        return filter === 'FS' && matchLeague.match(/([rLBK]-)?FS/);
     }
 </script>
 

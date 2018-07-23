@@ -104,6 +104,9 @@ public class MatchService {
             case "regionale Freundschaftsspiele":
                 shortenedLeague = "r-FS";
                 break;
+            case "Freundschaftsspiele":
+                shortenedLeague = "FS";
+                break;
             default:
                 shortenedLeague = match.getLeague();
         }
