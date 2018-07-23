@@ -105,7 +105,7 @@
         for (var i = 0; i < tds.length; i++) {
             var td = tds[i];
             var matchLeague = td.innerText;
-            if (matchLeague === league || isFSfilter(league, matchLeague)) {
+            if (matchLeague.startsWith(league) || isFSfilter(league, matchLeague)) {
                 var list = td.parentElement.classList;
                 active ? list.remove('hidden-by-league') : list.add('hidden-by-league');
             }
