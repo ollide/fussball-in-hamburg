@@ -29,8 +29,12 @@ public final class DateUtil {
         Matcher dateMatcher = DATE_PATTERN.matcher(date);
         Matcher hourMatcher = HOUR_PATTERN.matcher(date);
 
-        if (dateMatcher.matches() && hourMatcher.matches()) {
-            return dateMatcher.group(1) + " " + hourMatcher.group(1);
+        if (dateMatcher.matches()) {
+            if (hourMatcher.matches()) {
+                return dateMatcher.group(1) + " " + hourMatcher.group(1);
+            } else {
+                return dateMatcher.group(1) + " 00:00";
+            }
         } else {
             if (HOUR_PATTERN.matcher(date).matches() && lastDate != null) {
                 Matcher matcher = DATE_PATTERN.matcher(lastDate);
