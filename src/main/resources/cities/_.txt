@@ -6,8 +6,14 @@ bremen,Bremen
 delmenhorst,Delmenhorst
 dortmund,Dortmund
 flensburg,Flensburg
+fulda,Fulda
+fürth,Fürth
+göttingen,Göttingen
 hamburg,Hamburg
 hannover,Hannover
+ingolstadt,Ingolstadt
+jena,Jena
+kassel,Kassel
 kiel,Kiel
 köln,Köln
 lübeck,Lübeck
@@ -15,9 +21,11 @@ lüneburg,Lüneburg
 münchen,München
 neumünster,Neumünster
 norderstedt,Norderstedt
+nürnberg,Nürnberg
 oldenburg,Oldenburg
 osnabrück,Osnabrück
 potsdam,Potsdam
 rostock,Rostock
 schwerin,Schwerin
 wiesbaden,Wiesbaden
+würzburg,Würzburg
