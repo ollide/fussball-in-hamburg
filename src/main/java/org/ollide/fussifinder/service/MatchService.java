@@ -7,6 +7,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Nullable;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.HashSet;
@@ -38,10 +39,17 @@ public class MatchService {
     }
 
     @Async
-    public Future<List<Match>> getMatches(String region, RegionType type) {
-        LocalDate now = LocalDate.now();
-        String dateFrom = DateUtil.formatLocalDateForAPI(now);
-        String dateTo = DateUtil.formatLocalDateForAPI(now.plusDays(6));
+    public Future<List<Match>> getMatches(String region, RegionType type, @Nullable LocalDate date) {
+        String dateFrom;
+        String dateTo;
+        if (date != null) {
+            dateFrom = DateUtil.formatLocalDateForAPI(date);
+            dateTo = DateUtil.formatLocalDateForAPI(date.plusDays(1));
+        } else {
+            LocalDate now = LocalDate.now();
+            dateFrom = DateUtil.formatLocalDateForAPI(now);
+            dateTo = DateUtil.formatLocalDateForAPI(now.plusDays(6));
+        }
 
         List<String> zips;
         if (type == RegionType.CITY) {

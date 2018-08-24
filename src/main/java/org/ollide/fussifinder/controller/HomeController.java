@@ -11,7 +11,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.annotation.Nullable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,26 +35,29 @@ public class HomeController {
     }
 
     @RequestMapping("/")
-    public String home(Model model) {
-        return populateModel(model, DEFAULT_CITY, RegionType.CITY);
+    public String home(Model model, @RequestParam(value = "datum", required = false) LocalDate date) {
+        return populateModel(model, DEFAULT_CITY, RegionType.CITY, date);
     }
 
     @RequestMapping("/kreis/{district}")
-    public String matchesForDistrict(Model model, @PathVariable(name = "district") String district) {
-        return populateModel(model, district, RegionType.DISTRICT);
+    public String matchesForDistrict(Model model, @PathVariable(name = "district") String district,
+                                     @RequestParam(value = "datum", required = false) LocalDate date) {
+        return populateModel(model, district, RegionType.DISTRICT, date);
     }
 
     @RequestMapping("/stadt/{city}")
-    public String matchesForCity(Model model, @PathVariable(name = "city") String city) {
-        return populateModel(model, city, RegionType.CITY);
+    public String matchesForCity(Model model, @PathVariable(name = "city") String city,
+                                 @RequestParam(value = "datum", required = false) LocalDate date) {
+        return populateModel(model, city, RegionType.CITY, date);
     }
 
-    private String populateModel(Model model, String regionName, RegionType type) {
+    private String populateModel(Model model, String regionName, RegionType type, @Nullable LocalDate date) {
         model.addAttribute("city", StringUtil.capitalizeFirstLetter(regionName));
         model.addAttribute("teams", Team.getAllTeams());
         model.addAttribute("leagues", League.getAllLeagues());
+        model.addAttribute("date", date);
 
-        Future<List<Match>> asyncMatches = matchService.getMatches(regionName, type);
+        Future<List<Match>> asyncMatches = matchService.getMatches(regionName, type, date);
 
         AsyncUtil.waitMaxQuietly(asyncMatches, 1000);
         if (asyncMatches.isDone()) {
