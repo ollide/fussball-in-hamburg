@@ -6,6 +6,7 @@ bremen,Bremen
 delmenhorst,Delmenhorst
 dortmund,Dortmund
 flensburg,Flensburg
+frankfurt,Frankfurt
 fulda,Fulda
 fürth,Fürth
 göttingen,Göttingen
@@ -28,4 +29,5 @@ potsdam,Potsdam
 rostock,Rostock
 schwerin,Schwerin
 wiesbaden,Wiesbaden
+wolfsburg,Wolfsburg
 würzburg,Würzburg
