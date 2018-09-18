@@ -80,6 +80,10 @@ public class MatchServiceTest {
         Match cancelledMatch = new Match();
         cancelledMatch.setScore("Absetzung");
         assertFalse(MatchService.isNotCancelled(cancelledMatch));
+
+        Match noShowMatch = new Match();
+        noShowMatch.setScore("Absetzung HEIM");
+        assertFalse(MatchService.isNotCancelled(noShowMatch));
     }
 
 }

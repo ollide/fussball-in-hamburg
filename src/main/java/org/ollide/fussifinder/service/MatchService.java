@@ -26,6 +26,7 @@ public class MatchService {
     private static final String MATCH_FUTSAL = "Futsal";
 
     private static final String MATCH_CANCELLED = "Absetzung";
+    private static final String MATCH_NO_SHOW = "Nichtantritt";
 
     private final MatchCrawlService matchCrawlService;
     private final ParseService parseService;
@@ -131,7 +132,9 @@ public class MatchService {
     }
 
     protected static boolean isNotCancelled(Match match) {
-        return !match.getScore().equals(MATCH_CANCELLED);
+        String score = match.getScore();
+        boolean cancelled = score.contains(MATCH_CANCELLED) || score.contains(MATCH_NO_SHOW);
+        return !cancelled;
     }
 
 }
