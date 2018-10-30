@@ -53,10 +53,18 @@ public class MatchService {
         }
 
         List<String> zips;
-        if (type == RegionType.CITY) {
-            zips = zipService.getZipsForCity(region);
-        } else {
-            zips = zipService.getZipsForDistrict(region);
+        switch (type) {
+            case CITY:
+                zips = zipService.getZipsForCity(region);
+                break;
+            case DISTRICT:
+                zips = zipService.getZipsForDistrict(region);
+                break;
+            case SPECIAL:
+                zips = zipService.getZipsForSpecial(region);
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid region: " + region);
         }
 
         return new AsyncResult<>(zips.stream()

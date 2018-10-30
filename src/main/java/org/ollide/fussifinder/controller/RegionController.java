@@ -28,4 +28,10 @@ public class RegionController {
         return "district";
     }
 
+    @RequestMapping("/spezial")
+    public String specialOverview(Model model) {
+        model.addAttribute("specials", zipService.getSpecialOverview());
+        return "special";
+    }
+
 }

@@ -34,6 +34,15 @@
            transactionalMode="off">
         <persistence strategy="localTempSwap" />
     </cache>
+    <cache name="specialZips"
+           maxEntriesLocalHeap="1000"
+           maxEntriesLocalDisk="20000"
+           eternal="true"
+           diskSpoolBufferSizeMB="20"
+           memoryStoreEvictionPolicy="LFU"
+           transactionalMode="off">
+        <persistence strategy="localTempSwap" />
+    </cache>
 
     <cache name="regionCities"
            maxEntriesLocalHeap="100"
@@ -45,6 +54,15 @@
         <persistence strategy="localTempSwap" />
     </cache>
     <cache name="regionDistricts"
+           maxEntriesLocalHeap="100"
+           maxEntriesLocalDisk="1000"
+           eternal="true"
+           diskSpoolBufferSizeMB="20"
+           memoryStoreEvictionPolicy="LFU"
+           transactionalMode="off">
+        <persistence strategy="localTempSwap" />
+    </cache>
+    <cache name="regionSpecials"
            maxEntriesLocalHeap="100"
            maxEntriesLocalDisk="1000"
            eternal="true"

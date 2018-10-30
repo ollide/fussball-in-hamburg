@@ -51,6 +51,12 @@ public class HomeController {
         return populateModel(model, city, RegionType.CITY, date);
     }
 
+    @RequestMapping("/spezial/{name}")
+    public String matchesForSpecial(Model model, @PathVariable(name = "name") String name,
+                                 @RequestParam(value = "datum", required = false) LocalDate date) {
+        return populateModel(model, name, RegionType.SPECIAL, date);
+    }
+
     private String populateModel(Model model, String regionName, RegionType type, @Nullable LocalDate date) {
         model.addAttribute("city", StringUtil.capitalizeFirstLetter(regionName));
         model.addAttribute("teams", Team.getAllTeams());

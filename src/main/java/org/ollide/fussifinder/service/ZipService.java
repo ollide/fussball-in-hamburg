@@ -22,6 +22,7 @@ public class ZipService {
 
     private static final String RESOURCES_CITIES = "/cities/";
     private static final String RESOURCES_DISTRICTS = "/districts/";
+    private static final String RESOURCES_SPECIALS = "/specials/";
 
     private final ObjectReader stringReader;
     private final ObjectReader regionReader;
@@ -40,6 +41,11 @@ public class ZipService {
     @Cacheable(value = "districtZips", key = "#district.toLowerCase()")
     public List<String> getZipsForDistrict(String district) {
         return readZipsFromResources(RESOURCES_DISTRICTS + district.toLowerCase() + ".txt");
+    }
+
+    @Cacheable(value = "specialZips", key = "#special.toLowerCase()")
+    public List<String> getZipsForSpecial(String special) {
+        return readZipsFromResources(RESOURCES_SPECIALS + special.toLowerCase() + ".txt");
     }
 
     protected List<String> readZipsFromResources(String fileName) {
@@ -61,6 +67,11 @@ public class ZipService {
     @Cacheable(value = "regionDistricts")
     public List<Region> getDistrictOverview() {
         return getOverview(RESOURCES_DISTRICTS);
+    }
+
+    @Cacheable(value = "regionSpecials")
+    public List<Region> getSpecialOverview() {
+        return getOverview(RESOURCES_SPECIALS);
     }
 
     protected List<Region> getOverview(String type) {
