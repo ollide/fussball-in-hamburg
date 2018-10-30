@@ -1,0 +1,11 @@
+key,name
+dithmarschen,Dithmarschen
+harburg,Harburg
+nienburg,Nienburg (Weser)
+nordfriesland,Nordfriesland
+pinneberg,Pinneberg
+rendsburg-eckernförde,Rendsburg-Eckernförde
+schleswig-flensburg,Schleswig-Flensburg
+stade,Stade
+steinburg,Steinburg
+stormarn,Stormarn

@@ -1,19 +1,19 @@
 package org.ollide.fussifinder.service;
 
-import org.ollide.fussifinder.model.League;
-import org.ollide.fussifinder.model.Match;
-import org.ollide.fussifinder.model.MatchStats;
-import org.ollide.fussifinder.model.Team;
+import org.ollide.fussifinder.model.*;
 import org.ollide.fussifinder.util.DateUtil;
-import org.ollide.fussifinder.zip.Hamburg;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Nullable;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,26 +26,54 @@ public class MatchService {
     private static final String MATCH_FUTSAL = "Futsal";
 
     private static final String MATCH_CANCELLED = "Absetzung";
+    private static final String MATCH_NO_SHOW = "Nichtantritt";
 
     private final MatchCrawlService matchCrawlService;
     private final ParseService parseService;
+    private final ZipService zipService;
 
     @Autowired
-    public MatchService(MatchCrawlService matchCrawlService, ParseService parseService) {
+    public MatchService(MatchCrawlService matchCrawlService, ParseService parseService, ZipService zipService) {
         this.matchCrawlService = matchCrawlService;
         this.parseService = parseService;
+        this.zipService = zipService;
     }
 
-    public List<Match> getMatches() {
-        LocalDate now = LocalDate.now();
-        String dateFrom = DateUtil.formatLocalDateForAPI(now);
-        String dateTo = DateUtil.formatLocalDateForAPI(now.plusDays(6));
+    @Async
+    public Future<List<Match>> getMatches(String region, RegionType type, @Nullable LocalDate date) {
+        String dateFrom;
+        String dateTo;
+        if (date != null) {
+            dateFrom = DateUtil.formatLocalDateForAPI(date);
+            dateTo = DateUtil.formatLocalDateForAPI(date.plusDays(1));
+        } else {
+            LocalDate now = LocalDate.now();
+            dateFrom = DateUtil.formatLocalDateForAPI(now);
+            dateTo = DateUtil.formatLocalDateForAPI(now.plusDays(6));
+        }
 
-        return Hamburg.getAllZIP3().stream()
-                .map((zip3) -> matchCrawlService.getMatchCalendar(dateFrom, dateTo, zip3))
+        List<String> zips;
+        switch (type) {
+            case CITY:
+                zips = zipService.getZipsForCity(region);
+                break;
+            case DISTRICT:
+                zips = zipService.getZipsForDistrict(region);
+                break;
+            case SPECIAL:
+                zips = zipService.getZipsForSpecial(region);
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid region: " + region);
+        }
+
+        return new AsyncResult<>(zips.stream()
+                .map(zip5 -> zip5.substring(0, 3)).distinct()
+                .map(zip3 -> matchCrawlService.getMatchCalendar(dateFrom, dateTo, zip3))
                 .map(parseService::parseZipsWithMatches)
                 .flatMap(Collection::stream)
-                .map((zip5) -> matchCrawlService.getMatchCalendar(dateFrom, dateTo, zip5))
+                .filter(zips::contains)
+                .map(zip5 -> matchCrawlService.getMatchCalendar(dateFrom, dateTo, zip5))
                 .map(parseService::parseMatchesForZip)
                 .flatMap(Collection::stream)
                 // Run required filters
@@ -56,7 +84,7 @@ public class MatchService {
                 .map(this::shortenLeague)
                 // sort and collect
                 .sorted()
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()));
     }
 
     public MatchStats getMatchStats(List<Match> matches) {
@@ -90,6 +118,12 @@ public class MatchService {
             case "Kreisfreundschaftsspiele":
                 shortenedLeague = "K-FS";
                 break;
+            case "regionale Freundschaftsspiele":
+                shortenedLeague = "r-FS";
+                break;
+            case "Freundschaftsspiele":
+                shortenedLeague = "FS";
+                break;
             default:
                 shortenedLeague = match.getLeague();
         }
@@ -97,16 +131,18 @@ public class MatchService {
         return match;
     }
 
-    private static boolean isNotSpecialClass7Players(Match match) {
+    protected static boolean isNotSpecialClass7Players(Match match) {
         return !(match.getClubHome().endsWith(MATCH_7_PLAYERS) || match.getClubAway().endsWith(MATCH_7_PLAYERS));
     }
 
-    private static boolean isNotFutsal(Match match) {
+    protected static boolean isNotFutsal(Match match) {
         return !match.getLeague().contains(MATCH_FUTSAL);
     }
 
-    private static boolean isNotCancelled(Match match) {
-        return !match.getScore().equals(MATCH_CANCELLED);
+    protected static boolean isNotCancelled(Match match) {
+        String score = match.getScore();
+        boolean cancelled = score.contains(MATCH_CANCELLED) || score.contains(MATCH_NO_SHOW);
+        return !cancelled;
     }
 
 }

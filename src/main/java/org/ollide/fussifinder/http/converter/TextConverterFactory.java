@@ -17,6 +17,7 @@ public final class TextConverterFactory extends Factory {
         // hidden
     }
 
+    @Override
     public Converter<ResponseBody, ?> responseBodyConverter(Type type, Annotation[] annotations, Retrofit retrofit) {
         return new TextResponseBodyConverter();
     }

@@ -2,6 +2,8 @@ package org.ollide.fussifinder.util;
 
 import org.junit.Test;
 
+import java.time.LocalDateTime;
+
 import static org.junit.Assert.*;
 
 public class DateUtilTest {
@@ -22,5 +24,17 @@ public class DateUtilTest {
 
         // Whitespace and other characters before, in-between or afterwards are removed
         assertEquals(dateWithTime, DateUtil.normalizeDate("Mittwoch, 10.10.12 -> 15:00 Uhr", null));
+    }
+
+    @Test
+    public void testNormalizeAndParseAsteriskKickoff() {
+        String date = "So, 10.10.12 | **";
+
+        String normalizedDate = DateUtil.normalizeDate(date, null);
+        assertEquals("10.10.12 00:00", normalizedDate);
+
+        LocalDateTime localDateTime = DateUtil.parseLocalDateTime(normalizedDate);
+        assertEquals(0, localDateTime.getHour());
+        assertEquals(0, localDateTime.getMinute());
     }
 }

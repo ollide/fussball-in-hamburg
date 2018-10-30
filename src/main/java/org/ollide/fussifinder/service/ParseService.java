@@ -34,7 +34,6 @@ public class ParseService {
         List<String> zipsWithMatches = new ArrayList<>();
 
         for (Element district : districtsWithMatches) {
-            // {'plz':'20251'}
             String plzJson = district.attr("data-ajax-forced");
             ZIPCode zipCode;
             try {
@@ -68,8 +67,11 @@ public class ParseService {
                     m.setClubHome(matchRow.select("td.column-club div.club-name").text());
                     m.setClubHome(matchRow.select("td.column-club").first().select("div.club-name").text());
                     m.setClubAway(matchRow.select("td.column-club").last().select("div.club-name").text());
-                    m.setScore(matchRow.select("td.column-score").text());
-                    m.setUrl(matchRow.select("td.column-detail a").first().attr("href"));
+
+                    Elements matchScoreLinkTag = matchRow.select("td.column-score a");
+                    m.setScore(matchScoreLinkTag.text());
+                    m.setUrl(matchScoreLinkTag.attr("href"));
+
                     return m;
                 })
                 .collect(Collectors.toList());

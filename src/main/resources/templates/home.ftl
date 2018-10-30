@@ -2,7 +2,7 @@
 <@layout.default>
 
 <div class="container">
-    <h1 class="title">Fußball in Hamburg</h1>
+    <h1 class="title">Fußball in ${city!"Hamburg"}</h1>
     <p class="subtitle">die ${stats.numberOfMatches} spiele der nächsten woche.</p>
 
     <div class="buttons has-addons team-type-filter">
@@ -42,7 +42,7 @@
                 <td class="team-type">${match.teamType}</td>
                 <td>
                     <a href="${match.url}" target="_blank" rel="noreferrer">
-                        <i class="fas fa-external-link-alt"></i>
+                        <i class="icon-link-ext"></i>
                     </a>
                 </td>
             </tr>
@@ -105,7 +105,7 @@
         for (var i = 0; i < tds.length; i++) {
             var td = tds[i];
             var matchLeague = td.innerText;
-            if (matchLeague === league || isFSfilter(league, matchLeague)) {
+            if (matchLeague.startsWith(league) || isFSfilter(league, matchLeague)) {
                 var list = td.parentElement.classList;
                 active ? list.remove('hidden-by-league') : list.add('hidden-by-league');
             }
@@ -113,7 +113,7 @@
     }
 
     function isFSfilter(filter, matchLeague) {
-        return filter === 'FS' && matchLeague.match(/[LBK]-FS/);
+        return filter === 'FS' && matchLeague.match(/([rLBK]-)?FS/);
     }
 </script>
 

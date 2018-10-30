@@ -10,7 +10,14 @@ import org.ollide.fussifinder.http.HeaderInterceptor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.expression.ParseException;
+import org.springframework.format.Formatter;
 import retrofit2.Retrofit;
+
+import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 @Configuration
 public class AppConfig {
@@ -55,4 +62,20 @@ public class AppConfig {
         return retrofit.create(MatchClient.class);
     }
 
+    @Bean
+    public Formatter<LocalDate> localDateFormatter() {
+        return new Formatter<LocalDate>() {
+            @Override
+            @NotNull
+            public LocalDate parse(@NotNull String text, @NotNull Locale locale) throws ParseException {
+                return LocalDate.parse(text, DateTimeFormatter.ISO_DATE);
+            }
+
+            @Override
+            @NotNull
+            public String print(@NotNull LocalDate object, @NotNull Locale locale) {
+                return DateTimeFormatter.ISO_DATE.format(object);
+            }
+        };
+    }
 }

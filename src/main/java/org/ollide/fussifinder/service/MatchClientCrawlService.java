@@ -1,5 +1,6 @@
 package org.ollide.fussifinder.service;
 
+import com.google.common.util.concurrent.RateLimiter;
 import org.ollide.fussifinder.api.MatchClient;
 import org.ollide.fussifinder.model.Team;
 import org.slf4j.Logger;
@@ -17,6 +18,8 @@ public class MatchClientCrawlService implements MatchCrawlService {
 
     private static final String DEFAULT_TEAM_TYPES = Team.getDefaultTeamsQuery();
 
+    private static final RateLimiter RATE_LIMITER = RateLimiter.create(3.0);
+
     private final MatchClient matchClient;
 
     @Autowired
@@ -25,8 +28,9 @@ public class MatchClientCrawlService implements MatchCrawlService {
     }
 
     @Override
-    @Cacheable("matchCalendar")
+    @Cacheable(value = "matchCalendar", sync = true)
     public String getMatchCalendar(String dateFrom, String dateTo, String zip) {
+        RATE_LIMITER.acquire();
         return getMatchCalendar(dateFrom, dateTo, zip, DEFAULT_TEAM_TYPES);
     }
 
