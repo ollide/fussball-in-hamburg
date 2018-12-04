@@ -22,7 +22,7 @@ public class HeaderInterceptor implements Interceptor {
     public Response intercept(Chain chain) throws IOException {
         Request request = chain.request();
 
-        LOGGER.debug("Applying required headers.");
+        LOGGER.trace("Applying required headers.");
 
         Request requestWithHeaders = request.newBuilder()
                 .removeHeader("User-Agent")
