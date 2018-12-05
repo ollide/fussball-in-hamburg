@@ -1,6 +1,7 @@
 package org.ollide.fussifinder.controller;
 
 import org.ollide.fussifinder.model.*;
+import org.ollide.fussifinder.model.filter.JsFilter;
 import org.ollide.fussifinder.service.MatchService;
 import org.ollide.fussifinder.util.AsyncUtil;
 import org.ollide.fussifinder.util.StringUtil;
@@ -59,7 +60,7 @@ public class HomeController {
 
     private String populateModel(Model model, String regionName, RegionType type, @Nullable LocalDate date) {
         model.addAttribute("city", StringUtil.capitalizeFirstLetter(regionName));
-        model.addAttribute("teams", Team.getAllTeams());
+        model.addAttribute("teamFilter", JsFilter.getTeamFilter());
         model.addAttribute("leagues", League.getAllLeagues());
         model.addAttribute("date", date);
 
