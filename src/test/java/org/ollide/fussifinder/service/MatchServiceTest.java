@@ -86,4 +86,23 @@ public class MatchServiceTest {
         assertFalse(MatchService.isNotCancelled(noShowMatch));
     }
 
+    @Test
+    public void testIsNotIndoor() {
+        Match normalMatch = new Match();
+        normalMatch.setScore("");
+        assertTrue(MatchService.isNotIndoor(normalMatch));
+
+        Match awayTeamSingleMatch = new Match();
+        awayTeamSingleMatch.setClubAway("FC Hallenbach 05");
+        assertTrue(MatchService.isNotIndoor(awayTeamSingleMatch));
+
+        Match indoorLeagueMatch = new Match();
+        indoorLeagueMatch.setLeague("Hallen-Kreisturnier");
+        assertFalse(MatchService.isNotIndoor(indoorLeagueMatch));
+
+        Match indoorAwayTeamMatch = new Match();
+        indoorAwayTeamMatch.setClubAway("Hallenturnier bis ca. 19.45 Uhr");
+        assertFalse(MatchService.isNotIndoor(indoorAwayTeamMatch));
+    }
+
 }

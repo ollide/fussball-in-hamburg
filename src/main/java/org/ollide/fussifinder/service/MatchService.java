@@ -2,6 +2,7 @@ package org.ollide.fussifinder.service;
 
 import org.ollide.fussifinder.model.*;
 import org.ollide.fussifinder.util.DateUtil;
+import org.ollide.fussifinder.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
@@ -80,6 +81,7 @@ public class MatchService {
                 .filter(MatchService::isNotSpecialClass7Players)
                 .filter(MatchService::isNotFutsal)
                 .filter(MatchService::isNotCancelled)
+                .filter(MatchService::isNotIndoor)
                 // Beautify/shorten some things
                 .map(this::shortenLeague)
                 // sort and collect
@@ -143,6 +145,13 @@ public class MatchService {
         String score = match.getScore();
         boolean cancelled = score.contains(MATCH_CANCELLED) || score.contains(MATCH_NO_SHOW);
         return !cancelled;
+    }
+
+    protected static boolean isNotIndoor(Match match) {
+        boolean indoor = StringUtil.containsAllIgnoreCase(match.getClubAway(), "hallen", "turnier")
+                || StringUtil.containsAllIgnoreCase(match.getLeague(), "hallen", "turnier");
+
+        return !indoor;
     }
 
 }
