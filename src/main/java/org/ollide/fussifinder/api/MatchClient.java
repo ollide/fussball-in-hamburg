@@ -10,4 +10,7 @@ public interface MatchClient {
     Call<String> matchCalendar(@Path("dateFrom") String dateFrom, @Path("dateTo") String dateTo,
                                      @Path("zip") String zip, @Path("teamType") String teamType);
 
+    @GET("spiel/-/spiel/{id}")
+    Call<String> matchDetails(@Path("id") String id);
+
 }
