@@ -48,6 +48,30 @@ public class MatchServiceTest {
     }
 
     @Test
+    public void shortenTeamNames() {
+        Match j1 = new Match();
+        j1.setClubHome("Walddörfer 1.A (J1)");
+        j1.setClubAway("Rahlstedt 1.A (J1)");
+        j1 = matchService.shortenTeamNames(j1);
+        assertEquals("Walddörfer 1.A", j1.getClubHome());
+        assertEquals("Rahlstedt 1.A", j1.getClubAway());
+
+        Match a1 = new Match();
+        a1.setClubHome("TSV Sasel");
+        a1.setClubAway("BU 1.A (A1)");
+        a1 = matchService.shortenTeamNames(a1);
+        assertEquals("TSV Sasel", a1.getClubHome());
+        assertEquals("BU 1.A", a1.getClubAway());
+
+        Match j1A2 = new Match();
+        j1A2.setClubHome("Altenwerder 1.A (J1)");
+        j1A2.setClubAway("Vorw. Wacker 3.B (A2)");
+        j1A2 = matchService.shortenTeamNames(j1A2);
+        assertEquals("Altenwerder 1.A", j1A2.getClubHome());
+        assertEquals("Vorw. Wacker 3.B", j1A2.getClubAway());
+    }
+
+    @Test
     public void isNotSpecialClass7Players() {
         Match normalMatch = new Match();
         normalMatch.setClubHome("TUS Altertal");

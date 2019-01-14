@@ -84,6 +84,7 @@ public class MatchService {
                 .filter(MatchService::isNotIndoor)
                 // Beautify/shorten some things
                 .map(this::shortenLeague)
+                .map(this::shortenTeamNames)
                 // sort and collect
                 .sorted()
                 .collect(Collectors.toList()));
@@ -130,6 +131,14 @@ public class MatchService {
                 shortenedLeague = match.getLeague();
         }
         match.setLeague(shortenedLeague);
+        return match;
+    }
+
+    protected Match shortenTeamNames(Match match) {
+        // (A1) (J2) etc.
+        String youthYear = " ?\\([AJ][1-9]\\)$";
+        match.setClubHome(match.getClubHome().replaceAll(youthYear, ""));
+        match.setClubAway(match.getClubAway().replaceAll(youthYear, ""));
         return match;
     }
 
