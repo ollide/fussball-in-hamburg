@@ -10,7 +10,6 @@ import org.ollide.fussifinder.http.HeaderInterceptor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.expression.ParseException;
 import org.springframework.format.Formatter;
 import retrofit2.Retrofit;
 
@@ -67,7 +66,7 @@ public class AppConfig {
         return new Formatter<LocalDate>() {
             @Override
             @NotNull
-            public LocalDate parse(@NotNull String text, @NotNull Locale locale) throws ParseException {
+            public LocalDate parse(@NotNull String text, @NotNull Locale locale) {
                 return LocalDate.parse(text, DateTimeFormatter.ISO_DATE);
             }
 
