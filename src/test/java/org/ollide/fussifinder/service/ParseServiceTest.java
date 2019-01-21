@@ -1,11 +1,10 @@
 package org.ollide.fussifinder.service;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.ollide.fussifinder.ResourceHelper;
+import org.ollide.fussifinder.config.AppConfig;
 import org.ollide.fussifinder.model.Match;
 import org.ollide.fussifinder.util.DateUtil;
 
@@ -20,9 +19,7 @@ public class ParseServiceTest {
 
     @Before
     public void setUp() {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        mapper.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
+        ObjectMapper mapper = new AppConfig().objectMapper();
         parseService = new ParseService(mapper);
     }
 
