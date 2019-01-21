@@ -19,7 +19,10 @@ public final class TextConverterFactory extends Factory {
 
     @Override
     public Converter<ResponseBody, ?> responseBodyConverter(Type type, Annotation[] annotations, Retrofit retrofit) {
-        return new TextResponseBodyConverter();
+        if (type == String.class) {
+            return new TextResponseBodyConverter();
+        }
+        return null;
     }
 
 }

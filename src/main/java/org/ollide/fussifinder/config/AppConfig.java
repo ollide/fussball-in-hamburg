@@ -5,13 +5,14 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import okhttp3.OkHttpClient;
 import org.ollide.fussifinder.api.MatchClient;
-import org.ollide.fussifinder.http.converter.TextConverterFactory;
 import org.ollide.fussifinder.http.HeaderInterceptor;
+import org.ollide.fussifinder.http.converter.TextConverterFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.Formatter;
 import retrofit2.Retrofit;
+import retrofit2.converter.jackson.JacksonConverterFactory;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
@@ -40,10 +41,11 @@ public class AppConfig {
     }
 
     @Bean
-    public Retrofit retrofit(OkHttpClient client) {
+    public Retrofit retrofit(OkHttpClient client, ObjectMapper objectMapper) {
         return new Retrofit.Builder()
                 .baseUrl(crawlUrl)
                 .addConverterFactory(TextConverterFactory.create())
+                .addConverterFactory(JacksonConverterFactory.create(objectMapper))
                 .client(client)
                 .build();
     }
