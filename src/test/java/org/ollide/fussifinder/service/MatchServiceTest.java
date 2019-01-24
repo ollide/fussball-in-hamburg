@@ -69,6 +69,13 @@ public class MatchServiceTest {
         j1A2 = matchService.shortenTeamNames(j1A2);
         assertEquals("Altenwerder 1.A", j1A2.getClubHome());
         assertEquals("Vorw. Wacker 3.B", j1A2.getClubAway());
+
+        Match a1Sg = new Match();
+        a1Sg.setClubHome("SC V. M. 1.A");
+        a1Sg.setClubAway("Altengamme/Börnsen 1.A (A1) SG");
+        a1Sg = matchService.shortenTeamNames(a1Sg);
+        assertEquals("SC V. M. 1.A", a1Sg.getClubHome());
+        assertEquals("Altengamme/Börnsen 1.A SG", a1Sg.getClubAway());
     }
 
     @Test

@@ -132,7 +132,7 @@ public class MatchService {
 
     protected Match shortenTeamNames(Match match) {
         // (A1) (J2) etc.
-        String youthYear = " ?\\([AJ][1-9]\\)$";
+        String youthYear = " ?\\([AJ][1-9]\\)";
         match.setClubHome(match.getClubHome().replaceAll(youthYear, ""));
         match.setClubAway(match.getClubAway().replaceAll(youthYear, ""));
         return match;
