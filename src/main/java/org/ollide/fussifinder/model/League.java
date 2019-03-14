@@ -43,4 +43,8 @@ public class League {
     public boolean isActive() {
         return active;
     }
+
+    public String getAbbreviation() {
+        return abbreviation;
+    }
 }
