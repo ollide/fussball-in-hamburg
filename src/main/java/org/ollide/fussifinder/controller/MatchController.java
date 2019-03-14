@@ -34,9 +34,10 @@ public class MatchController {
 
     protected List<ZIPCode> getRandomZips(String zip3) {
         List<ZIPCode> zips = new ArrayList<>();
-        if (random.nextBoolean()) {
-            // 0-3 results
-            int numberOfZipsInOverview = random.nextInt(4);
+        // 80%
+        if (random.nextInt(10) < 8) {
+            // 0-7 results
+            int numberOfZipsInOverview = random.nextInt(8);
             for (int i = 0; i < numberOfZipsInOverview; i++) {
                 // generate random 5 digit ZIP
                 String zip = zip3 + random.nextInt(10) + random.nextInt(10);
@@ -57,10 +58,11 @@ public class MatchController {
             MatchDay matchDay = new MatchDay();
             matchDay.setDay(localDateFrom);
 
-            if (random.nextBoolean()) {
+            // 70%
+            if (random.nextInt(10) < 7) {
 
-                // 0-2 matches
-                int numberOfMatches = random.nextInt(3);
+                // 0-9 matches
+                int numberOfMatches = random.nextInt(10);
                 for (int i = 0; i < numberOfMatches; i++) {
                     matchDay.getMatches().add(getRandomMatch(localDateFrom));
                 }
