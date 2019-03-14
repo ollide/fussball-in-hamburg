@@ -4,8 +4,8 @@ import org.ollide.fussifinder.model.*;
 import org.ollide.fussifinder.util.DateUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -19,7 +19,7 @@ public class MatchController {
 
     private Random random = new Random();
 
-    @RequestMapping("ajax.match.calendar/-/datum-bis/{dateTo}/datum-von/{dateFrom}/plz/{zip}/mannschaftsart/{teamType}")
+    @GetMapping("ajax.match.calendar/-/datum-bis/{dateTo}/datum-von/{dateFrom}/plz/{zip}/mannschaftsart/{teamType}")
     public String getMatches(@PathVariable("dateTo") String dateTo, @PathVariable("dateFrom") String dateFrom,
                              @PathVariable("zip") String zip, @PathVariable("teamType") String teamType,
                              Model model) {
