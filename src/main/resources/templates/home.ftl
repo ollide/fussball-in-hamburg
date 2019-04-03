@@ -6,11 +6,10 @@
     <p class="subtitle">die ${stats.numberOfMatches} spiele der nächsten woche.</p>
 
     <div class="buttons has-addons team-type-filter">
-    <#list teams as type>
-        <#assign name = type.getName() />
-        <span class="button <#if type.isActive()>is-active-filter</#if>"
-              onclick="toggleTeamTypeFilter(this)" data-filter-name="${name}">
-            ${name}
+    <#list teamFilter as type>
+        <span class="button <#if type.active>is-active-filter</#if>"
+              onclick="toggleTeamTypeFilter(this)" data-filter-name="${type.filter}">
+            ${type.name}
         </span>
     </#list>
     </div>
@@ -87,7 +86,7 @@
         var tds = document.getElementsByClassName('team-type');
         for (var i = 0; i < tds.length; i++) {
             var td = tds[i];
-            if (td.innerText === type) {
+            if (td.innerText.startsWith(type)) {
                 var list = td.parentElement.classList;
                 active ? list.remove('hidden-by-type') : list.add('hidden-by-type');
             }

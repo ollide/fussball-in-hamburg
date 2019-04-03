@@ -48,6 +48,37 @@ public class MatchServiceTest {
     }
 
     @Test
+    public void shortenTeamNames() {
+        Match j1 = new Match();
+        j1.setClubHome("Walddörfer 1.A (J1)");
+        j1.setClubAway("Rahlstedt 1.A (J1)");
+        j1 = matchService.shortenTeamNames(j1);
+        assertEquals("Walddörfer 1.A", j1.getClubHome());
+        assertEquals("Rahlstedt 1.A", j1.getClubAway());
+
+        Match a1 = new Match();
+        a1.setClubHome("TSV Sasel");
+        a1.setClubAway("BU 1.A (A1)");
+        a1 = matchService.shortenTeamNames(a1);
+        assertEquals("TSV Sasel", a1.getClubHome());
+        assertEquals("BU 1.A", a1.getClubAway());
+
+        Match j1A2 = new Match();
+        j1A2.setClubHome("Altenwerder 1.A (J1)");
+        j1A2.setClubAway("Vorw. Wacker 3.B (A2)");
+        j1A2 = matchService.shortenTeamNames(j1A2);
+        assertEquals("Altenwerder 1.A", j1A2.getClubHome());
+        assertEquals("Vorw. Wacker 3.B", j1A2.getClubAway());
+
+        Match a1Sg = new Match();
+        a1Sg.setClubHome("SC V. M. 1.A");
+        a1Sg.setClubAway("Altengamme/Börnsen 1.A (A1) SG");
+        a1Sg = matchService.shortenTeamNames(a1Sg);
+        assertEquals("SC V. M. 1.A", a1Sg.getClubHome());
+        assertEquals("Altengamme/Börnsen 1.A SG", a1Sg.getClubAway());
+    }
+
+    @Test
     public void isNotSpecialClass7Players() {
         Match normalMatch = new Match();
         normalMatch.setClubHome("TUS Altertal");
@@ -84,6 +115,25 @@ public class MatchServiceTest {
         Match noShowMatch = new Match();
         noShowMatch.setScore("Absetzung HEIM");
         assertFalse(MatchService.isNotCancelled(noShowMatch));
+    }
+
+    @Test
+    public void testIsNotIndoor() {
+        Match normalMatch = new Match();
+        normalMatch.setScore("");
+        assertTrue(MatchService.isNotIndoor(normalMatch));
+
+        Match awayTeamSingleMatch = new Match();
+        awayTeamSingleMatch.setClubAway("FC Hallenbach 05");
+        assertTrue(MatchService.isNotIndoor(awayTeamSingleMatch));
+
+        Match indoorLeagueMatch = new Match();
+        indoorLeagueMatch.setLeague("Hallen-Kreisturnier");
+        assertFalse(MatchService.isNotIndoor(indoorLeagueMatch));
+
+        Match indoorAwayTeamMatch = new Match();
+        indoorAwayTeamMatch.setClubAway("Hallenturnier bis ca. 19.45 Uhr");
+        assertFalse(MatchService.isNotIndoor(indoorAwayTeamMatch));
     }
 
 }

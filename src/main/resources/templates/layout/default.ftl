@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="keywords" content="Fußball,Amateurfußball,Football,Groundhopping,Groundhopper,Hamburg">
     <meta name="Description" content="Fußballspiele der nächsten Woche in Hamburg">
+    <meta name="theme-color" content="#9C3">
 
     <link rel="icon" type="image/png" href="/favicon.png">
 

@@ -2,6 +2,8 @@ package org.ollide.fussifinder.util;
 
 import org.springframework.util.StringUtils;
 
+import javax.annotation.Nullable;
+
 public final class StringUtil {
 
     private StringUtil() {
@@ -18,5 +20,18 @@ public final class StringUtil {
             output += word.substring(1);
         }
         return output;
+    }
+
+    public static boolean containsAllIgnoreCase(@Nullable String str, String... toContain) {
+        if (str == null) {
+            return false;
+        }
+        String text = str.toLowerCase();
+        for (String tc : toContain) {
+            if (!text.contains(tc)) {
+                return false;
+            }
+        }
+        return true;
     }
 }

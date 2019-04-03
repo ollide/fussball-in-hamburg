@@ -1,5 +1,8 @@
 package org.ollide.fussifinder.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import org.ollide.fussifinder.http.serializer.IsoLocalDateSerializer;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -10,6 +13,7 @@ public class MatchDay {
 
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("EEEE, dd.MM.yy", Locale.GERMANY);
 
+    @JsonSerialize(using = IsoLocalDateSerializer.class)
     private LocalDate day;
     private List<Match> matches = new ArrayList<>();
 

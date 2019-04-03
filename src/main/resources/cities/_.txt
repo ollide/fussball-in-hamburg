@@ -28,6 +28,7 @@ osnabrück,Osnabrück
 potsdam,Potsdam
 rostock,Rostock
 schwerin,Schwerin
+uelzen,Uelzen
 wiesbaden,Wiesbaden
 wolfsburg,Wolfsburg
 würzburg,Würzburg

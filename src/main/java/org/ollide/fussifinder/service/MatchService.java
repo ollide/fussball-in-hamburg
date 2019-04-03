@@ -2,6 +2,7 @@ package org.ollide.fussifinder.service;
 
 import org.ollide.fussifinder.model.*;
 import org.ollide.fussifinder.util.DateUtil;
+import org.ollide.fussifinder.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
@@ -9,10 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Nullable;
 import java.time.LocalDate;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 
@@ -25,8 +23,7 @@ public class MatchService {
     private static final String MATCH_7_PLAYERS = " 7er";
     private static final String MATCH_FUTSAL = "Futsal";
 
-    private static final String MATCH_CANCELLED = "Absetzung";
-    private static final String MATCH_NO_SHOW = "Nichtantritt";
+    private static final Collection<String> MATCH_CANCELLED = Arrays.asList("Absetzung", "Nichtantritt", "Ausfall");
 
     private final MatchCrawlService matchCrawlService;
     private final ParseService parseService;
@@ -80,8 +77,10 @@ public class MatchService {
                 .filter(MatchService::isNotSpecialClass7Players)
                 .filter(MatchService::isNotFutsal)
                 .filter(MatchService::isNotCancelled)
+                .filter(MatchService::isNotIndoor)
                 // Beautify/shorten some things
                 .map(this::shortenLeague)
+                .map(this::shortenTeamNames)
                 // sort and collect
                 .sorted()
                 .collect(Collectors.toList()));
@@ -131,6 +130,14 @@ public class MatchService {
         return match;
     }
 
+    protected Match shortenTeamNames(Match match) {
+        // (A1) (J2) etc.
+        String youthYear = " ?\\([AJ][1-9]\\)";
+        match.setClubHome(match.getClubHome().replaceAll(youthYear, ""));
+        match.setClubAway(match.getClubAway().replaceAll(youthYear, ""));
+        return match;
+    }
+
     protected static boolean isNotSpecialClass7Players(Match match) {
         return !(match.getClubHome().endsWith(MATCH_7_PLAYERS) || match.getClubAway().endsWith(MATCH_7_PLAYERS));
     }
@@ -141,8 +148,14 @@ public class MatchService {
 
     protected static boolean isNotCancelled(Match match) {
         String score = match.getScore();
-        boolean cancelled = score.contains(MATCH_CANCELLED) || score.contains(MATCH_NO_SHOW);
-        return !cancelled;
+        return MATCH_CANCELLED.stream().noneMatch(score::contains);
+    }
+
+    protected static boolean isNotIndoor(Match match) {
+        boolean indoor = StringUtil.containsAllIgnoreCase(match.getClubAway(), "hallen", "turnier")
+                || StringUtil.containsAllIgnoreCase(match.getLeague(), "hallen", "turnier");
+
+        return !indoor;
     }
 
 }

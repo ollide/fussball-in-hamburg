@@ -1,6 +1,11 @@
 package org.ollide.fussifinder.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import org.ollide.fussifinder.http.serializer.IsoLocalDateTimeSerializer;
+import org.ollide.fussifinder.http.serializer.KickoffTimeSerializer;
+
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
@@ -9,6 +14,7 @@ public class Match implements Comparable<Match> {
     private static final DateTimeFormatter FORMATTER_TIME = DateTimeFormatter.ofPattern("HH:mm", Locale.GERMANY);
     private static final DateTimeFormatter FORMATTER_DATE = DateTimeFormatter.ofPattern("E, dd.MM.yy | HH:mm", Locale.GERMANY);
 
+    @JsonSerialize(using = IsoLocalDateTimeSerializer.class)
     private LocalDateTime date;
     private String teamType;
     private String league;
@@ -27,6 +33,11 @@ public class Match implements Comparable<Match> {
 
     public LocalDateTime getDate() {
         return date;
+    }
+
+    @JsonSerialize(using = KickoffTimeSerializer.class)
+    public LocalTime getKickoff() {
+        return date.toLocalTime();
     }
 
     public void setDate(LocalDateTime date) {

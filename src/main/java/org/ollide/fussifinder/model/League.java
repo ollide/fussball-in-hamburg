@@ -6,22 +6,25 @@ import java.util.stream.Collectors;
 
 public class League {
 
-    public static final League VERBANDSLIGA = new League("Verbandsliga", true);
-    public static final League LANDESLIGA = new League("Landesliga", true);
-    public static final League BEZIRKSLIGA = new League("Bezirksliga", true);
-    public static final League KREISLIGA = new League("Kreisliga");
-    public static final League KREISKLASSE = new League("Kreisklasse");
-    public static final League FREUNDSCHAFTSSPIEL = new League("FS", true);
+    public static final League VERBANDSLIGA = new League("Verbandsliga", "VL", true);
+    public static final League LANDESLIGA = new League("Landesliga", "LL", true);
+    public static final League BEZIRKSLIGA = new League("Bezirksliga", "BL", true);
+    public static final League KREISLIGA = new League("Kreisliga", "KL");
+    public static final League KREISKLASSE = new League("Kreisklasse", "KK");
+    public static final League FREUNDSCHAFTSSPIEL = new League("FS", "FS", true);
 
     private String name;
+    private String abbreviation;
     private boolean active = false;
 
-    public League(String name) {
+    public League(String name, String abbreviation) {
         this.name = name;
+        this.abbreviation = abbreviation;
     }
 
-    public League(String name, boolean active) {
+    public League(String name, String abbreviation, boolean active) {
         this.name = name;
+        this.abbreviation = abbreviation;
         this.active = active;
     }
 
@@ -39,5 +42,9 @@ public class League {
 
     public boolean isActive() {
         return active;
+    }
+
+    public String getAbbreviation() {
+        return abbreviation;
     }
 }
