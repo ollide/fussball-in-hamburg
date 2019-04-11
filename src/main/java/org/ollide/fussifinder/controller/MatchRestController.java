@@ -29,6 +29,7 @@ public class MatchRestController {
         this.matchService = matchService;
     }
 
+    @CrossOrigin
     @RequestMapping("/api/matches")
     public ResponseEntity getMatchDays() {
         Future<List<Match>> asyncMatches = matchService.getMatches(DEFAULT_CITY, RegionType.CITY, null);
