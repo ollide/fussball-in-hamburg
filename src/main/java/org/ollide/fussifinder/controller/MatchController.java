@@ -10,9 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 @Controller
 public class MatchController {
@@ -30,6 +28,27 @@ public class MatchController {
 
         model.addAttribute("matchDays", getRandomMatches(dateTo, dateFrom));
         return "api_matches";
+    }
+
+    @GetMapping("spiel/-/spiel/{id}")
+    public String getMatchDetails(@PathVariable("id") String id, Model model) {
+        model.addAttribute("id", id);
+
+        List<String> locations = Arrays.asList(
+                "Kunstrasenplatz, Sachsenweg 2 (Kunstrasen), Sachsenweg 78, 22455 Hamburg",
+                "Kunstrasenplatz, Langenfort 1, Langenfort 70, 22307 Hamburg",
+                "Rasenplatz, Edmund-Plambeck-Stadion, Ochsenzoller Str. 58, 22848 Norderstedt",
+                "Hartplatz, Grunewaldstr.61/I, Grunewaldstr. 61, 22149 Hamburg",
+                "Kunstrasenplatz, Stadion Hoheluft, Lokstedter Steindamm 87, 22529 Hamburg");
+        String location = locations.get(random.nextInt(locations.size()));
+        model.addAttribute("location", location);
+
+        List<String> competitions = Arrays.asList("Freundschaftsspiele Hamburg", "Oberliga", "Hammonia",
+                "Bezirksliga Nord");
+        String competition = competitions.get(random.nextInt(competitions.size()));
+        model.addAttribute("competition", competition);
+
+        return "api_matchdetails";
     }
 
     protected List<ZIPCode> getRandomZips(String zip3) {
@@ -77,6 +96,8 @@ public class MatchController {
 
     protected Match getRandomMatch(LocalDate date) {
         Match match = new Match();
+
+        match.setId(UUID.randomUUID().toString().replaceAll("-", ""));
 
         LocalTime time = LocalTime.of(random.nextInt(24), random.nextInt(60));
         LocalDateTime kickOff = LocalDateTime.of(date, time);
