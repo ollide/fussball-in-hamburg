@@ -14,6 +14,7 @@ public class Match implements Comparable<Match> {
     private static final DateTimeFormatter FORMATTER_TIME = DateTimeFormatter.ofPattern("HH:mm", Locale.GERMANY);
     private static final DateTimeFormatter FORMATTER_DATE = DateTimeFormatter.ofPattern("E, dd.MM.yy | HH:mm", Locale.GERMANY);
 
+    private String id;
     @JsonSerialize(using = IsoLocalDateTimeSerializer.class)
     private LocalDateTime date;
     private String teamType;
@@ -31,13 +32,21 @@ public class Match implements Comparable<Match> {
         return FORMATTER_DATE.format(date);
     }
 
+    @JsonSerialize(using = KickoffTimeSerializer.class)
+    public LocalTime getKickoff() {
+        return date.toLocalTime();
+    }
+
     public LocalDateTime getDate() {
         return date;
     }
 
-    @JsonSerialize(using = KickoffTimeSerializer.class)
-    public LocalTime getKickoff() {
-        return date.toLocalTime();
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public void setDate(LocalDateTime date) {

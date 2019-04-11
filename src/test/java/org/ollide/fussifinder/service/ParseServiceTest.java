@@ -17,6 +17,9 @@ public class ParseServiceTest {
 
     private ParseService parseService;
 
+    private static final String MATCH_ID = "0568E7K90O003330VS5489B3VVRESQAR";
+    private static final String MATCH_UTL = "http://www.example.org/spiel/abc1-def2/-/spiel/" + MATCH_ID;
+
     @Before
     public void setUp() {
         ObjectMapper mapper = new AppConfig().objectMapper();
@@ -37,20 +40,22 @@ public class ParseServiceTest {
         assertEquals("ParseService should find 2 matches", 2, matches.size());
 
         Match match1 = matches.get(0);
+        assertEquals(MATCH_ID, match1.getId());
         assertEquals("09.06.18 12:30", DateUtil.formatLocalDateTime(match1.getDate()));
         assertEquals("D-Junioren", match1.getTeamType());
         assertEquals("Kreisklasse", match1.getLeague());
         assertEquals("Home-Team-Name", match1.getClubHome());
         assertEquals("Away-Team-Name", match1.getClubAway());
-        assertEquals("http://www.example.org/match-url", match1.getUrl());
+        assertEquals(MATCH_UTL, match1.getUrl());
 
         Match match2 = matches.get(1);
+        assertEquals(MATCH_ID, match2.getId());
         assertEquals("10.06.18 11:30", DateUtil.formatLocalDateTime(match2.getDate()));
         assertEquals("A-Junioren", match2.getTeamType());
         assertEquals("Bezirksliga", match2.getLeague());
         assertEquals("Heimteam", match2.getClubHome());
         assertEquals("Auswärtsteam", match2.getClubAway());
-        assertEquals("http://www.example.org/match-url", match2.getUrl());
+        assertEquals(MATCH_UTL, match2.getUrl());
     }
 
     @Test

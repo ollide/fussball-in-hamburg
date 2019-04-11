@@ -70,7 +70,12 @@ public class ParseService {
 
                     Elements matchScoreLinkTag = matchRow.select("td.column-score a");
                     m.setScore(matchScoreLinkTag.text());
-                    m.setUrl(matchScoreLinkTag.attr("href"));
+
+                    String url = matchScoreLinkTag.attr("href");
+                    m.setUrl(url);
+                    String[] uriPaths = url.split("/");
+                    String id = uriPaths[uriPaths.length - 1];
+                    m.setId(id);
 
                     return m;
                 })

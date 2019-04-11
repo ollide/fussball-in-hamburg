@@ -45,12 +45,12 @@
                     </a>
                 </td>
                 <td class="column-score">
-                    <a href="http://www.example.org/match-url"><span
+                    <a href="http://www.example.org/spiel/abc1-def2/${match.id}"><span
                             data-obfuscation="jxjitdxa" class="score-left">&#xE68F;</span><span
                             class="colon">:</span><span data-obfuscation="jxjitdxa" class="score-right">&#xE68F;</span></a>
                 </td>
                 <td class="column-detail">
-                    <a href="http://www.example.org/match-url"><span
+                    <a href="http://www.example.org/spiel/abc1-def2/${match.id}"><span
                             class="icon-angle-right hidden-full"></span><span class="visible-full">Match<span
                             class="icon-link-arrow"></span></span></a>
                 </td>
