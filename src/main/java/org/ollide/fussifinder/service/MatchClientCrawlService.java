@@ -72,4 +72,15 @@ public class MatchClientCrawlService implements MatchCrawlService {
         return "";
     }
 
+    @Override
+    @Cacheable(value = "matchDetails", sync = true)
+    public String getMatchDetails(String id) {
+        try {
+            RATE_LIMITER.acquire();
+            return matchClient.matchDetails(id).execute().body();
+        } catch (IOException e) {
+            LOGGER.error("Failed to query match details.", e);
+        }
+        return "";
+    }
 }

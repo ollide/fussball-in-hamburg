@@ -16,6 +16,16 @@
         <persistence strategy="localTempSwap" />
     </cache>
 
+    <cache name="matchDetails"
+           maxEntriesLocalHeap="1000"
+           maxEntriesLocalDisk="20000"
+           timeToLiveSeconds="21600"
+           diskSpoolBufferSizeMB="20"
+           memoryStoreEvictionPolicy="LFU"
+           transactionalMode="off">
+        <persistence strategy="localTempSwap" />
+    </cache>
+
     <cache name="cityZips"
            maxEntriesLocalHeap="1000"
            maxEntriesLocalDisk="20000"
