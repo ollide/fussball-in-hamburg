@@ -20,9 +20,9 @@ public class ZipService {
 
     private static final Logger LOG = LoggerFactory.getLogger(ZipService.class);
 
-    private static final String RESOURCES_CITIES = "/cities/";
-    private static final String RESOURCES_DISTRICTS = "/districts/";
-    private static final String RESOURCES_SPECIALS = "/specials/";
+    private static final String RESOURCES_CITIES = "/regions/cities/";
+    private static final String RESOURCES_DISTRICTS = "/regions/districts/";
+    private static final String RESOURCES_SPECIALS = "/regions/specials/";
 
     private final ObjectReader stringReader;
     private final ObjectReader regionReader;
