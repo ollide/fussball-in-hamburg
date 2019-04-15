@@ -55,6 +55,18 @@ public class MatchServiceTest {
 
         kreisklasse.setLeague("2. Kreisklasse A");
         assertEquals("Kreisklasse", matchService.shortenLeague(kreisklasse).getLeague());
+
+        Match kreisligaB = new Match();
+        kreisligaB.setLeague("2.Kreisliga (B)");
+        assertEquals("Kreisliga", matchService.shortenLeague(kreisligaB).getLeague());
+
+        Match kreisStadtliga = new Match();
+        kreisStadtliga.setLeague("1.Kreisliga (A) / Stadtliga");
+        assertEquals("Kreisliga", matchService.shortenLeague(kreisStadtliga).getLeague());
+
+        Match bezirksklasse = new Match();
+        bezirksklasse.setLeague("1.Bezirksklasse");
+        assertEquals("Bezirksklasse", matchService.shortenLeague(bezirksklasse).getLeague());
     }
 
     @Test

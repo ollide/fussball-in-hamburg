@@ -12,6 +12,7 @@ import javax.annotation.Nullable;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.concurrent.Future;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -23,7 +24,7 @@ public class MatchService {
      */
     private static final Pattern PATTERN_7_OR_9_PLAYERS = Pattern.compile(".*\\(?[79]er\\)?$");
 
-    private static final Pattern PATTERN_KREISKLASSE = Pattern.compile("([1-9]\\. ?)?Kreisklasse( [A-Z])?");
+    private static final Pattern PATTERN_KREISKLASSE = Pattern.compile("([1-9]\\. ?)?((Kreis|Bezirks)(klasse|liga))( \\(?[A-Z]\\)?)?.*");
 
     private static final String MATCH_SPECIAL_CLASS = "Sonderklasse";
 
@@ -131,8 +132,10 @@ public class MatchService {
                 break;
             default:
                 shortenedLeague = match.getLeague();
-                if (PATTERN_KREISKLASSE.matcher(shortenedLeague).matches()) {
-                    shortenedLeague = "Kreisklasse";
+
+                Matcher kreisKlKkMatcher = PATTERN_KREISKLASSE.matcher(shortenedLeague);
+                if (kreisKlKkMatcher.matches()) {
+                    shortenedLeague = kreisKlKkMatcher.group(2);
                 }
         }
         match.setLeague(shortenedLeague);
