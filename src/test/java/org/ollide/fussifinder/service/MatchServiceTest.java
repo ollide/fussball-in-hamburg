@@ -45,6 +45,16 @@ public class MatchServiceTest {
         Match verbandsliga = new Match();
         verbandsliga.setLeague("Verbandsliga");
         assertEquals("Verbandsliga", matchService.shortenLeague(verbandsliga).getLeague());
+
+        Match kreisklasse = new Match();
+        kreisklasse.setLeague("3.Kreisklasse");
+        assertEquals("Kreisklasse", matchService.shortenLeague(kreisklasse).getLeague());
+
+        kreisklasse.setLeague("Kreisklasse B");
+        assertEquals("Kreisklasse", matchService.shortenLeague(kreisklasse).getLeague());
+
+        kreisklasse.setLeague("2. Kreisklasse A");
+        assertEquals("Kreisklasse", matchService.shortenLeague(kreisklasse).getLeague());
     }
 
     @Test
@@ -83,12 +93,21 @@ public class MatchServiceTest {
         Match normalMatch = new Match();
         normalMatch.setClubHome("TUS Altertal");
         normalMatch.setClubAway("SC Victoria");
-        assertTrue(MatchService.isNotSpecialClass7Players(normalMatch));
+        assertTrue(MatchService.isNotSpecialClass(normalMatch));
 
         Match match7Players = new Match();
         match7Players.setClubHome("TUS Altertal 7er");
         match7Players.setClubAway("SC Victoria 7er");
-        assertFalse(MatchService.isNotSpecialClass7Players(match7Players));
+        assertFalse(MatchService.isNotSpecialClass(match7Players));
+
+        Match match9Players = new Match();
+        match9Players.setClubHome("Witzhaver SV II");
+        match9Players.setClubAway("Delingsdorfer SV III (9er)");
+        assertFalse(MatchService.isNotSpecialClass(match9Players));
+
+        Match matchSpecialClass = new Match();
+        matchSpecialClass.setLeague("Sonderklasse");
+        assertFalse(MatchService.isNotSpecialClass(matchSpecialClass));
     }
 
     @Test

@@ -12,15 +12,21 @@ import javax.annotation.Nullable;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.concurrent.Future;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Service
 public class MatchService {
 
     /**
-     * Teams who only play with 7 players are usually marked with ' 7er' at the end of the team name.
+     * Teams who only play with 7 or 9 players are usually marked with '7er' or '(9er) at the end of the team name.
      */
-    private static final String MATCH_7_PLAYERS = " 7er";
+    private static final Pattern PATTERN_7_OR_9_PLAYERS = Pattern.compile(".*\\(?[79]er\\)?$");
+
+    private static final Pattern PATTERN_KREISKLASSE = Pattern.compile("([1-9]\\. ?)?Kreisklasse( [A-Z])?");
+
+    private static final String MATCH_SPECIAL_CLASS = "Sonderklasse";
+
     private static final String MATCH_FUTSAL = "Futsal";
 
     private static final Collection<String> MATCH_CANCELLED = Arrays.asList("Absetzung", "Nichtantritt", "Ausfall");
@@ -74,7 +80,7 @@ public class MatchService {
                 .map(parseService::parseMatchesForZip)
                 .flatMap(Collection::stream)
                 // Run required filters
-                .filter(MatchService::isNotSpecialClass7Players)
+                .filter(MatchService::isNotSpecialClass)
                 .filter(MatchService::isNotFutsal)
                 .filter(MatchService::isNotCancelled)
                 .filter(MatchService::isNotIndoor)
@@ -125,6 +131,9 @@ public class MatchService {
                 break;
             default:
                 shortenedLeague = match.getLeague();
+                if (PATTERN_KREISKLASSE.matcher(shortenedLeague).matches()) {
+                    shortenedLeague = "Kreisklasse";
+                }
         }
         match.setLeague(shortenedLeague);
         return match;
@@ -138,8 +147,11 @@ public class MatchService {
         return match;
     }
 
-    protected static boolean isNotSpecialClass7Players(Match match) {
-        return !(match.getClubHome().endsWith(MATCH_7_PLAYERS) || match.getClubAway().endsWith(MATCH_7_PLAYERS));
+    protected static boolean isNotSpecialClass(Match match) {
+        String home = match.getClubHome();
+        String away = match.getClubAway();
+        return !MATCH_SPECIAL_CLASS.equals(match.getLeague())
+                && !(PATTERN_7_OR_9_PLAYERS.matcher(home).matches() || PATTERN_7_OR_9_PLAYERS.matcher(away).matches());
     }
 
     protected static boolean isNotFutsal(Match match) {
