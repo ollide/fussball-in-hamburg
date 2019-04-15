@@ -1,0 +1,208 @@
+{
+  "cities": [
+    {
+      "name": "berlin",
+      "displayName": "Berlin"
+    },
+    {
+      "name": "bielefeld",
+      "displayName": "Bielefeld"
+    },
+    {
+      "name": "bonn",
+      "displayName": "Bonn"
+    },
+    {
+      "name": "bremen",
+      "displayName": "Bremen"
+    },
+    {
+      "name": "delmenhorst",
+      "displayName": "Delmenhorst"
+    },
+    {
+      "name": "dortmund",
+      "displayName": "Dortmund"
+    },
+    {
+      "name": "flensburg",
+      "displayName": "Flensburg"
+    },
+    {
+      "name": "frankfurt",
+      "displayName": "Frankfurt"
+    },
+    {
+      "name": "fulda",
+      "displayName": "Fulda"
+    },
+    {
+      "name": "fürth",
+      "displayName": "Fürth"
+    },
+    {
+      "name": "göttingen",
+      "displayName": "Göttingen"
+    },
+    {
+      "name": "hamburg",
+      "displayName": "Hamburg"
+    },
+    {
+      "name": "hannover",
+      "displayName": "Hannover"
+    },
+    {
+      "name": "ingolstadt",
+      "displayName": "Ingolstadt"
+    },
+    {
+      "name": "jena",
+      "displayName": "Jena"
+    },
+    {
+      "name": "kassel",
+      "displayName": "Kassel"
+    },
+    {
+      "name": "kiel",
+      "displayName": "Kiel"
+    },
+    {
+      "name": "köln",
+      "displayName": "Köln"
+    },
+    {
+      "name": "lübeck",
+      "displayName": "Lübeck"
+    },
+    {
+      "name": "lüneburg",
+      "displayName": "Lüneburg"
+    },
+    {
+      "name": "münchen",
+      "displayName": "München"
+    },
+    {
+      "name": "neumünster",
+      "displayName": "Neumünster"
+    },
+    {
+      "name": "norderstedt",
+      "displayName": "Norderstedt"
+    },
+    {
+      "name": "nürnberg",
+      "displayName": "Nürnberg"
+    },
+    {
+      "name": "oldenburg",
+      "displayName": "Oldenburg"
+    },
+    {
+      "name": "osnabrück",
+      "displayName": "Osnabrück"
+    },
+    {
+      "name": "potsdam",
+      "displayName": "Potsdam"
+    },
+    {
+      "name": "rostock",
+      "displayName": "Rostock"
+    },
+    {
+      "name": "schwerin",
+      "displayName": "Schwerin"
+    },
+    {
+      "name": "uelzen",
+      "displayName": "Uelzen"
+    },
+    {
+      "name": "wiesbaden",
+      "displayName": "Wiesbaden"
+    },
+    {
+      "name": "wolfsburg",
+      "displayName": "Wolfsburg"
+    },
+    {
+      "name": "würzburg",
+      "displayName": "Würzburg"
+    }
+  ],
+  "districts": [
+    {
+      "name": "dithmarschen",
+      "displayName": "Dithmarschen"
+    },
+    {
+      "name": "harburg",
+      "displayName": "Harburg"
+    },
+    {
+      "name": "nienburg",
+      "displayName": "Nienburg (Weser)"
+    },
+    {
+      "name": "nordfriesland",
+      "displayName": "Nordfriesland"
+    },
+    {
+      "name": "pinneberg",
+      "displayName": "Pinneberg"
+    },
+    {
+      "name": "rendsburg-eckernförde",
+      "displayName": "Rendsburg-Eckernförde"
+    },
+    {
+      "name": "schleswig-flensburg",
+      "displayName": "Schleswig-Flensburg"
+    },
+    {
+      "name": "stade",
+      "displayName": "Stade"
+    },
+    {
+      "name": "steinburg",
+      "displayName": "Steinburg"
+    },
+    {
+      "name": "stormarn",
+      "displayName": "Stormarn"
+    }
+  ],
+  "specials": [
+    {
+      "name": "hamburg_umland",
+      "displayName": "Hamburg & Umland"
+    },
+    {
+      "name": "hamburguelzen_me",
+      "displayName": "Hamburg-Uelzen (RE3)"
+    },
+    {
+      "name": "hamburgbremen_me",
+      "displayName": "Hamburg-Bremen (RE4)"
+    },
+    {
+      "name": "hamburgcuxhaven_re",
+      "displayName": "Hamburg-Cuxhaven (RE5)"
+    },
+    {
+      "name": "hamburgsylt_re",
+      "displayName": "Hamburg-Sylt (RE6)"
+    },
+    {
+      "name": "hamburgflensburg_rb",
+      "displayName": "Hamburg-Flensburg (RE7)"
+    },
+    {
+      "name": "hamburglübeck_rb",
+      "displayName": "Hamburg-Lübeck (RE8)"
+    }
+  ]
+}
