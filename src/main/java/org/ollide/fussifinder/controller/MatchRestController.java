@@ -31,8 +31,9 @@ public class MatchRestController {
 
     @CrossOrigin
     @RequestMapping("/api/matches")
-    public ResponseEntity getMatchDays() {
-        Future<List<Match>> asyncMatches = matchService.getMatches(DEFAULT_CITY, RegionType.CITY, null);
+    public ResponseEntity getMatchDays(@RequestParam(value = "name", defaultValue = DEFAULT_CITY) String name,
+                                       @RequestParam(value = "type", defaultValue = "CITY") RegionType type) {
+        Future<List<Match>> asyncMatches = matchService.getMatches(name, type, null);
 
         AsyncUtil.waitMaxQuietly(asyncMatches, 1000);
         if (asyncMatches.isDone()) {
