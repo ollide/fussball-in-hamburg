@@ -2,6 +2,7 @@ package org.ollide.fussifinder.service;
 
 import org.ollide.fussifinder.model.*;
 import org.ollide.fussifinder.util.DateUtil;
+import org.ollide.fussifinder.util.MatchUtils;
 import org.ollide.fussifinder.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
@@ -88,6 +89,8 @@ public class MatchService {
                 // Beautify/shorten some things
                 .map(this::shortenLeague)
                 .map(this::shortenTeamNames)
+                // Set team & league keys
+                .map(this::applyFilterKeys)
                 // sort and collect
                 .sorted()
                 .collect(Collectors.toList()));
@@ -147,6 +150,12 @@ public class MatchService {
         String youthYear = " ?\\([AJ][1-9]\\)";
         match.setClubHome(match.getClubHome().replaceAll(youthYear, ""));
         match.setClubAway(match.getClubAway().replaceAll(youthYear, ""));
+        return match;
+    }
+
+    protected Match applyFilterKeys(Match match) {
+        match.setLeagueKey(MatchUtils.getLeagueKey(match.getLeague()));
+        match.setTeamTypeKey(MatchUtils.getTeamKey(match.getTeamType()));
         return match;
     }
 

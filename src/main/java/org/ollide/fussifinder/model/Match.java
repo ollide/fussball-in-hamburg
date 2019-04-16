@@ -18,7 +18,9 @@ public class Match implements Comparable<Match> {
     @JsonSerialize(using = IsoLocalDateTimeSerializer.class)
     private LocalDateTime date;
     private String teamType;
+    private String teamTypeKey;
     private String league;
+    private String leagueKey;
     private String clubHome;
     private String clubAway;
     private String score;
@@ -61,12 +63,28 @@ public class Match implements Comparable<Match> {
         this.teamType = teamType;
     }
 
+    public String getTeamTypeKey() {
+        return teamTypeKey;
+    }
+
+    public void setTeamTypeKey(String teamTypeKey) {
+        this.teamTypeKey = teamTypeKey;
+    }
+
     public String getLeague() {
         return league;
     }
 
     public void setLeague(String league) {
         this.league = league;
+    }
+
+    public String getLeagueKey() {
+        return leagueKey;
+    }
+
+    public void setLeagueKey(String leagueKey) {
+        this.leagueKey = leagueKey;
     }
 
     public String getClubHome() {
