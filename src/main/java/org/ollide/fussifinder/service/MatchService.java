@@ -136,6 +136,11 @@ public class MatchService {
             default:
                 shortenedLeague = match.getLeague();
 
+                if (match.getLeague().contains("Oberliga")) {
+                    shortenedLeague = "Oberliga";
+                    break;
+                }
+
                 Matcher kreisKlKkMatcher = PATTERN_KREISKLASSE.matcher(shortenedLeague);
                 if (kreisKlKkMatcher.matches()) {
                     shortenedLeague = kreisKlKkMatcher.group(2);

@@ -67,6 +67,10 @@ public class MatchServiceTest {
         Match bezirksklasse = new Match();
         bezirksklasse.setLeague("1.Bezirksklasse");
         assertEquals("Bezirksklasse", matchService.shortenLeague(bezirksklasse).getLeague());
+
+        Match oberliga = new Match();
+        oberliga.setLeague("Oberliga Niedersachsen");
+        assertEquals("Oberliga", matchService.shortenLeague(oberliga).getLeague());
     }
 
     @Test

@@ -47,7 +47,7 @@ public final class MatchUtils {
         if (league.contains("landesliga")) {
             return "LL";
         }
-        if (league.contains("verbandsliga")) {
+        if (league.contains("verbandsliga") || league.contains("oberliga")) {
             return "VL";
         }
         if (league.contains("pokal")) {
