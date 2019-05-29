@@ -3,6 +3,7 @@ dithmarschen,Dithmarschen
 harburg,Harburg
 nienburg,Nienburg (Weser)
 nordfriesland,Nordfriesland
+ostholstein,Ostholstein
 pinneberg,Pinneberg
 rendsburg-eckernförde,Rendsburg-Eckernförde
 schleswig-flensburg,Schleswig-Flensburg
