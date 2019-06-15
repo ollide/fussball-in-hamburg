@@ -17,6 +17,10 @@
       "displayName": "Bremen"
     },
     {
+      "name": "celle",
+      "displayName": "Celle"
+    },
+    {
       "name": "delmenhorst",
       "displayName": "Delmenhorst"
     },
@@ -137,6 +141,10 @@
     {
       "name": "dithmarschen",
       "displayName": "Dithmarschen"
+    },
+    {
+      "name": "emsland",
+      "displayName": "Emsland"
     },
     {
       "name": "harburg",

@@ -3,6 +3,7 @@ berlin,Berlin
 bielefeld,Bielefeld
 bonn,Bonn
 bremen,Bremen
+celle,Celle
 delmenhorst,Delmenhorst
 dortmund,Dortmund
 flensburg,Flensburg
