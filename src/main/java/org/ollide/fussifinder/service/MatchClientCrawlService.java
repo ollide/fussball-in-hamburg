@@ -45,6 +45,10 @@ public class MatchClientCrawlService implements MatchCrawlService {
                 StringBuilder html = new StringBuilder(body);
 
                 int insertIndex = html.indexOf("</tbody>");
+                if (insertIndex == -1) {
+                    return body;
+                }
+
                 int offset = 10;
                 AjaxModel lastResponse;
                 do {
