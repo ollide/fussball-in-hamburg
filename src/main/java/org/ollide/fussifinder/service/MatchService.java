@@ -46,17 +46,6 @@ public class MatchService {
 
     @Async
     public Future<List<Match>> getMatches(String region, RegionType type, @Nullable LocalDate date) {
-        String dateFrom;
-        String dateTo;
-        if (date != null) {
-            dateFrom = DateUtil.formatLocalDateForAPI(date);
-            dateTo = DateUtil.formatLocalDateForAPI(date.plusDays(1));
-        } else {
-            LocalDate now = LocalDate.now();
-            dateFrom = DateUtil.formatLocalDateForAPI(now);
-            dateTo = DateUtil.formatLocalDateForAPI(now.plusDays(6));
-        }
-
         List<String> zips;
         switch (type) {
             case CITY:
@@ -70,6 +59,21 @@ public class MatchService {
                 break;
             default:
                 throw new IllegalArgumentException("Invalid region: " + region);
+        }
+        return getMatches(zips, date);
+    }
+
+    @Async
+    public Future<List<Match>> getMatches(Collection<String> zips, @Nullable LocalDate date) {
+        String dateFrom;
+        String dateTo;
+        if (date != null) {
+            dateFrom = DateUtil.formatLocalDateForAPI(date);
+            dateTo = DateUtil.formatLocalDateForAPI(date.plusDays(1));
+        } else {
+            LocalDate now = LocalDate.now();
+            dateFrom = DateUtil.formatLocalDateForAPI(now);
+            dateTo = DateUtil.formatLocalDateForAPI(now.plusDays(6));
         }
 
         return new AsyncResult<>(zips.stream()

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -30,10 +31,16 @@ public class MatchRestController {
     }
 
     @CrossOrigin
-    @RequestMapping("/api/matches")
-    public ResponseEntity getMatchDays(@RequestParam(value = "name", defaultValue = DEFAULT_CITY) String name,
+    @GetMapping("/api/matches")
+    public ResponseEntity getMatchDays(@RequestParam(value = "zip", required = false) String zip,
+                                       @RequestParam(value = "name", defaultValue = DEFAULT_CITY) String name,
                                        @RequestParam(value = "type", defaultValue = "CITY") RegionType type) {
-        Future<List<Match>> asyncMatches = matchService.getMatches(name, type, null);
+        Future<List<Match>> asyncMatches;
+        if (zip != null) {
+            asyncMatches = matchService.getMatches(Collections.singleton(zip),null);
+        } else {
+            asyncMatches = matchService.getMatches(name, type, null);
+        }
 
         AsyncUtil.waitMaxQuietly(asyncMatches, 1000);
         if (asyncMatches.isDone()) {
