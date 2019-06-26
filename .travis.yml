@@ -1,16 +1,19 @@
 language: java
+
 addons:
   sonarcloud:
     organization: ollide-github
+
 script:
-- export BRANCH=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then echo $TRAVIS_BRANCH;
-  else echo $TRAVIS_PULL_REQUEST_BRANCH; fi)
-- "./mvnw clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.branch.name=$BRANCH"
+  - export BRANCH=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then echo $TRAVIS_BRANCH; else echo $TRAVIS_PULL_REQUEST_BRANCH; fi)
+  - ./mvnw clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.branch.name=$BRANCH
+
 before_deploy:
-- openssl aes-256-cbc -K $encrypted_ba740c75e28b_key -iv $encrypted_ba740c75e28b_iv -in fih_rsa.enc -out /tmp/fih_rsa -d
-- eval "$(ssh-agent -s)"
-- chmod 600 /tmp/fih_rsa
-- ssh-add /tmp/fih_rsa
+  - openssl aes-256-cbc -K $encrypted_ba740c75e28b_key -iv $encrypted_ba740c75e28b_iv -in fih_rsa.enc -out /tmp/fih_rsa -d
+  - eval "$(ssh-agent -s)"
+  - chmod 600 /tmp/fih_rsa
+  - ssh-add /tmp/fih_rsa
+
 deploy:
   - provider: script
     skip_cleanup: true
