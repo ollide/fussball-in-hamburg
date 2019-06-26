@@ -19,7 +19,7 @@ public class MatchClientCrawlService implements MatchCrawlService {
 
     private static final String DEFAULT_TEAM_TYPES = Team.getDefaultTeamsQuery();
 
-    private static final RateLimiter RATE_LIMITER = RateLimiter.create(3.0);
+    private static final RateLimiter RATE_LIMITER = RateLimiter.create(2.5);
 
     private final MatchClient matchClient;
 
