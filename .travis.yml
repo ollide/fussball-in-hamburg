@@ -1,6 +1,7 @@
 language: java
 
 addons:
+  ssh_known_hosts: 5.45.96.20
   sonarcloud:
     organization: ollide-github
 
