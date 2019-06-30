@@ -139,6 +139,14 @@
   ],
   "districts": [
     {
+      "name": "cuxhaven",
+      "displayName": "Cuxhaven"
+    },
+    {
+      "name": "diepholz",
+      "displayName": "Diepholz"
+    },
+    {
       "name": "dithmarschen",
       "displayName": "Dithmarschen"
     },
@@ -149,6 +157,18 @@
     {
       "name": "harburg",
       "displayName": "Harburg"
+    },
+    {
+      "name": "heidekreis",
+      "displayName": "Heidekreis"
+    },
+    {
+      "name": "herzogtum-lauenburg",
+      "displayName": "Herzogtum Lauenburg"
+    },
+    {
+      "name": "lüneburg",
+      "displayName": "Lüneburg"
     },
     {
       "name": "nienburg",
@@ -167,12 +187,24 @@
       "displayName": "Pinneberg"
     },
     {
+      "name": "plön",
+      "displayName": "Plön"
+    },
+    {
       "name": "rendsburg-eckernförde",
       "displayName": "Rendsburg-Eckernförde"
     },
     {
+      "name": "rotenburg",
+      "displayName": "Rotenburg (Wümme)"
+    },
+    {
       "name": "schleswig-flensburg",
       "displayName": "Schleswig-Flensburg"
+    },
+    {
+      "name": "segeberg",
+      "displayName": "Segeberg"
     },
     {
       "name": "stade",
@@ -185,6 +217,10 @@
     {
       "name": "stormarn",
       "displayName": "Stormarn"
+    },
+    {
+      "name": "verden",
+      "displayName": "Verden"
     }
   ],
   "specials": [
