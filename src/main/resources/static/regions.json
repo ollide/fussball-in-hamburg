@@ -29,12 +29,20 @@
       "displayName": "Dortmund"
     },
     {
+      "name": "düsseldorf",
+      "displayName": "Düsseldorf"
+    },
+    {
       "name": "flensburg",
       "displayName": "Flensburg"
     },
     {
       "name": "frankfurt",
       "displayName": "Frankfurt"
+    },
+    {
+      "name": "freiburg",
+      "displayName": "Freiburg"
     },
     {
       "name": "fulda",
@@ -65,6 +73,10 @@
       "displayName": "Jena"
     },
     {
+      "name": "karlsruhe",
+      "displayName": "Karlsruhe"
+    },
+    {
       "name": "kassel",
       "displayName": "Kassel"
     },
@@ -83,6 +95,10 @@
     {
       "name": "lüneburg",
       "displayName": "Lüneburg"
+    },
+    {
+      "name": "mainz",
+      "displayName": "Mainz"
     },
     {
       "name": "münchen",
@@ -119,6 +135,10 @@
     {
       "name": "schwerin",
       "displayName": "Schwerin"
+    },
+    {
+      "name": "stuttgart",
+      "displayName": "Stuttgart"
     },
     {
       "name": "uelzen",
