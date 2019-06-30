@@ -1,8 +1,0 @@
-key,name
-hamburg_umland,Hamburg & Umland (Pinneberg Norderstedt Stormarn Harburg Stade)
-hamburguelzen_me,Hamburg-Uelzen (RE3)
-hamburgbremen_me,Hamburg-Bremen (RE4)
-hamburgcuxhaven_re,Hamburg-Cuxhaven (RE5)
-hamburgsylt_re,Hamburg-Sylt (RE6)
-hamburgflensburg_rb,Hamburg-Flensburg (RE7)
-hamburglübeck_rb,Hamburg-Lübeck (RE8)

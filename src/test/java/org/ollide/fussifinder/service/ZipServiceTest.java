@@ -1,7 +1,6 @@
 package org.ollide.fussifinder.service;
 
 import org.junit.Test;
-import org.ollide.fussifinder.model.Region;
 
 import java.util.List;
 
@@ -36,20 +35,4 @@ public class ZipServiceTest {
         assertTrue(unknown.isEmpty());
     }
 
-    @Test
-    public void getCityOverview() {
-        List<Region> cityOverview = zipService.getCityOverview();
-        assertEquals("City overview should contain 1 region", 1, cityOverview.size());
-
-        Region region = cityOverview.get(0);
-        assertEquals("testcity1", region.getKey());
-        assertEquals("Test Stadt #1", region.getName());
-    }
-
-    @Test
-    public void getDistrictOverview() {
-        // District overview file is empty
-        List<Region> districtOverview = zipService.getDistrictOverview();
-        assertTrue(districtOverview.isEmpty());
-    }
 }
