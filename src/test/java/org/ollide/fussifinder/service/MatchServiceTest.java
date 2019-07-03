@@ -11,6 +11,7 @@ import org.ollide.fussifinder.model.Match;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -44,6 +45,27 @@ public class MatchServiceTest {
         when(matchCrawlService.getMatchCalendar(anyString(), anyString(), eq("20359"))).thenReturn(htmlMatches);
 
         List<Match> matches = matchService.getMatchesSync(zips, null);
+        assertEquals(2, matches.size());
+    }
+
+    @Test
+    public void getMatchesWithShortZip() throws IOException {
+        final String shortZip3 = "203";
+        final String shortZip4 = "2035";
+        final String fullZip = "20359";
+
+        String htmlOverview = ResourceHelper.readOverview("2_results.html");
+        when(matchCrawlService.getMatchCalendar(anyString(), anyString(), eq(shortZip3))).thenReturn(htmlOverview);
+        when(matchCrawlService.getMatchCalendar(anyString(), anyString(), eq(shortZip4))).thenReturn(htmlOverview);
+        String htmlMatches = ResourceHelper.readMatches("2_matches_2_days.html");
+        when(matchCrawlService.getMatchCalendar(anyString(), anyString(), eq(fullZip))).thenReturn(htmlMatches);
+
+        // query with 3-digits zip
+        List<Match> matches = matchService.getMatchesSync(Collections.singleton(shortZip3), null);
+        assertEquals(2, matches.size());
+
+        // query with 4-digits zip
+        matches = matchService.getMatchesSync(Collections.singleton(shortZip4), null);
         assertEquals(2, matches.size());
     }
 
