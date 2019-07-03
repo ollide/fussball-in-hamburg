@@ -50,7 +50,7 @@ public final class MatchUtils {
         if (league.contains("verbandsliga") || league.contains("oberliga")) {
             return "VL";
         }
-        if (league.contains("pokal")) {
+        if (league.contains("pokal") || league.contains("turnier")) {
             return "P";
         }
         if (league.matches("([a-z]-)?fs")) {
