@@ -104,25 +104,6 @@ public class MatchService {
                 .collect(Collectors.toList());
     }
 
-    public MatchStats getMatchStats(List<Match> matches) {
-        Set<String> types = new HashSet<>();
-        types.addAll(League.getLeagueNames());
-        types.addAll(Team.getTeamTypeNames());
-
-        MatchStats matchStats = new MatchStats();
-        matchStats.setNumberOfMatches(matches.size());
-        for (String type : types) {
-            matchStats.setType(type, matchesForType(type, matches));
-        }
-        return matchStats;
-    }
-
-    protected int matchesForType(String type, List<Match> matches) {
-        return (int) matches.stream()
-                .filter((match -> (match.getLeague().endsWith(type)) || match.getTeamType().equals(type)))
-                .count();
-    }
-
     protected Match shortenLeague(Match match) {
         String shortenedLeague;
         switch (match.getLeague()) {
