@@ -1,23 +1,50 @@
 package org.ollide.fussifinder.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
+import org.ollide.fussifinder.ResourceHelper;
+import org.ollide.fussifinder.config.AppConfig;
 import org.ollide.fussifinder.model.League;
 import org.ollide.fussifinder.model.Match;
+
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class MatchServiceTest {
 
     private MatchService matchService;
+    private MatchCrawlService matchCrawlService;
 
     @Before
     public void setUp() {
-        matchService = new MatchService(mock(MatchCrawlService.class), mock(ParseService.class),
+        matchCrawlService = mock(MatchCrawlService.class);
+        ObjectMapper objectMapper = new AppConfig().objectMapper();
+        matchService = new MatchService(matchCrawlService, new ParseService(objectMapper),
                 mock(ZipService.class));
+    }
+
+    @Test
+    public void getMatches() throws IOException {
+        Collection<String> zips = Arrays.asList("20359", "22525");
+
+        String htmlOverview = ResourceHelper.readOverview("2_results.html");
+        when(matchCrawlService.getMatchCalendar(anyString(), anyString(), eq("203"))).thenReturn(htmlOverview);
+        String htmlMatches = ResourceHelper.readMatches("2_matches_2_days.html");
+        when(matchCrawlService.getMatchCalendar(anyString(), anyString(), eq("20359"))).thenReturn(htmlMatches);
+
+        List<Match> matches = matchService.getMatchesSync(zips, null);
+        assertEquals(2, matches.size());
     }
 
     @Test

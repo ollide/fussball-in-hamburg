@@ -65,6 +65,10 @@ public class MatchService {
 
     @Async
     public Future<List<Match>> getMatches(Collection<String> zips, @Nullable LocalDate date) {
+        return new AsyncResult<>(getMatchesSync(zips, date));
+    }
+
+    protected List<Match> getMatchesSync(Collection<String> zips, LocalDate date) {
         String dateFrom;
         String dateTo;
         if (date != null) {
@@ -76,7 +80,7 @@ public class MatchService {
             dateTo = DateUtil.formatLocalDateForAPI(now.plusDays(6));
         }
 
-        return new AsyncResult<>(zips.stream()
+        return zips.stream()
                 .map(zip5 -> zip5.substring(0, 3)).distinct()
                 .map(zip3 -> matchCrawlService.getMatchCalendar(dateFrom, dateTo, zip3))
                 .map(parseService::parseZipsWithMatches)
@@ -97,7 +101,7 @@ public class MatchService {
                 .map(this::applyFilterKeys)
                 // sort and collect
                 .sorted()
-                .collect(Collectors.toList()));
+                .collect(Collectors.toList());
     }
 
     public MatchStats getMatchStats(List<Match> matches) {

@@ -10,9 +10,11 @@ import org.ollide.fussifinder.model.ZIPCode;
 import org.ollide.fussifinder.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
@@ -28,10 +30,14 @@ public class ParseService {
     }
 
     public List<String> parseZipsWithMatches(String html) {
+        List<String> zipsWithMatches = new ArrayList<>();
+
+        if (StringUtils.isEmpty(html)) {
+            return zipsWithMatches;
+        }
+
         Document overview = Jsoup.parse(html);
         Elements districtsWithMatches = overview.select(".match-calendar a");
-
-        List<String> zipsWithMatches = new ArrayList<>();
 
         for (Element district : districtsWithMatches) {
             String plzJson = district.attr("data-ajax-forced");
@@ -47,6 +53,10 @@ public class ParseService {
     }
 
     public List<Match> parseMatchesForZip(String html) {
+        if (StringUtils.isEmpty(html)) {
+            return Collections.emptyList();
+        }
+
         Document matches = Jsoup.parse(html);
         Elements matchTrs = matches.select("div.match-calendar tbody tr");
 
