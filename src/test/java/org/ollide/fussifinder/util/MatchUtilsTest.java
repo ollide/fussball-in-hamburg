@@ -4,7 +4,6 @@ import org.junit.Test;
 import org.ollide.fussifinder.model.Match;
 import org.ollide.fussifinder.model.MatchDay;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
