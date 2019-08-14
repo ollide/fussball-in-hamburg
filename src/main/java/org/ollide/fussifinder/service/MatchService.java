@@ -45,21 +45,8 @@ public class MatchService {
     }
 
     @Async
-    public Future<List<Match>> getMatches(String region, RegionType type, @Nullable LocalDate date) {
-        List<String> zips;
-        switch (type) {
-            case CITY:
-                zips = zipService.getZipsForCity(region);
-                break;
-            case DISTRICT:
-                zips = zipService.getZipsForDistrict(region);
-                break;
-            case SPECIAL:
-                zips = zipService.getZipsForSpecial(region);
-                break;
-            default:
-                throw new IllegalArgumentException("Invalid region: " + region);
-        }
+    public Future<List<Match>> getMatches(Region region, @Nullable LocalDate date) {
+        List<String> zips = zipService.getZipsForRegion(region);
         return getMatches(zips, date);
     }
 

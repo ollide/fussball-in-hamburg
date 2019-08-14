@@ -1,6 +1,7 @@
 package org.ollide.fussifinder.controller;
 
 import org.ollide.fussifinder.model.Match;
+import org.ollide.fussifinder.model.Region;
 import org.ollide.fussifinder.model.RegionType;
 import org.ollide.fussifinder.service.MatchService;
 import org.ollide.fussifinder.util.AsyncUtil;
@@ -39,7 +40,8 @@ public class MatchRestController {
         if (zip != null) {
             asyncMatches = matchService.getMatches(Collections.singleton(zip),null);
         } else {
-            asyncMatches = matchService.getMatches(name, type, null);
+            Region region = new Region(type, name);
+            asyncMatches = matchService.getMatches(region, null);
         }
 
         AsyncUtil.waitMaxQuietly(asyncMatches, 1000);

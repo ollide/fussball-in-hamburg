@@ -3,6 +3,8 @@ package org.ollide.fussifinder.service;
 import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
+import org.ollide.fussifinder.model.Region;
+import org.ollide.fussifinder.model.RegionType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.Cacheable;
@@ -11,7 +13,9 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ZipService {
@@ -22,26 +26,23 @@ public class ZipService {
     private static final String RESOURCES_DISTRICTS = "/regions/districts/";
     private static final String RESOURCES_SPECIALS = "/regions/specials/";
 
+    private static final Map<RegionType, String> RESOURCE_MAP = new HashMap<>();
+
     private final ObjectReader stringReader;
 
     public ZipService() {
         CsvMapper csvMapper = new CsvMapper();
         stringReader = csvMapper.readerFor(String.class);
+
+        RESOURCE_MAP.put(RegionType.CITY, RESOURCES_CITIES);
+        RESOURCE_MAP.put(RegionType.DISTRICT, RESOURCES_DISTRICTS);
+        RESOURCE_MAP.put(RegionType.SPECIAL, RESOURCES_SPECIALS);
     }
 
-    @Cacheable(value = "cityZips", key = "#city.toLowerCase()")
-    public List<String> getZipsForCity(String city) {
-        return readZipsFromResources(RESOURCES_CITIES + city.toLowerCase() + ".txt");
-    }
-
-    @Cacheable(value = "districtZips", key = "#district.toLowerCase()")
-    public List<String> getZipsForDistrict(String district) {
-        return readZipsFromResources(RESOURCES_DISTRICTS + district.toLowerCase() + ".txt");
-    }
-
-    @Cacheable(value = "specialZips", key = "#special.toLowerCase()")
-    public List<String> getZipsForSpecial(String special) {
-        return readZipsFromResources(RESOURCES_SPECIALS + special.toLowerCase() + ".txt");
+    @Cacheable(value = "zips", key = "#region.toString()")
+    public List<String> getZipsForRegion(Region region) {
+        String resourceDir = RESOURCE_MAP.get(region.getType());
+        return readZipsFromResources(resourceDir + region.getName().toLowerCase() + ".txt");
     }
 
     protected List<String> readZipsFromResources(String fileName) {
