@@ -12,10 +12,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class ZipService {
@@ -26,7 +23,7 @@ public class ZipService {
     private static final String RESOURCES_DISTRICTS = "/regions/districts/";
     private static final String RESOURCES_SPECIALS = "/regions/specials/";
 
-    private static final Map<RegionType, String> RESOURCE_MAP = new HashMap<>();
+    private static final Map<RegionType, String> RESOURCE_MAP = new EnumMap<>(RegionType.class);
 
     private final ObjectReader stringReader;
 
