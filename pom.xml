@@ -27,9 +27,9 @@
         <jsoup.version>1.12.1</jsoup.version>
         <okhttp.version>3.14.2</okhttp.version>
         <retrofit.version>2.6.1</retrofit.version>
-        <guava.version>28.0-jre</guava.version>
+        <guava.version>28.1-jre</guava.version>
 
-        <sonar.plugin.version>3.6.0.1398</sonar.plugin.version>
+        <sonar.plugin.version>3.6.1.1688</sonar.plugin.version>
         <jacoco.plugin.version>0.8.4</jacoco.plugin.version>
     </properties>
 
