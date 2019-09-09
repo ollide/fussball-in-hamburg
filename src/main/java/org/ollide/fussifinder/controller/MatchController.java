@@ -97,7 +97,7 @@ public class MatchController {
     protected Match getRandomMatch(LocalDate date) {
         Match match = new Match();
 
-        match.setId(UUID.randomUUID().toString().replaceAll("-", ""));
+        match.setId(UUID.randomUUID().toString().replace("-", ""));
 
         LocalTime time = LocalTime.of(random.nextInt(24), random.nextInt(60));
         LocalDateTime kickOff = LocalDateTime.of(date, time);

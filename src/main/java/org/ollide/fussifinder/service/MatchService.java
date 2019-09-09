@@ -72,7 +72,7 @@ public class MatchService {
                 .map(zip3 -> matchCrawlService.getMatchCalendar(dateFrom, dateTo, zip3))
                 .map(parseService::parseZipsWithMatches)
                 .flatMap(Collection::stream)
-                .filter((z) -> zips.contains(z) || zips.stream().anyMatch(z::startsWith))
+                .filter(z -> zips.contains(z) || zips.stream().anyMatch(z::startsWith))
                 .map(zip5 -> matchCrawlService.getMatchCalendar(dateFrom, dateTo, zip5))
                 .map(parseService::parseMatchesForZip)
                 .flatMap(Collection::stream)
