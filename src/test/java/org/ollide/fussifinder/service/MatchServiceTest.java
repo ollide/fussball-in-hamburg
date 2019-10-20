@@ -170,6 +170,16 @@ public class MatchServiceTest {
         match9Players.setClubAway("Delingsdorfer SV III (9er)");
         assertFalse(MatchService.isNotSpecialClass(match9Players));
 
+        Match match9PlayersStart = new Match();
+        match9PlayersStart.setClubHome("9er U17 JSG TSV Auetal/MTV Egestorf");
+        match9PlayersStart.setClubAway("U16 TSV Winsen/Luhe");
+        assertFalse(MatchService.isNotSpecialClass(match9PlayersStart));
+
+        Match match9PlayersApostrophe = new Match();
+        match9PlayersApostrophe.setClubHome("JSG Geest (U19)");
+        match9PlayersApostrophe.setClubAway("SV Burweg (U19) 9'er");
+        assertFalse(MatchService.isNotSpecialClass(match9PlayersApostrophe));
+
         Match matchSpecialClass = new Match();
         matchSpecialClass.setLeague("Sonderklasse");
         assertFalse(MatchService.isNotSpecialClass(matchSpecialClass));

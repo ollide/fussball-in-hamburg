@@ -23,7 +23,7 @@ public class MatchService {
     /**
      * Teams who only play with 7 or 9 players are usually marked with '7er' or '(9er) at the end of the team name.
      */
-    private static final Pattern PATTERN_7_OR_9_PLAYERS = Pattern.compile(".*\\(?[79]er\\)?$");
+    private static final Pattern PATTERN_7_OR_9_PLAYERS = Pattern.compile(".*\\(?[79]'?er\\)?.*");
 
     private static final Pattern PATTERN_KREISKLASSE = Pattern.compile("([1-9]\\. ?)?((Kreis|Bezirks)(klasse|liga))( \\(?[A-Z]\\)?)?.*");
 
