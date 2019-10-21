@@ -26,10 +26,6 @@ public class Team {
         return Arrays.asList(HERREN, FRAUEN, JUNIOREN_A, JUNIORINNEN_A, JUNIOREN_B, JUNIORINNEN_B);
     }
 
-    public static List<String> getTeamTypeNames() {
-        return getAllTeams().stream().map(Team::getName).collect(Collectors.toList());
-    }
-
     public static String getDefaultTeamsQuery() {
         return getAllTeams().stream()
                 .map(Team::getTeamId)
