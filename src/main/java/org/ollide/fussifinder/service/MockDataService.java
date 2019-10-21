@@ -40,8 +40,8 @@ public class MockDataService {
     public List<ZIPCode> getRandomZips(String zip3) {
         List<ZIPCode> zips = new ArrayList<>();
         if (includeResult()) {
-            // 0-7 results
-            int numberOfZipsInOverview = random.nextInt(8);
+            // 1-7 results
+            int numberOfZipsInOverview = random.nextInt(7) + 1;
             for (int i = 0; i < numberOfZipsInOverview; i++) {
                 // generate random 5 digit ZIP
                 String zip = zip3 + random.nextInt(10) + random.nextInt(10);
