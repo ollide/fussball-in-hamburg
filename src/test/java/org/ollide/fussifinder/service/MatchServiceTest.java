@@ -5,7 +5,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.ollide.fussifinder.ResourceHelper;
 import org.ollide.fussifinder.config.AppConfig;
-import org.ollide.fussifinder.model.League;
 import org.ollide.fussifinder.model.Match;
 
 import java.io.IOException;
@@ -188,7 +187,7 @@ public class MatchServiceTest {
     @Test
     public void isNotFutsal() {
         Match normalMatch = new Match();
-        normalMatch.setLeague(League.VERBANDSLIGA.getName());
+        normalMatch.setLeague("Verbandsliga");
         assertTrue(MatchService.isNotFutsal(normalMatch));
 
         Match futsalMatch = new Match();

@@ -17,6 +17,9 @@ public class MatchController {
 
     private Random random = new Random();
 
+    private static final List<String> LEAGUES = Arrays.asList("Verbandsliga", "Landesliga", "Bezirksliga", "Kreisliga",
+            "Kreisklasse", "FS");
+
     @GetMapping("ajax.match.calendar/-/datum-bis/{dateTo}/datum-von/{dateFrom}/plz/{zip}/mannschaftsart/{teamType}")
     public String getMatches(@PathVariable("dateTo") String dateTo, @PathVariable("dateFrom") String dateFrom,
                              @PathVariable("zip") String zip, @PathVariable("teamType") String teamType,
@@ -103,8 +106,7 @@ public class MatchController {
         LocalDateTime kickOff = LocalDateTime.of(date, time);
         match.setDate(kickOff);
 
-        List<League> leagues = League.getAllLeagues();
-        String league = leagues.get(random.nextInt(leagues.size())).getName();
+        String league = LEAGUES.get(random.nextInt(LEAGUES.size()));
         match.setLeague(league);
 
         List<Team> teams = Team.getAllTeams();
