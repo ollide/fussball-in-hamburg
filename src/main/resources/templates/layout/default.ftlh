@@ -21,7 +21,7 @@
 
 <body>
 
-    <#include "header.ftl"/>
+    <#include "header.ftlh"/>
 
 <section class="section">
 
@@ -29,7 +29,7 @@
 
 </section>
 
-    <#include "footer.ftl"/>
+    <#include "footer.ftlh"/>
 
 </body>
 </html>

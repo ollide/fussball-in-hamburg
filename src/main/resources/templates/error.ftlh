@@ -1,4 +1,4 @@
-<#import "layout/default.ftl" as layout>
+<#import "layout/default.ftlh" as layout>
 <@layout.default>
 
 <div class="container">
