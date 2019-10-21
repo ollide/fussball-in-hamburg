@@ -5,14 +5,11 @@ import org.ollide.fussifinder.util.DateUtil;
 import org.ollide.fussifinder.util.MatchUtils;
 import org.ollide.fussifinder.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Nullable;
 import java.time.LocalDate;
 import java.util.*;
-import java.util.concurrent.Future;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -44,18 +41,12 @@ public class MatchService {
         this.zipService = zipService;
     }
 
-    @Async
-    public Future<List<Match>> getMatches(Region region, @Nullable LocalDate date) {
+    public List<Match> getMatches(Region region, @Nullable LocalDate date) {
         List<String> zips = zipService.getZipsForRegion(region);
         return getMatches(zips, date);
     }
 
-    @Async
-    public Future<List<Match>> getMatches(Collection<String> zips, @Nullable LocalDate date) {
-        return new AsyncResult<>(getMatchesSync(zips, date));
-    }
-
-    protected List<Match> getMatchesSync(Collection<String> zips, LocalDate date) {
+    public List<Match> getMatches(Collection<String> zips, @Nullable LocalDate date) {
         String dateFrom;
         String dateTo;
         if (date != null) {

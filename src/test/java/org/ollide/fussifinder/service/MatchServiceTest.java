@@ -43,7 +43,7 @@ public class MatchServiceTest {
         String htmlMatches = ResourceHelper.readMatches("2_matches_2_days.html");
         when(matchCrawlService.getMatchCalendar(anyString(), anyString(), eq("20359"))).thenReturn(htmlMatches);
 
-        List<Match> matches = matchService.getMatchesSync(zips, null);
+        List<Match> matches = matchService.getMatches(zips, null);
         assertEquals(2, matches.size());
     }
 
@@ -60,11 +60,11 @@ public class MatchServiceTest {
         when(matchCrawlService.getMatchCalendar(anyString(), anyString(), eq(fullZip))).thenReturn(htmlMatches);
 
         // query with 3-digits zip
-        List<Match> matches = matchService.getMatchesSync(Collections.singleton(shortZip3), null);
+        List<Match> matches = matchService.getMatches(Collections.singleton(shortZip3), null);
         assertEquals(2, matches.size());
 
         // query with 4-digits zip
-        matches = matchService.getMatchesSync(Collections.singleton(shortZip4), null);
+        matches = matchService.getMatches(Collections.singleton(shortZip4), null);
         assertEquals(2, matches.size());
     }
 
