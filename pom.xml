@@ -29,8 +29,8 @@
         <retrofit.version>2.6.2</retrofit.version>
         <guava.version>28.1-jre</guava.version>
 
-        <sonar.plugin.version>3.6.1.1688</sonar.plugin.version>
-        <jacoco.plugin.version>0.8.4</jacoco.plugin.version>
+        <sonar.plugin.version>3.7.0.1746</sonar.plugin.version>
+        <jacoco.plugin.version>0.8.5</jacoco.plugin.version>
     </properties>
 
     <dependencies>
