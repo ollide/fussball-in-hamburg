@@ -20,7 +20,7 @@ public class MatchDetailsRestController {
     }
 
     @CrossOrigin
-    @GetMapping(value = "/api/details", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(value = "/api/details", produces = MediaType.APPLICATION_JSON_VALUE)
     public MatchDetails getMatchDetails(@RequestParam String id) {
         return matchDetailsService.getMatchDetails(id);
     }
