@@ -1,3 +1,3 @@
-# Fußball in Hamburg [![Build Status](https://travis-ci.org/ollide/fussball-in-hamburg.svg?branch=develop)](https://travis-ci.org/ollide/fussball-in-hamburg) [![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=org.oliide%3Afussifinder&metric=alert_status)](https://sonarcloud.io/dashboard?id=org.oliide%3Afussifinder)
+# Fußball in Hamburg [![Build Status](https://travis-ci.org/ollide/fussball-in-hamburg.svg?branch=develop)](https://travis-ci.org/ollide/fussball-in-hamburg) [![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=org.ollide%3Afussifinder&metric=alert_status)](https://sonarcloud.io/dashboard?id=org.oliide%3Afussifinder)
 
 FIH displays all upcoming football matches in Hamburg, Germany.
