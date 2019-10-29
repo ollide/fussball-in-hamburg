@@ -28,6 +28,8 @@ public class MatchService {
 
     private static final String MATCH_FUTSAL = "Futsal";
 
+    private static final String MATCH_EFOOT = "eFoot";
+
     private static final Collection<String> MATCH_CANCELLED = Arrays.asList("Absetzung", "Nichtantritt", "Ausfall");
 
     private final MatchCrawlService matchCrawlService;
@@ -70,6 +72,7 @@ public class MatchService {
                 // Run required filters
                 .filter(MatchService::isNotSpecialClass)
                 .filter(MatchService::isNotFutsal)
+                .filter(MatchService::isNotEFoot)
                 .filter(MatchService::isNotCancelled)
                 .filter(MatchService::isNotIndoor)
                 // Beautify/shorten some things
@@ -140,6 +143,10 @@ public class MatchService {
 
     protected static boolean isNotFutsal(Match match) {
         return !match.getLeague().contains(MATCH_FUTSAL);
+    }
+
+    static boolean isNotEFoot(Match match) {
+        return !(match.getClubHome().contains(MATCH_EFOOT) || match.getClubAway().contains(MATCH_EFOOT));
     }
 
     protected static boolean isNotCancelled(Match match) {

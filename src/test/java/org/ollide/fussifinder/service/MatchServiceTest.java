@@ -196,6 +196,19 @@ public class MatchServiceTest {
     }
 
     @Test
+    public void isNotEFoot() {
+        Match normalMatch = new Match();
+        normalMatch.setClubHome("Viktoria Harburg 1.");
+        normalMatch.setClubAway("TSG Bergedorf 2.");
+        assertTrue(MatchService.isNotEFoot(normalMatch));
+
+        Match eFootMatch = new Match();
+        eFootMatch.setClubHome("Eimsbüttel I (eFoot)");
+        eFootMatch.setClubAway("Komet Blankenese I (eFoot)");
+        assertFalse(MatchService.isNotEFoot(eFootMatch));
+    }
+
+    @Test
     public void isNotCancelled() {
         Match normalMatch = new Match();
         normalMatch.setScore("");
