@@ -85,7 +85,7 @@ public class MatchService {
                 .collect(Collectors.toList());
     }
 
-    protected Match shortenLeague(Match match) {
+    Match shortenLeague(Match match) {
         String shortenedLeague;
         switch (match.getLeague()) {
             case "Landesfreundschaftsspiele":
@@ -120,7 +120,7 @@ public class MatchService {
         return match;
     }
 
-    protected Match shortenTeamNames(Match match) {
+    Match shortenTeamNames(Match match) {
         // (A1) (J2) etc.
         String youthYear = " ?\\([AJ][1-9]\\)";
         match.setClubHome(match.getClubHome().replaceAll(youthYear, ""));
@@ -128,20 +128,20 @@ public class MatchService {
         return match;
     }
 
-    protected Match applyFilterKeys(Match match) {
+    private Match applyFilterKeys(Match match) {
         match.setLeagueKey(MatchUtils.getLeagueKey(match.getLeague()));
         match.setTeamTypeKey(MatchUtils.getTeamKey(match.getTeamType()));
         return match;
     }
 
-    protected static boolean isNotSpecialClass(Match match) {
+    static boolean isNotSpecialClass(Match match) {
         String home = match.getClubHome();
         String away = match.getClubAway();
         return !MATCH_SPECIAL_CLASS.equals(match.getLeague())
                 && !(PATTERN_7_OR_9_PLAYERS.matcher(home).matches() || PATTERN_7_OR_9_PLAYERS.matcher(away).matches());
     }
 
-    protected static boolean isNotFutsal(Match match) {
+    static boolean isNotFutsal(Match match) {
         return !match.getLeague().contains(MATCH_FUTSAL);
     }
 
@@ -149,12 +149,12 @@ public class MatchService {
         return !(match.getClubHome().contains(MATCH_EFOOT) || match.getClubAway().contains(MATCH_EFOOT));
     }
 
-    protected static boolean isNotCancelled(Match match) {
+    static boolean isNotCancelled(Match match) {
         String score = match.getScore();
         return MATCH_CANCELLED.stream().noneMatch(score::contains);
     }
 
-    protected static boolean isNotIndoor(Match match) {
+    static boolean isNotIndoor(Match match) {
         boolean indoor = StringUtil.containsAllIgnoreCase(match.getClubAway(), "hallen", "turnier")
                 || StringUtil.containsAllIgnoreCase(match.getLeague(), "hallen", "turnier");
 
