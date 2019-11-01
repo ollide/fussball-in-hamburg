@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.ollide.fussifinder.ResourceHelper;
 import org.ollide.fussifinder.config.AppConfig;
 import org.ollide.fussifinder.model.Match;
+import org.ollide.fussifinder.model.Period;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -43,7 +44,7 @@ public class MatchServiceTest {
         String htmlMatches = ResourceHelper.readMatches("2_matches_2_days.html");
         when(matchCrawlService.getMatchCalendar(anyString(), anyString(), eq("20359"))).thenReturn(htmlMatches);
 
-        List<Match> matches = matchService.getMatches(zips, null);
+        List<Match> matches = matchService.getMatches(zips, new Period());
         assertEquals(2, matches.size());
     }
 
@@ -60,11 +61,11 @@ public class MatchServiceTest {
         when(matchCrawlService.getMatchCalendar(anyString(), anyString(), eq(fullZip))).thenReturn(htmlMatches);
 
         // query with 3-digits zip
-        List<Match> matches = matchService.getMatches(Collections.singleton(shortZip3), null);
+        List<Match> matches = matchService.getMatches(Collections.singleton(shortZip3), new Period());
         assertEquals(2, matches.size());
 
         // query with 4-digits zip
-        matches = matchService.getMatches(Collections.singleton(shortZip4), null);
+        matches = matchService.getMatches(Collections.singleton(shortZip4), new Period());
         assertEquals(2, matches.size());
     }
 

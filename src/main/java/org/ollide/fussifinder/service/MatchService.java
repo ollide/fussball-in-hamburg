@@ -7,8 +7,6 @@ import org.ollide.fussifinder.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Nullable;
-import java.time.LocalDate;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -43,22 +41,14 @@ public class MatchService {
         this.zipService = zipService;
     }
 
-    public List<Match> getMatches(Region region, @Nullable LocalDate date) {
+    public List<Match> getMatches(Region region, Period period) {
         List<String> zips = zipService.getZipsForRegion(region);
-        return getMatches(zips, date);
+        return getMatches(zips, period);
     }
 
-    public List<Match> getMatches(Collection<String> zips, @Nullable LocalDate date) {
-        String dateFrom;
-        String dateTo;
-        if (date != null) {
-            dateFrom = DateUtil.formatLocalDateForAPI(date);
-            dateTo = DateUtil.formatLocalDateForAPI(date.plusDays(1));
-        } else {
-            LocalDate now = LocalDate.now();
-            dateFrom = DateUtil.formatLocalDateForAPI(now);
-            dateTo = DateUtil.formatLocalDateForAPI(now.plusDays(6));
-        }
+    public List<Match> getMatches(Collection<String> zips, Period period) {
+        String dateFrom = DateUtil.formatLocalDateForAPI(period.getStart());
+        String dateTo = DateUtil.formatLocalDateForAPI(period.getEnd());
 
         return zips.stream()
                 .map(zip5 -> zip5.substring(0, 3)).distinct()

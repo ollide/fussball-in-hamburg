@@ -1,9 +1,6 @@
 package org.ollide.fussifinder.controller;
 
-import org.ollide.fussifinder.model.Match;
-import org.ollide.fussifinder.model.MatchDay;
-import org.ollide.fussifinder.model.Region;
-import org.ollide.fussifinder.model.RegionType;
+import org.ollide.fussifinder.model.*;
 import org.ollide.fussifinder.service.MatchService;
 import org.ollide.fussifinder.util.MatchUtils;
 import org.slf4j.Logger;
@@ -33,15 +30,19 @@ public class MatchRestController {
     @GetMapping(value = "/api/matches", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<MatchDay> getMatchDays(@RequestParam(value = "zip", required = false) String zip,
                                        @RequestParam(value = "name", defaultValue = DEFAULT_CITY) String name,
-                                       @RequestParam(value = "type", defaultValue = "CITY") RegionType type) {
+                                       @RequestParam(value = "type", defaultValue = "CITY") RegionType type,
+                                       @RequestParam(value = "period", required = false) String period) {
         List<Match> matches;
+
+        Period p = Period.fromString(period);
+
         if (zip != null) {
             LOG.debug("Requesting matches for ZIP '{}'", zip);
-            matches = matchService.getMatches(Collections.singleton(zip), null);
+            matches = matchService.getMatches(Collections.singleton(zip), p);
         } else {
             Region region = new Region(type, name);
             LOG.debug("Requesting matches for region '{}'", region);
-            matches = matchService.getMatches(region, null);
+            matches = matchService.getMatches(region, p);
         }
 
         return MatchUtils.splitIntoMatchDays(matches);
