@@ -2,6 +2,7 @@ package org.ollide.fussifinder.util;
 
 import org.ollide.fussifinder.model.Match;
 import org.ollide.fussifinder.model.MatchDay;
+import org.ollide.fussifinder.model.Team;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,6 +48,10 @@ public final class MatchUtils {
         if (league.contains("landesliga")) {
             return "LL";
         }
+        if (league.contains("(freizeit)")) {
+            // Freizeitliga -> Freundschaftsspiel
+            return "FS";
+        }
         if (league.contains("verbandsliga") || league.contains("oberliga")) {
             return "VL";
         }
@@ -67,7 +72,11 @@ public final class MatchUtils {
     }
 
     public static String getTeamKey(String fullTeam) {
-        if ("Herren".equals(fullTeam) || "Frauen".equals(fullTeam)) {
+        if (Team.HERREN.getName().equals(fullTeam) || Team.HERREN_FREIZEIT.getName().equals(fullTeam)) {
+            return Team.HERREN.getName();
+        }
+
+        if (Team.FRAUEN.getName().equals(fullTeam)) {
             return fullTeam;
         }
 
