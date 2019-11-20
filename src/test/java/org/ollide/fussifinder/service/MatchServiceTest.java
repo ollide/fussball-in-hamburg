@@ -7,6 +7,7 @@ import org.ollide.fussifinder.ResourceHelper;
 import org.ollide.fussifinder.config.AppConfig;
 import org.ollide.fussifinder.model.Match;
 import org.ollide.fussifinder.model.Period;
+import org.ollide.fussifinder.model.Team;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -120,6 +121,18 @@ public class MatchServiceTest {
         Match oberliga = new Match();
         oberliga.setLeague("Oberliga Niedersachsen");
         assertEquals("Oberliga", matchService.shortenLeague(oberliga).getLeague());
+
+        Match freizeit = new Match();
+        freizeit.setLeague("Verbandsoberliga (Freizeit)");
+        assertEquals("Freizeitliga", matchService.shortenLeague(freizeit).getLeague());
+    }
+
+    @Test
+    public void shortenTeamTypes() {
+        Match freizeit = new Match();
+        freizeit.setTeamType(Team.HERREN_FREIZEIT.getName());
+        freizeit = matchService.shortenTeamType(freizeit);
+        assertEquals(Team.HERREN.getName(), freizeit.getTeamType());
     }
 
     @Test

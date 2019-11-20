@@ -72,11 +72,7 @@ public final class MatchUtils {
     }
 
     public static String getTeamKey(String fullTeam) {
-        if (Team.HERREN.getName().equals(fullTeam) || Team.HERREN_FREIZEIT.getName().equals(fullTeam)) {
-            return Team.HERREN.getName();
-        }
-
-        if (Team.FRAUEN.getName().equals(fullTeam)) {
+        if (Team.HERREN.getName().equals(fullTeam) || Team.FRAUEN.getName().equals(fullTeam)) {
             return fullTeam;
         }
 

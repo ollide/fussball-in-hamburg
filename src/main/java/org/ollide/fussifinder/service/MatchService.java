@@ -67,6 +67,7 @@ public class MatchService {
                 .filter(MatchService::isNotIndoor)
                 // Beautify/shorten some things
                 .map(this::shortenLeague)
+                .map(this::shortenTeamType)
                 .map(this::shortenTeamNames)
                 // Set team & league keys
                 .map(this::applyFilterKeys)
@@ -96,7 +97,9 @@ public class MatchService {
             default:
                 shortenedLeague = match.getLeague();
 
-                if (match.getLeague().contains("Oberliga")) {
+                if (match.getLeague().contains("(Freizeit)")) {
+                    shortenedLeague = "Freizeitliga";
+                } else if (match.getLeague().contains("Oberliga")) {
                     shortenedLeague = "Oberliga";
                     break;
                 }
@@ -107,6 +110,13 @@ public class MatchService {
                 }
         }
         match.setLeague(shortenedLeague);
+        return match;
+    }
+
+    Match shortenTeamType(Match match) {
+        if (Team.HERREN_FREIZEIT.getName().equals(match.getTeamType())) {
+            match.setTeamType(Team.HERREN.getName());
+        }
         return match;
     }
 

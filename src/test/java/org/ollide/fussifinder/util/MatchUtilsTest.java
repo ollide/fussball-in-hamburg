@@ -60,7 +60,6 @@ public class MatchUtilsTest {
         assertEquals("C-Jun", MatchUtils.getTeamKey("C-Juniorinnen"));
         assertEquals("B-Jun", MatchUtils.getTeamKey("B-Junioren"));
         assertEquals("A-Jun", MatchUtils.getTeamKey("A-Jun."));
-        assertEquals("Herren", MatchUtils.getTeamKey("Freizeitsport"));
 
         final String unknownTeam = "Senioren Ü60";
         assertEquals(unknownTeam, MatchUtils.getTeamKey(unknownTeam));
