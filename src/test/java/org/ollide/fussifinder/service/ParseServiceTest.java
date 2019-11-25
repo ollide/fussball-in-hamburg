@@ -60,10 +60,10 @@ public class ParseServiceTest {
 
     @Test
     public void parseMatchesForZipSameDay() throws IOException {
-        String html = ResourceHelper.readMatches("2_matches_1_day.html");
+        String html = ResourceHelper.readMatches("3_matches_1_day.html");
         List<Match> matches = parseService.parseMatchesForZip(html);
 
-        assertEquals("ParseService should find 2 matches", 2, matches.size());
+        assertEquals("ParseService should find 3 matches", 3, matches.size());
         assertEquals("09.06.18 12:30", DateUtil.formatLocalDateTime(matches.get(0).getDate()));
         // Raw data only says '18:00', we derive the date from the previous match
         assertEquals("09.06.18 18:00", DateUtil.formatLocalDateTime(matches.get(1).getDate()));

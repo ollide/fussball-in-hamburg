@@ -50,6 +50,24 @@ public class MatchServiceTest {
     }
 
     @Test
+    public void getMatches_WithFreizeit() throws IOException {
+        Collection<String> zips = Arrays.asList("20359", "22525");
+
+        String htmlOverview = ResourceHelper.readOverview("2_results.html");
+        when(matchCrawlService.getMatchCalendar(anyString(), anyString(), eq("203"))).thenReturn(htmlOverview);
+        String htmlMatches = ResourceHelper.readMatches("3_matches_1_day.html");
+        when(matchCrawlService.getMatchCalendar(anyString(), anyString(), eq("20359"))).thenReturn(htmlMatches);
+
+        List<Match> matches = matchService.getMatches(zips, new Period());
+        assertEquals(3, matches.size());
+
+        // Test the Freizeitliga match to have the correct league and team type
+        Match freizeitMatch = matches.get(2);
+        assertEquals("FS", freizeitMatch.getLeagueKey());
+        assertEquals(Team.HERREN.getName(), freizeitMatch.getTeamType());
+    }
+
+    @Test
     public void getMatchesWithShortZip() throws IOException {
         final String shortZip3 = "203";
         final String shortZip4 = "2035";

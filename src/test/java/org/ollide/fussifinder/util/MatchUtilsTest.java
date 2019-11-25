@@ -48,7 +48,7 @@ public class MatchUtilsTest {
         assertEquals("VL", MatchUtils.getLeagueKey("Verbandsliga Hessen"));
 
         // Freizeitliga
-        assertEquals("FS", MatchUtils.getLeagueKey("Verbandsoberliga (Freizeit)"));
+        assertEquals("FS", MatchUtils.getLeagueKey("Freizeitliga"));
 
         // Fall through
         final String unknownLeague = "Jupiler Bierliga";

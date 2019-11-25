@@ -48,7 +48,7 @@ public final class MatchUtils {
         if (league.contains("landesliga")) {
             return "LL";
         }
-        if (league.contains("(freizeit)")) {
+        if (league.contains("freizeitliga")) {
             // Freizeitliga -> Freundschaftsspiel
             return "FS";
         }
