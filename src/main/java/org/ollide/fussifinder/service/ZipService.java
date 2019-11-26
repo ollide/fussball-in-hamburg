@@ -36,13 +36,17 @@ public class ZipService {
         RESOURCE_MAP.put(RegionType.SPECIAL, RESOURCES_SPECIALS);
     }
 
-    @Cacheable(value = "zips", key = "#region.toString()")
+    @Cacheable(value = "zips", key = "#region.toString()", condition = "#region.type.name() != 'ZIP'")
     public List<String> getZipsForRegion(Region region) {
+        if (RegionType.ZIP.equals(region.getType())) {
+            return Collections.singletonList(region.getName());
+        }
+
         String resourceDir = RESOURCE_MAP.get(region.getType());
         return readZipsFromResources(resourceDir + region.getName().toLowerCase() + ".txt");
     }
 
-    protected List<String> readZipsFromResources(String fileName) {
+    private List<String> readZipsFromResources(String fileName) {
         try {
             ClassPathResource resource = new ClassPathResource(fileName);
             MappingIterator<String> readValues = stringReader.readValues(resource.getInputStream());

@@ -4,12 +4,13 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.ollide.fussifinder.http.serializer.IsoLocalDateTimeSerializer;
 import org.ollide.fussifinder.http.serializer.KickoffTimeSerializer;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
-public class Match implements Comparable<Match> {
+public class Match implements Comparable<Match>, Serializable {
 
     private static final DateTimeFormatter FORMATTER_TIME = DateTimeFormatter.ofPattern("HH:mm", Locale.GERMANY);
     private static final DateTimeFormatter FORMATTER_DATE = DateTimeFormatter.ofPattern("E, dd.MM.yy | HH:mm", Locale.GERMANY);

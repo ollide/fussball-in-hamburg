@@ -4,6 +4,8 @@ import org.springframework.util.StringUtils;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 public class Period {
@@ -15,8 +17,8 @@ public class Period {
     private static final String DAYS_3 = "D3";
     private static final String DAYS_7 = "D7";
 
-    private LocalDate start;
-    private LocalDate end;
+    private final LocalDate start;
+    private final LocalDate end;
 
     public Period() {
         this(LocalDate.now(), LocalDate.now());
@@ -63,5 +65,18 @@ public class Period {
 
     public LocalDate getEnd() {
         return end;
+    }
+
+    public Set<Period> widenedPeriods() {
+        Set<Period> periods = new HashSet<>();
+        if (start.equals(end)) {
+            // T -> D3 & D7
+            periods.add(new Period(start, start.plusDays(2)));
+            periods.add(new Period(start, start.plusDays(6)));
+        } else if (start.plusDays(2).equals(end)) {
+            // D3 -> D7
+            periods.add(new Period(start, start.plusDays(6)));
+        }
+        return periods;
     }
 }

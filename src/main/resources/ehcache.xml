@@ -34,6 +34,15 @@
         </expiry>
     </cache>
 
+    <cache alias="matchDayResponse" uses-template="default">
+        <key-type>java.lang.String</key-type>
+        <value-type>java.util.List</value-type>
+        <expiry>
+            <ttl unit="hours">24</ttl>
+        </expiry>
+        <heap>500</heap>
+    </cache>
+
     <cache alias="matchDetails" uses-template="default">
         <key-type>java.lang.String</key-type>
         <value-type>java.lang.String</value-type>

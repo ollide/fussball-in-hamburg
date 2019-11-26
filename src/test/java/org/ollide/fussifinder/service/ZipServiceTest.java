@@ -39,4 +39,13 @@ public class ZipServiceTest {
         assertTrue(unknown.isEmpty());
     }
 
+    @Test
+    public void getZipsForRegionZip() {
+        Region region = new Region(RegionType.ZIP, "20359");
+        List<String> zipsForRegion = zipService.getZipsForRegion(region);
+
+        assertEquals(1, zipsForRegion.size());
+        assertEquals("20359", zipsForRegion.get(0));
+    }
+
 }
