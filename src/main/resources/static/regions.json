@@ -33,6 +33,10 @@
       "displayName": "Düsseldorf"
     },
     {
+      "name": "emden",
+      "displayName": "Emden"
+    },
+    {
       "name": "flensburg",
       "displayName": "Flensburg"
     },
@@ -159,6 +163,10 @@
   ],
   "districts": [
     {
+      "name": "aurich",
+      "displayName": "Aurich"
+    },
+    {
       "name": "cuxhaven",
       "displayName": "Cuxhaven"
     },
@@ -185,6 +193,10 @@
     {
       "name": "herzogtum-lauenburg",
       "displayName": "Herzogtum Lauenburg"
+    },
+    {
+      "name": "leer",
+      "displayName": "Leer"
     },
     {
       "name": "lüneburg",
@@ -241,6 +253,10 @@
     {
       "name": "verden",
       "displayName": "Verden"
+    },
+    {
+      "name": "wittmund",
+      "displayName": "Wittmund"
     }
   ],
   "specials": [
