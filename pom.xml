@@ -25,9 +25,9 @@
 
         <jackson.version>2.10.1</jackson.version>
         <jsoup.version>1.12.1</jsoup.version>
-        <okhttp.version>4.2.2</okhttp.version>
+        <okhttp.version>4.3.0</okhttp.version>
         <retrofit.version>2.7.0</retrofit.version>
-        <guava.version>28.1-jre</guava.version>
+        <guava.version>28.2-jre</guava.version>
 
         <sonar.plugin.version>3.7.0.1746</sonar.plugin.version>
         <jacoco.plugin.version>0.8.5</jacoco.plugin.version>
