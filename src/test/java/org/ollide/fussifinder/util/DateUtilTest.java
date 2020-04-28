@@ -37,4 +37,16 @@ public class DateUtilTest {
         assertEquals(0, localDateTime.getHour());
         assertEquals(0, localDateTime.getMinute());
     }
+
+    @Test
+    public void testTimeNotPublishedAndNormalize() {
+        String date1 = "So, 10.10.12 | **";
+        String date2 = "**";
+
+        String date1Normalized = DateUtil.normalizeDate(date1, null);
+        String date2Normalized = DateUtil.normalizeDate(date2, date1Normalized);
+
+        assertEquals("10.10.12 00:00", date1Normalized);
+        assertEquals("10.10.12 00:00", date2Normalized);
+    }
 }

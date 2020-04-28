@@ -59,6 +59,13 @@ public class ParseServiceTest {
     }
 
     @Test
+    public void parseMatchesWithoutKickOffTime() throws IOException {
+        String html = ResourceHelper.readMatches("matches_no_kickoff_time.html");
+        List<Match> matches = parseService.parseMatchesForZip(html);
+        assertEquals(10, matches.size());
+    }
+
+    @Test
     public void parseMatchesForZipSameDay() throws IOException {
         String html = ResourceHelper.readMatches("3_matches_1_day.html");
         List<Match> matches = parseService.parseMatchesForZip(html);
