@@ -17,6 +17,7 @@ import static org.mockito.Mockito.when;
 public class MatchDetailsServiceTest {
 
     private MatchDetailsService matchDetailsService;
+    private MatchClientCrawlService matchClientCrawlService;
     private MatchClient matchClient = mock(MatchClient.class);
 
     // === Artificial Pitches ===
@@ -43,7 +44,8 @@ public class MatchDetailsServiceTest {
 
     @Before
     public void setUp() {
-        matchDetailsService = new MatchDetailsService(matchClient);
+        matchClientCrawlService = new MatchClientCrawlService(matchClient);
+        matchDetailsService = new MatchDetailsService(matchClientCrawlService);
     }
 
     @Test

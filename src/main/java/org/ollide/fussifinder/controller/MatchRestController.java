@@ -1,19 +1,14 @@
 package org.ollide.fussifinder.controller;
 
-import org.ollide.fussifinder.model.Match;
-import org.ollide.fussifinder.model.RegionType;
-import org.ollide.fussifinder.service.MatchService;
-import org.ollide.fussifinder.util.AsyncUtil;
-import org.ollide.fussifinder.util.MatchUtils;
+import org.ollide.fussifinder.model.*;
+import org.ollide.fussifinder.service.MatchDayService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
 
 @RestController
 public class MatchRestController {
@@ -22,27 +17,22 @@ public class MatchRestController {
 
     private static final String DEFAULT_CITY = "Hamburg";
 
-    private final MatchService matchService;
+    private final MatchDayService matchDayService;
 
     @Autowired
-    public MatchRestController(MatchService matchService) {
-        this.matchService = matchService;
+    public MatchRestController(MatchDayService matchDayService) {
+        this.matchDayService = matchDayService;
     }
 
-    @RequestMapping("/api/matches")
-    public ResponseEntity getMatchDays() {
-        Future<List<Match>> asyncMatches = matchService.getMatches(DEFAULT_CITY, RegionType.CITY, null);
-
-        AsyncUtil.waitMaxQuietly(asyncMatches, 1000);
-        if (asyncMatches.isDone()) {
-            try {
-                List<Match> matches = asyncMatches.get();
-                return ResponseEntity.ok(MatchUtils.splitIntoMatchDays(matches));
-            } catch (InterruptedException | ExecutionException e) {
-                LOG.error("Error retrieving matches", e);
-            }
-        }
-        return ResponseEntity.noContent().build();
+    @CrossOrigin
+    @GetMapping(value = "/api/matches", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<MatchDay> getMatchDays(@RequestParam(value = "name", defaultValue = DEFAULT_CITY) String name,
+                                       @RequestParam(value = "type", defaultValue = "CITY") RegionType type,
+                                       @RequestParam(value = "period", required = false) String period) {
+        Period p = Period.fromString(period);
+        Region region = new Region(type, name);
+        LOG.debug("Requesting matches for region '{}'", region);
+        return matchDayService.getMatchDays(region, p);
     }
 
 }

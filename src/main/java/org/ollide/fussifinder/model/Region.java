@@ -4,22 +4,27 @@ import java.io.Serializable;
 
 public class Region implements Serializable {
 
-    private String key;
-    private String name;
+    private final RegionType type;
+    private final String name;
 
-    public String getKey() {
-        return key;
+    public Region(RegionType type, String name) {
+        this.type = type;
+        this.name = name;
     }
 
-    public void setKey(String key) {
-        this.key = key;
+    public RegionType getType() {
+        return type;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    @Override
+    public String toString() {
+        return "Region{" +
+                "type=" + type +
+                ", name='" + name + '\'' +
+                '}';
     }
 }

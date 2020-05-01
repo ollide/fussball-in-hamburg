@@ -19,7 +19,7 @@ public class MatchClientCrawlService implements MatchCrawlService {
 
     private static final String DEFAULT_TEAM_TYPES = Team.getDefaultTeamsQuery();
 
-    private static final RateLimiter RATE_LIMITER = RateLimiter.create(3.0);
+    private static final RateLimiter RATE_LIMITER = RateLimiter.create(2.5);
 
     private final MatchClient matchClient;
 
@@ -45,6 +45,10 @@ public class MatchClientCrawlService implements MatchCrawlService {
                 StringBuilder html = new StringBuilder(body);
 
                 int insertIndex = html.indexOf("</tbody>");
+                if (insertIndex == -1) {
+                    return body;
+                }
+
                 int offset = 10;
                 AjaxModel lastResponse;
                 do {
@@ -72,4 +76,15 @@ public class MatchClientCrawlService implements MatchCrawlService {
         return "";
     }
 
+    @Override
+    @Cacheable(value = "matchDetails", sync = true)
+    public String getMatchDetails(String id) {
+        try {
+            RATE_LIMITER.acquire();
+            return matchClient.matchDetails(id).execute().body();
+        } catch (IOException e) {
+            LOGGER.error("Failed to query match details.", e);
+        }
+        return "";
+    }
 }

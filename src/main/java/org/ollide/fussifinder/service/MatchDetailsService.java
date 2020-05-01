@@ -3,29 +3,26 @@ package org.ollide.fussifinder.service;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
-import org.ollide.fussifinder.api.MatchClient;
 import org.ollide.fussifinder.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-
 @Service
 public class MatchDetailsService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MatchDetailsService.class);
 
-    private final MatchClient matchClient;
+    private final MatchCrawlService matchCrawlService;
 
     @Autowired
-    public MatchDetailsService(MatchClient matchClient) {
-        this.matchClient = matchClient;
+    public MatchDetailsService(MatchCrawlService matchCrawlService) {
+        this.matchCrawlService = matchCrawlService;
     }
 
-    public MatchDetails getMatchDetails(String id) throws IOException {
-        String text = matchClient.matchDetails(id).execute().body();
+    public MatchDetails getMatchDetails(String id) {
+        String text = matchCrawlService.getMatchDetails(id);
         return parseMatchDetails(text);
     }
 
