@@ -49,4 +49,11 @@ public class DateUtilTest {
         assertEquals("10.10.12 00:00", date1Normalized);
         assertEquals("10.10.12 00:00", date2Normalized);
     }
+
+    @Test
+    public void testInvalidDates() {
+        assertEquals("", DateUtil.normalizeDate("No date", null));
+        assertEquals("", DateUtil.normalizeDate("No date", "No date"));
+        assertEquals("", DateUtil.normalizeDate("No date", "10.10.12 15:23"));
+    }
 }
