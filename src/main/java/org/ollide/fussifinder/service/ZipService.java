@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ZipService {
@@ -50,11 +51,39 @@ public class ZipService {
         try {
             ClassPathResource resource = new ClassPathResource(fileName);
             MappingIterator<String> readValues = stringReader.readValues(resource.getInputStream());
-            return readValues.readAll();
+            List<String> zips = readValues.readAll();
+            validateZips(fileName, zips);
+            return zips;
         } catch (IOException e) {
             LOG.error("Error occurred while loading ZIPs from " + fileName, e);
             return Collections.emptyList();
         }
+    }
+
+    private void validateZips(String fileName, List<String> zips) {
+        // 3-digit ZIP
+        List<String> zip3 = zips.stream().filter(z -> z.length() == 3).collect(Collectors.toList());
+        // Full ZIPs
+        List<String> zip4or5 = zips.stream().filter(z -> z.length() > 3).collect(Collectors.toList());
+
+        // Look for matching 3-digit/full ZIP (eg. 315 & 31511)
+        zip4or5.stream().filter(z -> zip3.stream().anyMatch(z::startsWith))
+                .forEach(z -> LOG.warn("'{}' contains the full ZIP '{}' and a matching 3-digit ZIP.", fileName, z));
+
+        // Look for duplicates
+        getDuplicatesFromList(zips).forEach(z -> LOG.warn("'{}' contains the duplicated ZIP '{}'.", fileName, z));
+    }
+
+    private Set<String> getDuplicatesFromList(List<String> zips) {
+        final Set<String> setWithDuplicates = new HashSet<>();
+        final Set<String> testSet = new HashSet<>();
+
+        for (String zip : zips) {
+            if (!testSet.add(zip)) {
+                setWithDuplicates.add(zip);
+            }
+        }
+        return setWithDuplicates;
     }
 
 }

@@ -48,4 +48,13 @@ public class ZipServiceTest {
         assertEquals("20359", zipsForRegion.get(0));
     }
 
+    @Test
+    public void getZipsWithDuplicates() {
+        Region region = new Region(RegionType.CITY, "duplicates");
+        List<String> zipsForRegion = zipService.getZipsForRegion(region);
+
+        // We expect all ZIPs to be returned, check logs for information on duplicates
+        assertEquals(5, zipsForRegion.size());
+    }
+
 }
