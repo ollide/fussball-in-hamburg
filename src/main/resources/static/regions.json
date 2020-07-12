@@ -328,5 +328,35 @@
       "name": "hamburglübeck_rb",
       "displayName": "Hamburg-Lübeck (RE8)"
     }
+  ],
+  "associations": [
+    {
+      "name": "braunschweig",
+      "displayName": "NFV - Braunschweig"
+    },
+    {
+      "name": "hannover",
+      "displayName": "NFV - Hannover"
+    },
+    {
+      "name": "lüneburg",
+      "displayName": "NFV - Lüneburg"
+    },
+    {
+      "name": "weser-ems",
+      "displayName": "NFV - Weser-Ems"
+    },
+    {
+      "name": "mittelrhein",
+      "displayName": "WDFV - Mittelrhein"
+    },
+    {
+      "name": "niederrhein",
+      "displayName": "WDFV - Niederrhein"
+    },
+    {
+      "name": "westfalen",
+      "displayName": "WDFV - Westfalen"
+    }
   ]
 }

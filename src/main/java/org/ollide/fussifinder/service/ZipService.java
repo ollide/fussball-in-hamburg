@@ -20,6 +20,7 @@ public class ZipService {
 
     private static final Logger LOG = LoggerFactory.getLogger(ZipService.class);
 
+    private static final String RESOURCES_ASSOCIATIONS = "/regions/associations/";
     private static final String RESOURCES_CITIES = "/regions/cities/";
     private static final String RESOURCES_DISTRICTS = "/regions/districts/";
     private static final String RESOURCES_SPECIALS = "/regions/specials/";
@@ -32,6 +33,7 @@ public class ZipService {
         CsvMapper csvMapper = new CsvMapper();
         stringReader = csvMapper.readerFor(String.class);
 
+        RESOURCE_MAP.put(RegionType.ASSOCIATION, RESOURCES_ASSOCIATIONS);
         RESOURCE_MAP.put(RegionType.CITY, RESOURCES_CITIES);
         RESOURCE_MAP.put(RegionType.DISTRICT, RESOURCES_DISTRICTS);
         RESOURCE_MAP.put(RegionType.SPECIAL, RESOURCES_SPECIALS);
