@@ -56,8 +56,12 @@ public class MatchService {
                 .map(parseService::parseZipsWithMatches)
                 .flatMap(Collection::stream)
                 .filter(z -> zips.contains(z) || zips.stream().anyMatch(z::startsWith))
-                .map(zip5 -> matchCrawlService.getMatchCalendar(dateFrom, dateTo, zip5))
-                .map(parseService::parseMatchesForZip)
+                .map(zip5 -> {
+                    String matchCalendarHtml = matchCrawlService.getMatchCalendar(dateFrom, dateTo, zip5);
+                    List<Match> matches = parseService.parseMatchesForZip(matchCalendarHtml);
+                    matches.forEach(m -> m.setZip(zip5));
+                    return matches;
+                })
                 .flatMap(Collection::stream)
                 // Run required filters
                 .filter(MatchService::isNotSpecialClass)
