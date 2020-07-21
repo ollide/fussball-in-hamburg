@@ -18,6 +18,7 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 @Configuration
 public class AppConfig {
@@ -31,6 +32,7 @@ public class AppConfig {
     @Bean
     public OkHttpClient okHttpClient(HeaderInterceptor headerInterceptor) {
         OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder();
+        clientBuilder.readTimeout(60, TimeUnit.SECONDS);
         clientBuilder.addNetworkInterceptor(headerInterceptor);
         return clientBuilder.build();
     }
