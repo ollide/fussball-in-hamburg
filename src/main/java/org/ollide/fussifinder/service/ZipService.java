@@ -3,13 +3,17 @@ package org.ollide.fussifinder.service;
 import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
+import org.ollide.fussifinder.api.OverpassClient;
 import org.ollide.fussifinder.model.Region;
 import org.ollide.fussifinder.model.RegionType;
+import org.ollide.fussifinder.model.overpass.OverpassElement;
+import org.ollide.fussifinder.model.overpass.OverpassResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
+import retrofit2.Response;
 
 import java.io.IOException;
 import java.util.*;
@@ -28,8 +32,11 @@ public class ZipService {
     private static final Map<RegionType, String> RESOURCE_MAP = new EnumMap<>(RegionType.class);
 
     private final ObjectReader stringReader;
+    private final OverpassClient overpassClient;
 
-    public ZipService() {
+    public ZipService(OverpassClient overpassClient) {
+        this.overpassClient = overpassClient;
+
         CsvMapper csvMapper = new CsvMapper();
         stringReader = csvMapper.readerFor(String.class);
 
@@ -47,6 +54,41 @@ public class ZipService {
 
         String resourceDir = RESOURCE_MAP.get(region.getType());
         return readZipsFromResources(resourceDir + region.getName().toLowerCase() + ".txt");
+    }
+
+    @Cacheable(value = "nearbyZips")
+    public List<String> getNearbyZips(String zip, int distance) {
+        final String query = "[out:json][timeout:60];\n" +
+                "\n" +
+                "rel[postal_code=" + zip + "];\n" +
+                "rel(around:" + distance + ")[boundary=postal_code];\n" +
+                "convert result\n" +
+                "    ::id = id(),\n" +
+                "    postal_code = t[\"postal_code\"];\n" +
+                "\n" +
+                "out qt;";
+
+        Response<OverpassResponse> response;
+        try {
+            LOG.info("Querying Overpass. Distance: '{}'", distance);
+            response = overpassClient.query(query).execute();
+        } catch (IOException e) {
+            LOG.error("Error querying Overpass.", e);
+            return Collections.emptyList();
+        }
+
+        if (response.isSuccessful()) {
+            OverpassResponse body = response.body();
+            if (body != null) {
+                return body.getElements().stream().map(OverpassElement::getTags)
+                        .filter(it -> it.containsKey("postal_code"))
+                        .map(it -> it.get("postal_code"))
+                        .map(it -> (String) it)
+                        .distinct().collect(Collectors.toList());
+            }
+        }
+
+        return Collections.emptyList();
     }
 
     private List<String> readZipsFromResources(String fileName) {

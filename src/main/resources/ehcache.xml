@@ -56,4 +56,12 @@
         </expiry>
     </cache>
 
+    <cache alias="nearbyZips" uses-template="default">
+        <key-type>org.springframework.cache.interceptor.SimpleKey</key-type>
+        <value-type>java.util.List</value-type>
+        <expiry>
+            <ttl unit="hours">72</ttl>
+        </expiry>
+    </cache>
+
 </config>

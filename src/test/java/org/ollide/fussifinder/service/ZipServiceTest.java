@@ -1,16 +1,18 @@
 package org.ollide.fussifinder.service;
 
 import org.junit.Test;
+import org.ollide.fussifinder.api.OverpassClient;
 import org.ollide.fussifinder.model.Region;
 import org.ollide.fussifinder.model.RegionType;
 
 import java.util.List;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
 
 public class ZipServiceTest {
 
-    private final ZipService zipService = new ZipService();
+    private final ZipService zipService = new ZipService(mock(OverpassClient.class));
 
     @Test
     public void getZipsForCity() {
