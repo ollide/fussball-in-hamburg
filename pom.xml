@@ -28,6 +28,7 @@
         <okhttp.version>4.7.2</okhttp.version>
         <retrofit.version>2.9.0</retrofit.version>
         <guava.version>29.0-jre</guava.version>
+        <jetbrains.annoations.version>13.0</jetbrains.annoations.version>
 
         <sonar.plugin.version>3.7.0.1746</sonar.plugin.version>
         <jacoco.plugin.version>0.8.5</jacoco.plugin.version>
@@ -90,6 +91,12 @@
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>${guava.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>${jetbrains.annoations.version}</version>
         </dependency>
 
         <dependency>
