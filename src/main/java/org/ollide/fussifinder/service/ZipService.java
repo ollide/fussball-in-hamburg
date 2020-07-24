@@ -58,15 +58,7 @@ public class ZipService {
 
     @Cacheable(value = "nearbyZips")
     public List<String> getNearbyZips(String zip, int distance) {
-        final String query = "[out:json][timeout:60];\n" +
-                "\n" +
-                "rel[postal_code=" + zip + "];\n" +
-                "rel(around:" + distance + ")[boundary=postal_code];\n" +
-                "convert result\n" +
-                "    ::id = id(),\n" +
-                "    postal_code = t[\"postal_code\"];\n" +
-                "\n" +
-                "out qt;";
+        final String query = buildNearbyZipcodesOverpassQuery(zip, distance);
 
         Response<OverpassResponse> response;
         try {
@@ -80,7 +72,14 @@ public class ZipService {
         if (response.isSuccessful()) {
             OverpassResponse body = response.body();
             if (body != null) {
-                return body.getElements().stream().map(OverpassElement::getTags)
+
+                final List<OverpassElement> elements = body.getElements();
+
+                if (elements.isEmpty() && body.getRemark() != null) {
+                    LOG.warn("Encountered possible Overpass query timeout: {}", body.getRemark());
+                }
+
+                return elements.stream().map(OverpassElement::getTags)
                         .filter(it -> it.containsKey("postal_code"))
                         .map(it -> it.get("postal_code"))
                         .map(it -> (String) it)
@@ -128,6 +127,18 @@ public class ZipService {
             }
         }
         return setWithDuplicates;
+    }
+
+    String buildNearbyZipcodesOverpassQuery(String zip, int distance) {
+        return "[out:json][timeout:60];\n" +
+                "\n" +
+                "rel[postal_code=" + zip + "];\n" +
+                "rel(around:" + distance + ")[boundary=postal_code];\n" +
+                "convert result\n" +
+                "    ::id = id(),\n" +
+                "    postal_code = t[\"postal_code\"];\n" +
+                "\n" +
+                "out qt;";
     }
 
 }
