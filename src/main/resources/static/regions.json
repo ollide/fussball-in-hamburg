@@ -327,6 +327,10 @@
     {
       "name": "hamburglübeck_rb",
       "displayName": "Hamburg-Lübeck (RE8)"
+    },
+    {
+      "name":"ostfriesische_inseln",
+      "displayName": "Ostfriesische Inseln"
     }
   ],
   "associations": [
