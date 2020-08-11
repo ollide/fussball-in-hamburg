@@ -23,9 +23,9 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
 
-        <jackson.version>2.11.1</jackson.version>
+        <jackson.version>2.11.2</jackson.version>
         <jsoup.version>1.13.1</jsoup.version>
-        <okhttp.version>4.8.0</okhttp.version>
+        <okhttp.version>4.8.1</okhttp.version>
         <retrofit.version>2.9.0</retrofit.version>
         <guava.version>29.0-jre</guava.version>
         <jetbrains.annoations.version>13.0</jetbrains.annoations.version>
