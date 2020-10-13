@@ -28,7 +28,7 @@ public final class ResourceHelper {
         return readFile(HTML_MATCHDETAILS + fileName);
     }
 
-    private static String readFile(String fileName) throws IOException {
+    public static String readFile(String fileName) throws IOException {
         InputStream resourceAsStream = ResourceHelper.class.getResourceAsStream(fileName);
         return StreamUtils.copyToString(resourceAsStream, Charset.defaultCharset());
     }

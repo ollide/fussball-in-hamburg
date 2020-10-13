@@ -27,6 +27,9 @@ public class Match implements Comparable<Match>, Serializable {
     private String score;
     private String url;
 
+    // Manually added
+    private String zip;
+
     public String formattedTime() {
         return FORMATTER_TIME.format(date);
     }
@@ -118,6 +121,14 @@ public class Match implements Comparable<Match>, Serializable {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public String getZip() {
+        return zip;
+    }
+
+    public void setZip(String zip) {
+        this.zip = zip;
     }
 
     @Override

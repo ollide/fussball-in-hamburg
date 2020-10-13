@@ -1,16 +1,59 @@
 package org.ollide.fussifinder.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.Before;
 import org.junit.Test;
+import org.ollide.fussifinder.ResourceHelper;
+import org.ollide.fussifinder.api.OverpassClient;
 import org.ollide.fussifinder.model.Region;
 import org.ollide.fussifinder.model.RegionType;
+import org.ollide.fussifinder.model.overpass.OverpassResponse;
+import retrofit2.mock.Calls;
 
 import java.util.List;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class ZipServiceTest {
 
-    private final ZipService zipService = new ZipService();
+    private OverpassClient overpassClient;
+    private ZipService zipService;
+
+    private final ObjectMapper objectMapper = new ObjectMapper();
+
+    @Before
+    public void setUp() {
+        overpassClient = mock(OverpassClient.class);
+        zipService = new ZipService(overpassClient);
+    }
+
+    @Test
+    public void getNearbyZips() throws Exception {
+        final String zip = "20359";
+        final int distance = 10000;
+
+        String responseJson = ResourceHelper.readFile("/overpass/20359_success.json");
+        when(overpassClient.query(zipService.buildNearbyZipcodesOverpassQuery(zip, distance)))
+                .thenReturn(Calls.response(objectMapper.readValue(responseJson, OverpassResponse.class)));
+
+        List<String> nearbyZips = zipService.getNearbyZips(zip, distance);
+        assertEquals(87, nearbyZips.size());
+    }
+
+    @Test
+    public void getNearbyZipsOverpassTimeout() throws Exception {
+        final String zip = "20359";
+        final int distance = 50000;
+
+        String responseJson = ResourceHelper.readFile("/overpass/timeout.json");
+        when(overpassClient.query(zipService.buildNearbyZipcodesOverpassQuery(zip, distance)))
+                .thenReturn(Calls.response(objectMapper.readValue(responseJson, OverpassResponse.class)));
+
+        List<String> nearbyZips = zipService.getNearbyZips(zip, distance);
+        assertEquals(0, nearbyZips.size());
+    }
 
     @Test
     public void getZipsForCity() {
@@ -46,6 +89,15 @@ public class ZipServiceTest {
 
         assertEquals(1, zipsForRegion.size());
         assertEquals("20359", zipsForRegion.get(0));
+    }
+
+    @Test
+    public void getZipsWithDuplicates() {
+        Region region = new Region(RegionType.CITY, "duplicates");
+        List<String> zipsForRegion = zipService.getZipsForRegion(region);
+
+        // We expect all ZIPs to be returned, check logs for information on duplicates
+        assertEquals(5, zipsForRegion.size());
     }
 
 }

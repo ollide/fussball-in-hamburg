@@ -1,0 +1,621 @@
+{
+  "version": 0.6,
+  "generator": "Overpass API 0.7.56.3 eb200aeb",
+  "osm3s": {
+    "timestamp_osm_base": "2020-07-24T19:18:03Z",
+    "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL."
+  },
+  "elements": [
+
+    {
+      "type": "result",
+      "id": 934922,
+      "tags": {
+        "postal_code": "21149"
+      }
+    },
+    {
+      "type": "result",
+      "id": 934924,
+      "tags": {
+        "postal_code": "21147"
+      }
+    },
+    {
+      "type": "result",
+      "id": 1086360,
+      "tags": {
+        "postal_code": "20148"
+      }
+    },
+    {
+      "type": "result",
+      "id": 1086361,
+      "tags": {
+        "postal_code": "20146"
+      }
+    },
+    {
+      "type": "result",
+      "id": 1086729,
+      "tags": {
+        "postal_code": "21129"
+      }
+    },
+    {
+      "type": "result",
+      "id": 1086948,
+      "tags": {
+        "postal_code": "20149"
+      }
+    },
+    {
+      "type": "result",
+      "id": 1100069,
+      "tags": {
+        "postal_code": "21075"
+      }
+    },
+    {
+      "type": "result",
+      "id": 1100768,
+      "tags": {
+        "postal_code": "20144"
+      }
+    },
+    {
+      "type": "result",
+      "id": 1102135,
+      "tags": {
+        "postal_code": "21073"
+      }
+    },
+    {
+      "type": "result",
+      "id": 1102137,
+      "tags": {
+        "postal_code": "21079"
+      }
+    },
+    {
+      "type": "result",
+      "id": 1103652,
+      "tags": {
+        "postal_code": "20099"
+      }
+    },
+    {
+      "type": "result",
+      "id": 1103658,
+      "tags": {
+        "postal_code": "20095"
+      }
+    },
+    {
+      "type": "result",
+      "id": 1369234,
+      "tags": {
+        "postal_code": "21107"
+      }
+    },
+    {
+      "type": "result",
+      "id": 1369353,
+      "tags": {
+        "postal_code": "21109"
+      }
+    },
+    {
+      "type": "result",
+      "id": 1370596,
+      "tags": {
+        "postal_code": "21037"
+      }
+    },
+    {
+      "type": "result",
+      "id": 1376533,
+      "tags": {
+        "postal_code": "21035"
+      }
+    },
+    {
+      "type": "result",
+      "id": 1392187,
+      "tags": {
+        "postal_code": "20459"
+      }
+    },
+    {
+      "type": "result",
+      "id": 1392188,
+      "tags": {
+        "postal_code": "20539"
+      }
+    },
+    {
+      "type": "result",
+      "id": 1392481,
+      "tags": {
+        "postal_code": "20097"
+      }
+    },
+    {
+      "type": "result",
+      "id": 1394333,
+      "tags": {
+        "postal_code": "20359"
+      }
+    },
+    {
+      "type": "result",
+      "id": 1395417,
+      "tags": {
+        "postal_code": "20457"
+      }
+    },
+    {
+      "type": "result",
+      "id": 1397320,
+      "tags": {
+        "postal_code": "20354"
+      }
+    },
+    {
+      "type": "result",
+      "id": 1397330,
+      "tags": {
+        "postal_code": "20355"
+      }
+    },
+    {
+      "type": "result",
+      "id": 1398025,
+      "tags": {
+        "postal_code": "20537"
+      }
+    },
+    {
+      "type": "result",
+      "id": 1452211,
+      "tags": {
+        "postal_code": "25474"
+      }
+    },
+    {
+      "type": "result",
+      "id": 1453521,
+      "tags": {
+        "postal_code": "20357"
+      }
+    },
+    {
+      "type": "result",
+      "id": 1732878,
+      "tags": {
+        "postal_code": "22113"
+      }
+    },
+    {
+      "type": "result",
+      "id": 1733093,
+      "tags": {
+        "postal_code": "20535"
+      }
+    },
+    {
+      "type": "result",
+      "id": 1733440,
+      "tags": {
+        "postal_code": "20249"
+      }
+    },
+    {
+      "type": "result",
+      "id": 1764915,
+      "tags": {
+        "postal_code": "20253"
+      }
+    },
+    {
+      "type": "result",
+      "id": 2782351,
+      "tags": {
+        "postal_code": "20251"
+      }
+    },
+    {
+      "type": "result",
+      "id": 2782356,
+      "tags": {
+        "postal_code": "22159"
+      }
+    },
+    {
+      "type": "result",
+      "id": 2782357,
+      "tags": {
+        "postal_code": "22587"
+      }
+    },
+    {
+      "type": "result",
+      "id": 2782358,
+      "tags": {
+        "postal_code": "22589"
+      }
+    },
+    {
+      "type": "result",
+      "id": 2782359,
+      "tags": {
+        "postal_code": "22605"
+      }
+    },
+    {
+      "type": "result",
+      "id": 2782360,
+      "tags": {
+        "postal_code": "22609"
+      }
+    },
+    {
+      "type": "result",
+      "id": 2782361,
+      "tags": {
+        "postal_code": "22763"
+      }
+    },
+    {
+      "type": "result",
+      "id": 2793589,
+      "tags": {
+        "postal_code": "22335"
+      }
+    },
+    {
+      "type": "result",
+      "id": 2793590,
+      "tags": {
+        "postal_code": "22337"
+      }
+    },
+    {
+      "type": "result",
+      "id": 2793591,
+      "tags": {
+        "postal_code": "22339"
+      }
+    },
+    {
+      "type": "result",
+      "id": 2793593,
+      "tags": {
+        "postal_code": "22415"
+      }
+    },
+    {
+      "type": "result",
+      "id": 2793598,
+      "tags": {
+        "postal_code": "22848"
+      }
+    },
+    {
+      "type": "result",
+      "id": 2794006,
+      "tags": {
+        "postal_code": "22453"
+      }
+    },
+    {
+      "type": "result",
+      "id": 2794007,
+      "tags": {
+        "postal_code": "22455"
+      }
+    },
+    {
+      "type": "result",
+      "id": 2794008,
+      "tags": {
+        "postal_code": "22457"
+      }
+    },
+    {
+      "type": "result",
+      "id": 2794009,
+      "tags": {
+        "postal_code": "22459"
+      }
+    },
+    {
+      "type": "result",
+      "id": 2796107,
+      "tags": {
+        "postal_code": "22043"
+      }
+    },
+    {
+      "type": "result",
+      "id": 2796108,
+      "tags": {
+        "postal_code": "22111"
+      }
+    },
+    {
+      "type": "result",
+      "id": 2796110,
+      "tags": {
+        "postal_code": "22117"
+      }
+    },
+    {
+      "type": "result",
+      "id": 2796111,
+      "tags": {
+        "postal_code": "22119"
+      }
+    },
+    {
+      "type": "result",
+      "id": 2800539,
+      "tags": {
+        "postal_code": "22175"
+      }
+    },
+    {
+      "type": "result",
+      "id": 2800540,
+      "tags": {
+        "postal_code": "22177"
+      }
+    },
+    {
+      "type": "result",
+      "id": 2800541,
+      "tags": {
+        "postal_code": "22179"
+      }
+    },
+    {
+      "type": "result",
+      "id": 2800542,
+      "tags": {
+        "postal_code": "22391"
+      }
+    },
+    {
+      "type": "result",
+      "id": 3257188,
+      "tags": {
+        "postal_code": "22549"
+      }
+    },
+    {
+      "type": "result",
+      "id": 3258653,
+      "tags": {
+        "postal_code": "22045"
+      }
+    },
+    {
+      "type": "result",
+      "id": 3284198,
+      "tags": {
+        "postal_code": "22765"
+      }
+    },
+    {
+      "type": "result",
+      "id": 3285148,
+      "tags": {
+        "postal_code": "22767"
+      }
+    },
+    {
+      "type": "result",
+      "id": 3285169,
+      "tags": {
+        "postal_code": "22769"
+      }
+    },
+    {
+      "type": "result",
+      "id": 3285562,
+      "tags": {
+        "postal_code": "22761"
+      }
+    },
+    {
+      "type": "result",
+      "id": 3289590,
+      "tags": {
+        "postal_code": "22607"
+      }
+    },
+    {
+      "type": "result",
+      "id": 3292429,
+      "tags": {
+        "postal_code": "22529"
+      }
+    },
+    {
+      "type": "result",
+      "id": 3292481,
+      "tags": {
+        "postal_code": "20255"
+      }
+    },
+    {
+      "type": "result",
+      "id": 3295167,
+      "tags": {
+        "postal_code": "20259"
+      }
+    },
+    {
+      "type": "result",
+      "id": 3299449,
+      "tags": {
+        "postal_code": "20257"
+      }
+    },
+    {
+      "type": "result",
+      "id": 3301326,
+      "tags": {
+        "postal_code": "22525"
+      }
+    },
+    {
+      "type": "result",
+      "id": 3301543,
+      "tags": {
+        "postal_code": "22547"
+      }
+    },
+    {
+      "type": "result",
+      "id": 3301989,
+      "tags": {
+        "postal_code": "22527"
+      }
+    },
+    {
+      "type": "result",
+      "id": 3302673,
+      "tags": {
+        "postal_code": "22523"
+      }
+    },
+    {
+      "type": "result",
+      "id": 3305224,
+      "tags": {
+        "postal_code": "22087"
+      }
+    },
+    {
+      "type": "result",
+      "id": 3305272,
+      "tags": {
+        "postal_code": "22089"
+      }
+    },
+    {
+      "type": "result",
+      "id": 3306946,
+      "tags": {
+        "postal_code": "22085"
+      }
+    },
+    {
+      "type": "result",
+      "id": 3307092,
+      "tags": {
+        "postal_code": "22301"
+      }
+    },
+    {
+      "type": "result",
+      "id": 3307142,
+      "tags": {
+        "postal_code": "22299"
+      }
+    },
+    {
+      "type": "result",
+      "id": 3307240,
+      "tags": {
+        "postal_code": "22303"
+      }
+    },
+    {
+      "type": "result",
+      "id": 3307251,
+      "tags": {
+        "postal_code": "22297"
+      }
+    },
+    {
+      "type": "result",
+      "id": 3308481,
+      "tags": {
+        "postal_code": "22083"
+      }
+    },
+    {
+      "type": "result",
+      "id": 3308494,
+      "tags": {
+        "postal_code": "22081"
+      }
+    },
+    {
+      "type": "result",
+      "id": 3317277,
+      "tags": {
+        "postal_code": "22307"
+      }
+    },
+    {
+      "type": "result",
+      "id": 3317278,
+      "tags": {
+        "postal_code": "22309"
+      }
+    },
+    {
+      "type": "result",
+      "id": 3318099,
+      "tags": {
+        "postal_code": "22305"
+      }
+    },
+    {
+      "type": "result",
+      "id": 3318379,
+      "tags": {
+        "postal_code": "22049"
+      }
+    },
+    {
+      "type": "result",
+      "id": 3318447,
+      "tags": {
+        "postal_code": "22041"
+      }
+    },
+    {
+      "type": "result",
+      "id": 3318480,
+      "tags": {
+        "postal_code": "22047"
+      }
+    },
+    {
+      "type": "result",
+      "id": 3385536,
+      "tags": {
+        "postal_code": "22869"
+      }
+    },
+    {
+      "type": "result",
+      "id": 3385538,
+      "tags": {
+        "postal_code": "25462"
+      }
+    },
+    {
+      "type": "result",
+      "id": 3385539,
+      "tags": {
+        "postal_code": "25469"
+      }
+    }
+
+  ]
+}

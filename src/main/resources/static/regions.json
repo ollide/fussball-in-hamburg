@@ -9,8 +9,16 @@
       "displayName": "Bielefeld"
     },
     {
+      "name": "bochum",
+      "displayName": "Bochum"
+    },
+    {
       "name": "bonn",
       "displayName": "Bonn"
+    },
+    {
+      "name": "bottrop",
+      "displayName": "Bottrop"
     },
     {
       "name": "bremen",
@@ -57,16 +65,32 @@
       "displayName": "Fürth"
     },
     {
+      "name": "gelsenkirchen",
+      "displayName": "Gelsenkirchen"
+    },
+    {
       "name": "göttingen",
       "displayName": "Göttingen"
+    },
+    {
+      "name": "hagen_westfalen",
+      "displayName": "Hagen (Westf.)"
     },
     {
       "name": "hamburg",
       "displayName": "Hamburg"
     },
     {
+      "name": "hamm_westfalen",
+      "displayName": "Hamm (Westf.)"
+    },
+    {
       "name": "hannover",
       "displayName": "Hannover"
+    },
+    {
+      "name": "herne",
+      "displayName": "Herne"
     },
     {
       "name": "ingolstadt",
@@ -109,6 +133,10 @@
       "displayName": "München"
     },
     {
+      "name": "münster",
+      "displayName": "Münster"
+    },
+    {
       "name": "neumünster",
       "displayName": "Neumünster"
     },
@@ -129,8 +157,16 @@
       "displayName": "Osnabrück"
     },
     {
+      "name": "paderborn",
+      "displayName": "Paderborn"
+    },
+    {
       "name": "potsdam",
       "displayName": "Potsdam"
+    },
+    {
+      "name": "recklinghausen",
+      "displayName": "Recklinghausen"
     },
     {
       "name": "rostock",
@@ -139,6 +175,10 @@
     {
       "name": "schwerin",
       "displayName": "Schwerin"
+    },
+    {
+      "name": "siegen",
+      "displayName": "Siegen"
     },
     {
       "name": "stuttgart",
@@ -287,6 +327,40 @@
     {
       "name": "hamburglübeck_rb",
       "displayName": "Hamburg-Lübeck (RE8)"
+    },
+    {
+      "name":"ostfriesische_inseln",
+      "displayName": "Ostfriesische Inseln"
+    }
+  ],
+  "associations": [
+    {
+      "name": "braunschweig",
+      "displayName": "NFV - Braunschweig"
+    },
+    {
+      "name": "hannover",
+      "displayName": "NFV - Hannover"
+    },
+    {
+      "name": "lüneburg",
+      "displayName": "NFV - Lüneburg"
+    },
+    {
+      "name": "weser-ems",
+      "displayName": "NFV - Weser-Ems"
+    },
+    {
+      "name": "mittelrhein",
+      "displayName": "WDFV - Mittelrhein"
+    },
+    {
+      "name": "niederrhein",
+      "displayName": "WDFV - Niederrhein"
+    },
+    {
+      "name": "westfalen",
+      "displayName": "WDFV - Westfalen"
     }
   ]
 }

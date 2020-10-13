@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import okhttp3.OkHttpClient;
+import org.jetbrains.annotations.NotNull;
 import org.ollide.fussifinder.api.MatchClient;
 import org.ollide.fussifinder.http.HeaderInterceptor;
 import org.ollide.fussifinder.http.converter.TextConverterFactory;
@@ -14,10 +15,10 @@ import org.springframework.format.Formatter;
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
-import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 @Configuration
 public class AppConfig {
@@ -31,6 +32,7 @@ public class AppConfig {
     @Bean
     public OkHttpClient okHttpClient(HeaderInterceptor headerInterceptor) {
         OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder();
+        clientBuilder.readTimeout(60, TimeUnit.SECONDS);
         clientBuilder.addNetworkInterceptor(headerInterceptor);
         return clientBuilder.build();
     }

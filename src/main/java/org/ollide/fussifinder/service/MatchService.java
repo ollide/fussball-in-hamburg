@@ -41,6 +41,26 @@ public class MatchService {
         this.zipService = zipService;
     }
 
+    public List<MatchDay> getNearbyMatches(String zip, int distance, Period period) {
+        // find nearby zips
+        List<String> zip5 = zipService.getNearbyZips(zip, distance);
+
+        // build 3-digit zips
+        List<String> zip3 = zip5.stream()
+                .map(z -> z.substring(0, 3))
+                .distinct()
+                .collect(Collectors.toList());
+
+        // find matches
+        List<Match> matches = getMatches(zip3, period);
+
+        // filter with original 5-digit zips
+        matches = matches.stream().filter(m -> zip5.contains(m.getZip()))
+                .collect(Collectors.toList());
+
+        return MatchUtils.splitIntoMatchDays(matches);
+    }
+
     public List<Match> getMatches(Region region, Period period) {
         List<String> zips = zipService.getZipsForRegion(region);
         return getMatches(zips, period);
@@ -56,8 +76,12 @@ public class MatchService {
                 .map(parseService::parseZipsWithMatches)
                 .flatMap(Collection::stream)
                 .filter(z -> zips.contains(z) || zips.stream().anyMatch(z::startsWith))
-                .map(zip5 -> matchCrawlService.getMatchCalendar(dateFrom, dateTo, zip5))
-                .map(parseService::parseMatchesForZip)
+                .map(zip5 -> {
+                    String matchCalendarHtml = matchCrawlService.getMatchCalendar(dateFrom, dateTo, zip5);
+                    List<Match> matches = parseService.parseMatchesForZip(matchCalendarHtml);
+                    matches.forEach(m -> m.setZip(zip5));
+                    return matches;
+                })
                 .flatMap(Collection::stream)
                 // Run required filters
                 .filter(MatchService::isNotSpecialClass)
