@@ -9,8 +9,7 @@ import org.springframework.util.StringUtils;
 import java.time.LocalDate;
 import java.util.List;
 
-import static org.junit.Assert.*;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 class MockDataServiceTest {
 
@@ -68,11 +67,11 @@ class MockDataServiceTest {
 
     @Test
     void getRandomLocation() {
-        assertFalse(StringUtils.isEmpty(mockDataService100.getRandomLocation()));
+        assertTrue(StringUtils.hasLength(mockDataService100.getRandomLocation()));
     }
 
     @Test
     void getRandomCompetition() {
-        assertFalse(StringUtils.isEmpty(mockDataService100.getRandomCompetition()));
+        assertTrue(StringUtils.hasLength(mockDataService100.getRandomCompetition()));
     }
 }

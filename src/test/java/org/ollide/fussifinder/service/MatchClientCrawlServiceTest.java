@@ -1,13 +1,13 @@
 package org.ollide.fussifinder.service;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.ollide.fussifinder.ResourceHelper;
 import org.ollide.fussifinder.api.MatchClient;
 import org.ollide.fussifinder.model.AjaxModel;
 import retrofit2.mock.Calls;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
@@ -23,8 +23,8 @@ public class MatchClientCrawlServiceTest {
     private String response2MatchesLoadMore;
     private String responseLoadMore;
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeEach
+    void setUp() throws Exception {
         matchClient = mock(MatchClient.class);
 
         // 2 Matches

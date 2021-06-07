@@ -1,15 +1,15 @@
 package org.ollide.fussifinder.service;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.ollide.fussifinder.ResourceHelper;
 import org.ollide.fussifinder.api.MatchClient;
 import org.ollide.fussifinder.model.MatchDetails;
 import org.ollide.fussifinder.model.Pitch;
 import retrofit2.mock.Calls;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -42,8 +42,8 @@ public class MatchDetailsServiceTest {
     // === Clay ===
     private static final String LOCATION_13 = "Hartplatz, Grunewaldstr.61/I, Grunewaldstr. 61, 22149 Hamburg";
 
-    @Before
-    public void setUp() {
+    @BeforeEach
+    void setUp() {
         matchClientCrawlService = new MatchClientCrawlService(matchClient);
         matchDetailsService = new MatchDetailsService(matchClientCrawlService);
     }

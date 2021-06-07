@@ -1,8 +1,8 @@
 package org.ollide.fussifinder.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.ollide.fussifinder.ResourceHelper;
 import org.ollide.fussifinder.config.AppConfig;
 import org.ollide.fussifinder.model.Match;
@@ -15,9 +15,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
@@ -28,8 +26,8 @@ public class MatchServiceTest {
     private MatchService matchService;
     private MatchCrawlService matchCrawlService;
 
-    @Before
-    public void setUp() {
+    @BeforeEach
+    void setUp() {
         matchCrawlService = mock(MatchCrawlService.class);
         ObjectMapper objectMapper = new AppConfig().objectMapper();
         matchService = new MatchService(matchCrawlService, new ParseService(objectMapper),

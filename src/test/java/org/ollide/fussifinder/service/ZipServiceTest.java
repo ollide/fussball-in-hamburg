@@ -1,8 +1,8 @@
 package org.ollide.fussifinder.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.ollide.fussifinder.ResourceHelper;
 import org.ollide.fussifinder.api.OverpassClient;
 import org.ollide.fussifinder.model.Region;
@@ -12,7 +12,8 @@ import retrofit2.mock.Calls;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -23,8 +24,8 @@ public class ZipServiceTest {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    @Before
-    public void setUp() {
+    @BeforeEach
+    void setUp() {
         overpassClient = mock(OverpassClient.class);
         zipService = new ZipService(overpassClient);
     }
@@ -60,9 +61,9 @@ public class ZipServiceTest {
         // testcity.txt
         Region region = new Region(RegionType.CITY, "Testcity1");
         List<String> testCities = zipService.getZipsForRegion(region);
-        assertEquals("testcity.txt should contain 2 ZIP codes", 2, testCities.size());
-        assertTrue("testcity.txt should contain '11111'", testCities.contains("11111"));
-        assertTrue("testcity.txt should contain '22222'", testCities.contains("22222"));
+        assertEquals(2, testCities.size(), "testcity.txt should contain 2 ZIP codes");
+        assertTrue(testCities.contains("11111"), "testcity.txt should contain '11111'");
+        assertTrue(testCities.contains("22222"), "testcity.txt should contain '22222'");
 
         // unknown city
         List<String> unknown = zipService.getZipsForRegion(new Region(RegionType.CITY, "unknown-city"));
@@ -74,8 +75,8 @@ public class ZipServiceTest {
         // testdistrict2.txt
         Region region = new Region(RegionType.DISTRICT, "testdistrict2");
         List<String> testDistricts = zipService.getZipsForRegion(region);
-        assertEquals("testdistrict2.txt should contain 1 ZIP code", 1, testDistricts.size());
-        assertTrue("testdistrict2.txt should contain '11111'", testDistricts.contains("11111"));
+        assertEquals(1, testDistricts.size(), "testdistrict2.txt should contain 1 ZIP code");
+        assertTrue(testDistricts.contains("11111"), "testdistrict2.txt should contain '11111'");
 
         // unknown district
         List<String> unknown = zipService.getZipsForRegion(new Region(RegionType.DISTRICT, "unknown-district"));
