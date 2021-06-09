@@ -26,8 +26,7 @@ public class Team {
     }
 
     public static List<Team> getAllTeams() {
-        return Arrays.asList(HERREN, FRAUEN, JUNIOREN_A, JUNIORINNEN_A, JUNIOREN_B, JUNIORINNEN_B,
-                JUNIOREN_C, JUNIORINNEN_C, HERREN_FREIZEIT);
+        return Arrays.asList(HERREN, FRAUEN, JUNIOREN_A, JUNIORINNEN_A, JUNIOREN_B, JUNIORINNEN_B, HERREN_FREIZEIT);
     }
 
     public static String getDefaultTeamsQuery() {
