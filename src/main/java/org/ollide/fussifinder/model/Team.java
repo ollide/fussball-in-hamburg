@@ -17,8 +17,8 @@ public class Team {
     public static final Team JUNIORINNEN_B = new Team(7, "B-Juniorinnen");
     public static final Team JUNIORINNEN_C = new Team(9, "C-Juniorinnen");
 
-    private int id;
-    private String name;
+    private final int id;
+    private final String name;
 
     public Team(int id, String name) {
         this.id = id;
