@@ -24,7 +24,7 @@
         <java.version>1.8</java.version>
 
         <jackson.version>2.11.4</jackson.version>
-        <jsoup.version>1.13.1</jsoup.version>
+        <jsoup.version>1.14.2</jsoup.version>
         <okhttp.version>4.9.1</okhttp.version>
         <retrofit.version>2.9.0</retrofit.version>
         <guava.version>30.1.1-jre</guava.version>
