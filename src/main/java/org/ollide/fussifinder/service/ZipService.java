@@ -8,6 +8,7 @@ import org.ollide.fussifinder.model.Region;
 import org.ollide.fussifinder.model.RegionType;
 import org.ollide.fussifinder.model.overpass.OverpassElement;
 import org.ollide.fussifinder.model.overpass.OverpassResponse;
+import org.ollide.fussifinder.repository.NearbyZipRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.Cacheable;
@@ -31,10 +32,12 @@ public class ZipService {
 
     private static final Map<RegionType, String> RESOURCE_MAP = new EnumMap<>(RegionType.class);
 
+    private final NearbyZipRepository nearbyZipRepository;
     private final ObjectReader stringReader;
     private final OverpassClient overpassClient;
 
-    public ZipService(OverpassClient overpassClient) {
+    public ZipService(NearbyZipRepository nearbyZipRepository, OverpassClient overpassClient) {
+        this.nearbyZipRepository = nearbyZipRepository;
         this.overpassClient = overpassClient;
 
         CsvMapper csvMapper = new CsvMapper();
@@ -58,6 +61,12 @@ public class ZipService {
 
     @Cacheable(value = "nearbyZips", unless = "#result.isEmpty()")
     public List<String> getNearbyZips(String zip, int distance) {
+
+        List<String> zipEntries = nearbyZipRepository.readZipEntries(zip, distance);
+        if (!zipEntries.isEmpty()) {
+            return zipEntries;
+        }
+
         final String query = buildNearbyZipcodesOverpassQuery(zip, distance);
 
         Response<OverpassResponse> response;
@@ -79,11 +88,14 @@ public class ZipService {
                     LOG.warn("Encountered possible Overpass query timeout: {}", body.getRemark());
                 }
 
-                return elements.stream().map(OverpassElement::getTags)
+                List<String> zipList = elements.stream().map(OverpassElement::getTags)
                         .filter(it -> it.containsKey("postal_code"))
                         .map(it -> it.get("postal_code"))
                         .map(it -> (String) it)
                         .distinct().collect(Collectors.toList());
+
+                nearbyZipRepository.saveZipEntries(zip, distance, zipList);
+                return zipList;
             }
         }
 

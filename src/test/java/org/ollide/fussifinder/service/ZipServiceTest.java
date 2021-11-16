@@ -8,6 +8,7 @@ import org.ollide.fussifinder.api.OverpassClient;
 import org.ollide.fussifinder.model.Region;
 import org.ollide.fussifinder.model.RegionType;
 import org.ollide.fussifinder.model.overpass.OverpassResponse;
+import org.ollide.fussifinder.repository.NearbyZipRepository;
 import retrofit2.mock.Calls;
 
 import java.util.List;
@@ -17,21 +18,22 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class ZipServiceTest {
+class ZipServiceTest {
 
     private OverpassClient overpassClient;
     private ZipService zipService;
 
+    private final NearbyZipRepository nearbyZipRepository = mock(NearbyZipRepository.class);
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @BeforeEach
     void setUp() {
         overpassClient = mock(OverpassClient.class);
-        zipService = new ZipService(overpassClient);
+        zipService = new ZipService(nearbyZipRepository, overpassClient);
     }
 
     @Test
-    public void getNearbyZips() throws Exception {
+    void getNearbyZips() throws Exception {
         final String zip = "20359";
         final int distance = 10000;
 
@@ -44,7 +46,7 @@ public class ZipServiceTest {
     }
 
     @Test
-    public void getNearbyZipsOverpassTimeout() throws Exception {
+    void getNearbyZipsOverpassTimeout() throws Exception {
         final String zip = "20359";
         final int distance = 50000;
 
@@ -57,7 +59,7 @@ public class ZipServiceTest {
     }
 
     @Test
-    public void getZipsForCity() {
+    void getZipsForCity() {
         // testcity.txt
         Region region = new Region(RegionType.CITY, "Testcity1");
         List<String> testCities = zipService.getZipsForRegion(region);
@@ -71,7 +73,7 @@ public class ZipServiceTest {
     }
 
     @Test
-    public void getZipsForDistrict() {
+    void getZipsForDistrict() {
         // testdistrict2.txt
         Region region = new Region(RegionType.DISTRICT, "testdistrict2");
         List<String> testDistricts = zipService.getZipsForRegion(region);
@@ -84,7 +86,7 @@ public class ZipServiceTest {
     }
 
     @Test
-    public void getZipsForRegionZip() {
+    void getZipsForRegionZip() {
         Region region = new Region(RegionType.ZIP, "20359");
         List<String> zipsForRegion = zipService.getZipsForRegion(region);
 
@@ -93,7 +95,7 @@ public class ZipServiceTest {
     }
 
     @Test
-    public void getZipsWithDuplicates() {
+    void getZipsWithDuplicates() {
         Region region = new Region(RegionType.CITY, "duplicates");
         List<String> zipsForRegion = zipService.getZipsForRegion(region);
 
