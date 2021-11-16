@@ -56,7 +56,7 @@ public class ZipService {
         return readZipsFromResources(resourceDir + region.getName().toLowerCase() + ".txt");
     }
 
-    @Cacheable(value = "nearbyZips")
+    @Cacheable(value = "nearbyZips", unless = "#result.isEmpty()")
     public List<String> getNearbyZips(String zip, int distance) {
         final String query = buildNearbyZipcodesOverpassQuery(zip, distance);
 
