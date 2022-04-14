@@ -19,8 +19,24 @@ jobs:
         cache: 'maven'
     - name: Build with Maven
       run: mvn -B package --file pom.xml
-    - name: Archive application
+    - name: Archive app
       uses: actions/upload-artifact@v3
       with:
         name: fussifinder-jar
         path: target/fussifinder-*.jar
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/develop' }}
+    steps:
+      - name: Download app
+        uses: actions/download-artifact@v3
+        with:
+          name: fussifinder-jar
+      - name: Install SSH Key
+        uses: shimataro/ssh-key-action@3c9b0fc6f2d223b8450b02a0445f526350fc73e0
+        with:
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          known_hosts: ${{ secrets.SSH_KNOWN_HOSTS }}
+      - name: Transfer and run app
+        run: rsync -avz fussifinder-*.jar ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:fussifinder-dev.jar && ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} './install_fih_dev.sh'
