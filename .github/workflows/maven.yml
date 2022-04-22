@@ -52,4 +52,4 @@ jobs:
         run: rsync -avz fussifinder-*.jar ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:fussifinder-dev.jar && ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} './install_fih_dev.sh'
       - name: 'Transfer and run app (main)'
         if: ${{ github.ref == 'refs/heads/main' }}
-        run: rsync -avz fussifinder-*.jar ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:fussifinder-dev.jar && ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} './install_fih.sh'
+        run: rsync -avz fussifinder-*.jar ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:fussifinder-prod.jar && ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} './install_fih.sh'
