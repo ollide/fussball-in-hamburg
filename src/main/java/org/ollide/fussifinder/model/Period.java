@@ -30,7 +30,7 @@ public class Period {
     }
 
     public static Period fromString(String p) {
-        if (StringUtils.isEmpty(p)) {
+        if (!StringUtils.hasText(p)) {
             return new Period();
         }
 
@@ -50,6 +50,7 @@ public class Period {
                 case DAYS_7:
                     days = 6;
                     break;
+                case TODAY:
                 default:
                     days = 0;
             }
