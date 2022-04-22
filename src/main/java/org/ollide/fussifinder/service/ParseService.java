@@ -32,7 +32,7 @@ public class ParseService {
     public List<String> parseZipsWithMatches(String html) {
         List<String> zipsWithMatches = new ArrayList<>();
 
-        if (StringUtils.isEmpty(html)) {
+        if (!StringUtils.hasText(html)) {
             return zipsWithMatches;
         }
 
@@ -53,7 +53,7 @@ public class ParseService {
     }
 
     public List<Match> parseMatchesForZip(String html) {
-        if (StringUtils.isEmpty(html)) {
+        if (!StringUtils.hasText(html)) {
             return Collections.emptyList();
         }
 
@@ -74,9 +74,16 @@ public class ParseService {
 
                     m.setTeamType(matchRow.select("td.column-team").text());
                     m.setLeague(matchRow.select("td.column-league").text());
-                    m.setClubHome(matchRow.select("td.column-club div.club-name").text());
-                    m.setClubHome(matchRow.select("td.column-club").first().select("div.club-name").text());
-                    m.setClubAway(matchRow.select("td.column-club").last().select("div.club-name").text());
+
+                    Elements clubElements = matchRow.select("td.column-club");
+                    Element clubHomeEl = clubElements.first();
+                    if (clubHomeEl != null) {
+                        m.setClubHome(clubHomeEl.select("div.club-name").text());
+                    }
+                    Element clubAwayEl = clubElements.last();
+                    if (clubAwayEl != null) {
+                        m.setClubAway(clubAwayEl.select("div.club-name").text());
+                    }
 
                     Elements matchScoreLinkTag = matchRow.select("td.column-score a");
                     m.setScore(matchScoreLinkTag.text());
