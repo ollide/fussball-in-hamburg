@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class IsoLocalDateTimeSerializerTest {
+class IsoLocalDateTimeSerializerTest {
 
     private static ObjectMapper mapper;
 
@@ -23,7 +23,7 @@ public class IsoLocalDateTimeSerializerTest {
     }
 
     @Test
-    public void serialize() throws JsonProcessingException {
+    void serialize() throws JsonProcessingException {
         LocalDateTime localDateTime = LocalDateTime.of(2019, 1, 12, 15, 30);
         assertEquals("\"2019-01-12T15:30:00\"", mapper.writeValueAsString(localDateTime));
     }

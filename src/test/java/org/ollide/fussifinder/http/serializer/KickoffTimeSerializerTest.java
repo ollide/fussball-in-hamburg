@@ -10,7 +10,7 @@ import java.time.LocalTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class KickoffTimeSerializerTest {
+class KickoffTimeSerializerTest {
 
     private static ObjectMapper mapper;
 
@@ -23,7 +23,7 @@ public class KickoffTimeSerializerTest {
     }
 
     @Test
-    public void serialize() throws JsonProcessingException {
+    void serialize() throws JsonProcessingException {
         assertEquals("\"15:30\"", mapper.writeValueAsString(LocalTime.of(15, 30)));
         assertEquals("\"15:30\"", mapper.writeValueAsString(LocalTime.of(15, 30, 0)));
         assertEquals("\"15:30\"", mapper.writeValueAsString(LocalTime.of(15, 30, 15)));

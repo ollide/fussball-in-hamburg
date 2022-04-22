@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
-public class MatchClientCrawlServiceTest {
+class MatchClientCrawlServiceTest {
 
     private static final String TWO_MATCHES_ZIP = "12345";
     private static final String TWO_MATCHES_LOAD_MORE_ZIP = "45678";
@@ -52,14 +52,14 @@ public class MatchClientCrawlServiceTest {
     }
 
     @Test
-    public void testGetMatchCalendar() {
+    void testGetMatchCalendar() {
         String matchCalendar = matchClientCrawlService.getMatchCalendar("", "", TWO_MATCHES_ZIP);
         verify(matchClient, never()).loadMoreMatches(anyString(), anyString(), anyString(), anyString(), anyInt());
         assertEquals(response2Matches, matchCalendar);
     }
 
     @Test
-    public void testGetMatchCalendarLoadMore() {
+    void testGetMatchCalendarLoadMore() {
         String matchCalendar = matchClientCrawlService.getMatchCalendar("", "", TWO_MATCHES_LOAD_MORE_ZIP);
         verify(matchClient, times(1))
                 .loadMoreMatches(anyString(), anyString(), eq(TWO_MATCHES_LOAD_MORE_ZIP), anyString(), anyInt());

@@ -14,11 +14,10 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class MatchDetailsServiceTest {
+class MatchDetailsServiceTest {
 
     private MatchDetailsService matchDetailsService;
-    private MatchClientCrawlService matchClientCrawlService;
-    private MatchClient matchClient = mock(MatchClient.class);
+    private final MatchClient matchClient = mock(MatchClient.class);
 
     // === Artificial Pitches ===
     private static final String LOCATION_1 = "Kunstrasenplatz, Sachsenweg 2 (Kunstrasen), Sachsenweg 78, 22455 Hamburg";
@@ -44,12 +43,12 @@ public class MatchDetailsServiceTest {
 
     @BeforeEach
     void setUp() {
-        matchClientCrawlService = new MatchClientCrawlService(matchClient);
+        MatchClientCrawlService matchClientCrawlService = new MatchClientCrawlService(matchClient);
         matchDetailsService = new MatchDetailsService(matchClientCrawlService);
     }
 
     @Test
-    public void testGetMatchDetails() throws Exception {
+    void testGetMatchDetails() throws Exception {
         String html = ResourceHelper.readMatchDetails("matchdetails_1.html");
         when(matchClient.matchDetails(anyString())).thenReturn(Calls.response(html));
 
@@ -61,7 +60,7 @@ public class MatchDetailsServiceTest {
     }
 
     @Test
-    public void testGetMatchDetailsError() throws Exception {
+    void testGetMatchDetailsError() throws Exception {
         String html = ResourceHelper.readMatchDetails("matchdetails_1.html");
         when(matchClient.matchDetails(anyString())).thenReturn(Calls.response(html));
 
@@ -73,7 +72,7 @@ public class MatchDetailsServiceTest {
     }
 
     @Test
-    public void parseMatchDetails() throws Exception {
+    void parseMatchDetails() throws Exception {
         String html = ResourceHelper.readMatchDetails("matchdetails_1.html");
         MatchDetails matchDetails = matchDetailsService.parseMatchDetails(html);
 
@@ -84,7 +83,7 @@ public class MatchDetailsServiceTest {
     }
 
     @Test
-    public void parseMatchDetailsSuspended() throws Exception {
+    void parseMatchDetailsSuspended() throws Exception {
         String html = ResourceHelper.readMatchDetails("matchdetails_2.html");
         MatchDetails matchDetails = matchDetailsService.parseMatchDetails(html);
 
@@ -95,7 +94,7 @@ public class MatchDetailsServiceTest {
     }
 
     @Test
-    public void testParseAddress() {
+    void testParseAddress() {
         assertNull(matchDetailsService.parseAddress(""));
         assertNull(matchDetailsService.parseAddress("This is not an address."));
 
@@ -106,7 +105,7 @@ public class MatchDetailsServiceTest {
     }
 
     @Test
-    public void testParsePitch() {
+    void testParsePitch() {
         assertNull(matchDetailsService.parsePitch(""));
         assertNull(matchDetailsService.parsePitch("This is not a pitch."));
 
@@ -129,7 +128,7 @@ public class MatchDetailsServiceTest {
     }
 
     @Test
-    public void testParseGround() {
+    void testParseGround() {
         assertNull(matchDetailsService.parseGround(""));
         assertNull(matchDetailsService.parseGround("This is not a ground."));
 

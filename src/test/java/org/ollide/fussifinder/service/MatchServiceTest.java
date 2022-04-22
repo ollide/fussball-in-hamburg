@@ -21,7 +21,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class MatchServiceTest {
+class MatchServiceTest {
 
     private MatchService matchService;
     private MatchCrawlService matchCrawlService;
@@ -35,7 +35,7 @@ public class MatchServiceTest {
     }
 
     @Test
-    public void getMatches() throws IOException {
+    void getMatches() throws IOException {
         Collection<String> zips = Arrays.asList("20359", "22525");
 
         String htmlOverview = ResourceHelper.readOverview("2_results.html");
@@ -48,7 +48,7 @@ public class MatchServiceTest {
     }
 
     @Test
-    public void getMatches_WithFreizeit() throws IOException {
+    void getMatches_WithFreizeit() throws IOException {
         Collection<String> zips = Arrays.asList("20359", "22525");
 
         String htmlOverview = ResourceHelper.readOverview("2_results.html");
@@ -66,7 +66,7 @@ public class MatchServiceTest {
     }
 
     @Test
-    public void getMatchesWithShortZip() throws IOException {
+    void getMatchesWithShortZip() throws IOException {
         final String shortZip3 = "203";
         final String shortZip4 = "2035";
         final String fullZip = "20359";
@@ -87,7 +87,7 @@ public class MatchServiceTest {
     }
 
     @Test
-    public void shortenLeague() {
+    void shortenLeague() {
         Match kFS = new Match();
         kFS.setLeague("Kreisfreundschaftsspiele");
         assertEquals("K-FS", matchService.shortenLeague(kFS).getLeague());
@@ -144,7 +144,7 @@ public class MatchServiceTest {
     }
 
     @Test
-    public void shortenTeamTypes() {
+    void shortenTeamTypes() {
         Match freizeit = new Match();
         freizeit.setTeamType(Team.HERREN_FREIZEIT.getName());
         freizeit = matchService.shortenTeamType(freizeit);
@@ -152,7 +152,7 @@ public class MatchServiceTest {
     }
 
     @Test
-    public void shortenTeamNames() {
+    void shortenTeamNames() {
         Match j1 = new Match();
         j1.setClubHome("Walddörfer 1.A (J1)");
         j1.setClubAway("Rahlstedt 1.A (J1)");
@@ -183,7 +183,7 @@ public class MatchServiceTest {
     }
 
     @Test
-    public void isNotSpecialClass7Players() {
+    void isNotSpecialClass7Players() {
         Match normalMatch = new Match();
         normalMatch.setClubHome("TUS Altertal");
         normalMatch.setClubAway("SC Victoria");
@@ -215,7 +215,7 @@ public class MatchServiceTest {
     }
 
     @Test
-    public void isNotFutsal() {
+    void isNotFutsal() {
         Match normalMatch = new Match();
         normalMatch.setLeague("Verbandsliga");
         assertTrue(MatchService.isNotFutsal(normalMatch));
@@ -226,7 +226,7 @@ public class MatchServiceTest {
     }
 
     @Test
-    public void isNotEFoot() {
+    void isNotEFoot() {
         Match normalMatch = new Match();
         normalMatch.setClubHome("Viktoria Harburg 1.");
         normalMatch.setClubAway("TSG Bergedorf 2.");
@@ -239,7 +239,7 @@ public class MatchServiceTest {
     }
 
     @Test
-    public void isNotCancelled() {
+    void isNotCancelled() {
         Match normalMatch = new Match();
         normalMatch.setScore("");
         assertTrue(MatchService.isNotCancelled(normalMatch));
@@ -254,7 +254,7 @@ public class MatchServiceTest {
     }
 
     @Test
-    public void testIsNotIndoor() {
+    void testIsNotIndoor() {
         Match normalMatch = new Match();
         normalMatch.setScore("");
         assertTrue(MatchService.isNotIndoor(normalMatch));

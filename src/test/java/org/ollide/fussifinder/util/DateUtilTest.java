@@ -6,10 +6,10 @@ import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class DateUtilTest {
+class DateUtilTest {
 
     @Test
-    public void normalizeDate() {
+    void normalizeDate() {
         String dateWithTime = "10.10.12 15:00";
 
         // Full-date without previous date leads to the same full-date
@@ -27,7 +27,7 @@ public class DateUtilTest {
     }
 
     @Test
-    public void testNormalizeAndParseAsteriskKickoff() {
+    void testNormalizeAndParseAsteriskKickoff() {
         String date = "So, 10.10.12 | **";
 
         String normalizedDate = DateUtil.normalizeDate(date, null);
@@ -39,7 +39,7 @@ public class DateUtilTest {
     }
 
     @Test
-    public void testTimeNotPublishedAndNormalize() {
+    void testTimeNotPublishedAndNormalize() {
         String date1 = "So, 10.10.12 | **";
         String date2 = "**";
 
@@ -51,7 +51,7 @@ public class DateUtilTest {
     }
 
     @Test
-    public void testInvalidDates() {
+    void testInvalidDates() {
         assertEquals("", DateUtil.normalizeDate("No date", null));
         assertEquals("", DateUtil.normalizeDate("No date", "No date"));
         assertEquals("", DateUtil.normalizeDate("No date", "10.10.12 15:23"));

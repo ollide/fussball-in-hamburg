@@ -25,7 +25,7 @@ class MatchDayKeyGeneratorTest {
 
         // Some method...
         Method method = ReflectionUtils.findMethod(Class.forName("java.lang.Object"), "toString");
-
+        assertNotNull(method);
         String key = keyGenerator.generate(new Object(), method, hamburg, period);
 
         assertEquals(RegionType.CITY.name() + ":" + "Hamburg" + "::" + start.toString() + ":" + end.toString(), key);

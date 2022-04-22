@@ -13,7 +13,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class ParseServiceTest {
+class ParseServiceTest {
 
     private ParseService parseService;
 
@@ -27,14 +27,14 @@ public class ParseServiceTest {
     }
 
     @Test
-    public void parseZipsWithMatches() throws IOException {
+    void parseZipsWithMatches() throws IOException {
         String html = ResourceHelper.readOverview("2_results.html");
         List<String> zips = parseService.parseZipsWithMatches(html);
         assertEquals(2, zips.size(), "ParseService should find 2 ZIP results");
     }
 
     @Test
-    public void parseMatchesForZip() throws IOException {
+    void parseMatchesForZip() throws IOException {
         String html = ResourceHelper.readMatches("2_matches_2_days.html");
         List<Match> matches = parseService.parseMatchesForZip(html);
         assertEquals(2, matches.size(), "ParseService should find 2 matches");
@@ -59,14 +59,14 @@ public class ParseServiceTest {
     }
 
     @Test
-    public void parseMatchesWithoutKickOffTime() throws IOException {
+    void parseMatchesWithoutKickOffTime() throws IOException {
         String html = ResourceHelper.readMatches("matches_no_kickoff_time.html");
         List<Match> matches = parseService.parseMatchesForZip(html);
         assertEquals(10, matches.size());
     }
 
     @Test
-    public void parseMatchesForZipSameDay() throws IOException {
+    void parseMatchesForZipSameDay() throws IOException {
         String html = ResourceHelper.readMatches("3_matches_1_day.html");
         List<Match> matches = parseService.parseMatchesForZip(html);
 

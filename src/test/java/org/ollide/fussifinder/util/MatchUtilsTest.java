@@ -10,10 +10,10 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class MatchUtilsTest {
+class MatchUtilsTest {
 
     @Test
-    public void splitIntoMatchDays() {
+    void splitIntoMatchDays() {
         LocalDateTime now = LocalDateTime.now().withMinute(0).withSecond(0);
 
         Match day1Match1 = new Match();
@@ -33,7 +33,7 @@ public class MatchUtilsTest {
     }
 
     @Test
-    public void testGetLeagueKey() {
+    void testGetLeagueKey() {
         // Friendlies
         assertEquals("FS", MatchUtils.getLeagueKey("K-FS"));
         assertEquals("FS", MatchUtils.getLeagueKey("B-FS"));
@@ -56,7 +56,7 @@ public class MatchUtilsTest {
     }
 
     @Test
-    public void testGetTeamKey() {
+    void testGetTeamKey() {
         assertEquals("C-Jun", MatchUtils.getTeamKey("C-Juniorinnen"));
         assertEquals("B-Jun", MatchUtils.getTeamKey("B-Junioren"));
         assertEquals("A-Jun", MatchUtils.getTeamKey("A-Jun."));
