@@ -27,7 +27,7 @@
         <sonar.organization>ollide-github</sonar.organization>
         <sonar.projectKey>org.ollide:fussifinder</sonar.projectKey>
 
-        <jsoup.version>1.14.3</jsoup.version>
+        <jsoup.version>1.15.3</jsoup.version>
         <okhttp.version>4.9.3</okhttp.version>
         <retrofit.version>2.9.0</retrofit.version>
         <guava.version>31.1-jre</guava.version>
