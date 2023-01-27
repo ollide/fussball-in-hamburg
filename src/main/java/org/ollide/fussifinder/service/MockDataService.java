@@ -29,7 +29,7 @@ public class MockDataService {
     private static final List<String> COMPETITIONS = Arrays.asList("Freundschaftsspiele Hamburg", "Oberliga",
             "Hammonia", "Bezirksliga Nord", "Bezirksliga Süd", "Kreisliga");
 
-    private Random random = new Random();
+    private final Random random = new Random();
 
     private final double probabilityMod;
 
