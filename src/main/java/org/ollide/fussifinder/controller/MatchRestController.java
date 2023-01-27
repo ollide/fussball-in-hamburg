@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.regex.Pattern;
 
 @RestController
 public class MatchRestController {
@@ -16,6 +18,8 @@ public class MatchRestController {
     private static final Logger LOG = LoggerFactory.getLogger(MatchRestController.class);
 
     private static final String DEFAULT_CITY = "Hamburg";
+
+    private static final Pattern PATTERN_ALLOWED_NAMES = Pattern.compile("^[a-zA-Z0-9_\\-ÜÄÖüäö]+$");
 
     private final MatchDayService matchDayService;
 
@@ -29,6 +33,11 @@ public class MatchRestController {
     public List<MatchDay> getMatchDays(@RequestParam(value = "name", defaultValue = DEFAULT_CITY) String name,
                                        @RequestParam(value = "type", defaultValue = "CITY") RegionType type,
                                        @RequestParam(value = "period", required = false) String period) {
+
+        if (!PATTERN_ALLOWED_NAMES.matcher(name).matches()) {
+            return Collections.emptyList();
+        }
+
         Period p = Period.fromString(period);
         Region region = new Region(type, name);
         LOG.debug("Requesting matches for region '{}'", region);
