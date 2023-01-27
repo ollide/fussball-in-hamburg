@@ -1,16 +1,18 @@
 package org.ollide.fussifinder.model;
 
+import org.springframework.lang.NonNull;
 import org.springframework.util.StringUtils;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.regex.Pattern;
 
 public class Period {
 
-    private static final Pattern DATE_PATTERN = Pattern.compile("^[0-9]{4}[-][0-9]{2}[-][0-9]{2}$");
+    private static final Pattern DATE_PATTERN = Pattern.compile("^\\d{4}-\\d{2}-\\d{2}$");
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     private static final String TODAY = "T";
@@ -24,7 +26,7 @@ public class Period {
         this(LocalDate.now(), LocalDate.now());
     }
 
-    public Period(LocalDate start, LocalDate end) {
+    public Period(@NonNull LocalDate start, @NonNull LocalDate end) {
         this.start = start;
         this.end = end;
     }
@@ -79,5 +81,18 @@ public class Period {
             periods.add(new Period(start, start.plusDays(6)));
         }
         return periods;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Period period = (Period) o;
+        return start.equals(period.start) && end.equals(period.end);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(start, end);
     }
 }
