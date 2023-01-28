@@ -38,7 +38,7 @@ public class MatchDayService {
         Cache cache = cacheManager.getCache(CACHE_NAME);
         for (Period widenedPeriod : period.widenedPeriods()) {
             String key = matchDayKeyGenerator.generateKey(region, widenedPeriod);
-            if (cache.get(key) != null) {
+            if (cache != null && cache.get(key) != null) {
                 List<MatchDay> resultList = new ArrayList<>();
                 List<MatchDay> cachedMatchDays = cache.get(key, List.class);
                 for (MatchDay cachedMatchDay : cachedMatchDays) {

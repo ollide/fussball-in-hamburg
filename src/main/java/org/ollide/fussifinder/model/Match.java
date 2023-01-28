@@ -3,12 +3,15 @@ package org.ollide.fussifinder.model;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.ollide.fussifinder.http.serializer.IsoLocalDateTimeSerializer;
 import org.ollide.fussifinder.http.serializer.KickoffTimeSerializer;
+import org.springframework.lang.NonNull;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
 import java.util.Locale;
+import java.util.Objects;
 
 public class Match implements Comparable<Match>, Serializable {
 
@@ -132,7 +135,20 @@ public class Match implements Comparable<Match>, Serializable {
     }
 
     @Override
-    public int compareTo(Match o) {
-        return getDate().compareTo(o.getDate());
+    public int compareTo(@NonNull Match o) {
+        return Comparator.comparing(Match::getDate).thenComparing(Match::getId).compare(this, o);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Match match = (Match) o;
+        return id.equals(match.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
