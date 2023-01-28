@@ -25,12 +25,12 @@ class MatchDayServiceTest {
 
         // invocation without any caches
         service.getMatchDays(region, period);
-        verify(matchServiceMock, times(1)).getMatches(eq(region), eq(period));
+        verify(matchServiceMock, times(1)).getMatches(region, period);
         reset(matchServiceMock);
 
         // invocation with empty cache
         cacheManager.setCaches(List.of(new NoOpCache("matchDayResponse")));
         service.getMatchDays(region, period);
-        verify(matchServiceMock, times(1)).getMatches(eq(region), eq(period));
+        verify(matchServiceMock, times(1)).getMatches(region, period);
     }
 }
