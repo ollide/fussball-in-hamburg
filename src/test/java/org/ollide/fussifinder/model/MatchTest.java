@@ -39,20 +39,26 @@ class MatchTest {
     }
 
     @Test
-    void equals() {
+    void equalsHashCode() {
         String id = UUID.randomUUID().toString();
         Match m1 = new Match();
         m1.setId(id);
 
-        assertThat(m1).isEqualTo(m1);
-        assertThat(m1).isNotEqualTo(null);
+        assertThat(m1)
+                .isEqualTo(m1)
+                .hasSameHashCodeAs(m1)
+                .isNotEqualTo(null);
 
         Match m1Clone = new Match();
         m1Clone.setId(id);
-        assertThat(m1).isEqualTo(m1Clone);
+        assertThat(m1)
+                .isEqualTo(m1Clone)
+                .hasSameHashCodeAs(m1Clone);
 
         Match m2 = new Match();
         m2.setId(UUID.randomUUID().toString());
-        assertThat(m1).isNotEqualTo(m2);
+        assertThat(m1)
+                .isNotEqualTo(m2)
+                .doesNotHaveSameHashCodeAs(m2);
     }
 }
