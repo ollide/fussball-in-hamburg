@@ -34,7 +34,7 @@
         <jetbrains.annoations.version>23.1.0</jetbrains.annoations.version>
 
         <sonar.plugin.version>3.9.1.2184</sonar.plugin.version>
-        <jacoco.plugin.version>0.8.8</jacoco.plugin.version>
+        <jacoco.plugin.version>0.8.10</jacoco.plugin.version>
     </properties>
 
     <dependencies>
