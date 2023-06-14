@@ -30,7 +30,7 @@
         <jsoup.version>1.16.1</jsoup.version>
         <okhttp.version>4.11.0</okhttp.version>
         <retrofit.version>2.9.0</retrofit.version>
-        <guava.version>31.1-jre</guava.version>
+        <guava.version>32.0.0-jre</guava.version>
         <jetbrains.annoations.version>23.1.0</jetbrains.annoations.version>
 
         <sonar.plugin.version>3.9.1.2184</sonar.plugin.version>
