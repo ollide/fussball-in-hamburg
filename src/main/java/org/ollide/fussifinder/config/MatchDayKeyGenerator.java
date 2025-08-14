@@ -1,9 +1,9 @@
 package org.ollide.fussifinder.config;
 
-import org.jetbrains.annotations.NotNull;
 import org.ollide.fussifinder.model.Period;
 import org.ollide.fussifinder.model.Region;
 import org.springframework.cache.interceptor.KeyGenerator;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
@@ -17,8 +17,8 @@ import java.lang.reflect.Method;
 public class MatchDayKeyGenerator implements KeyGenerator {
 
     @Override
-    @NotNull
-    public String generate(@NotNull Object target, @NotNull Method method, Object... params) {
+    @NonNull
+    public String generate(@NonNull Object target, @NonNull Method method, Object... params) {
         Region r = (Region) params[0];
         Period p = (Period) params[1];
         return generateKey(r, p);

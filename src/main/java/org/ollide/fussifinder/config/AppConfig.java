@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import okhttp3.OkHttpClient;
-import org.jetbrains.annotations.NotNull;
 import org.ollide.fussifinder.api.MatchClient;
 import org.ollide.fussifinder.http.HeaderInterceptor;
 import org.ollide.fussifinder.http.converter.TextConverterFactory;
@@ -12,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.Formatter;
+import org.springframework.lang.NonNull;
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
@@ -67,16 +67,16 @@ public class AppConfig {
 
     @Bean
     public Formatter<LocalDate> localDateFormatter() {
-        return new Formatter<LocalDate>() {
+        return new Formatter<>() {
             @Override
-            @NotNull
-            public LocalDate parse(@NotNull String text, @NotNull Locale locale) {
+            @NonNull
+            public LocalDate parse(@NonNull String text, @NonNull Locale locale) {
                 return LocalDate.parse(text, DateTimeFormatter.ISO_DATE);
             }
 
             @Override
-            @NotNull
-            public String print(@NotNull LocalDate object, @NotNull Locale locale) {
+            @NonNull
+            public String print(@NonNull LocalDate object, @NonNull Locale locale) {
                 return DateTimeFormatter.ISO_DATE.format(object);
             }
         };

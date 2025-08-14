@@ -1,6 +1,6 @@
 package org.ollide.fussifinder.util;
 
-import javax.annotation.Nullable;
+import org.springframework.lang.Nullable;
 
 public final class StringUtil {
 

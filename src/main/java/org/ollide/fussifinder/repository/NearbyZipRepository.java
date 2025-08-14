@@ -3,8 +3,8 @@ package org.ollide.fussifinder.repository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.jdbc.core.*;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collections;
@@ -39,7 +39,7 @@ public class NearbyZipRepository {
         });
     }
 
-    @NotNull
+    @NonNull
     public List<String> readZipEntries(String zip, int distance) {
         String json = jdbcTemplate.query("SELECT nearby FROM zips_nearby WHERE id = ?",
                 ps -> ps.setString(1, zip + distance),
