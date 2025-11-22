@@ -1,6 +1,6 @@
 package org.ollide.fussifinder.model;
 
-import org.springframework.lang.NonNull;
+import org.jspecify.annotations.NonNull;
 import org.springframework.util.StringUtils;
 
 import java.time.LocalDate;

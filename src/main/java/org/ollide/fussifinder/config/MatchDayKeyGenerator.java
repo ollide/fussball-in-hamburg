@@ -1,9 +1,9 @@
 package org.ollide.fussifinder.config;
 
+import org.jspecify.annotations.NonNull;
 import org.ollide.fussifinder.model.Period;
 import org.ollide.fussifinder.model.Region;
 import org.springframework.cache.interceptor.KeyGenerator;
-import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;

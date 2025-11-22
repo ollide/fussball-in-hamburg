@@ -3,8 +3,8 @@ package org.ollide.fussifinder.repository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
+import org.jspecify.annotations.NonNull;
 import org.springframework.jdbc.core.*;
-import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collections;

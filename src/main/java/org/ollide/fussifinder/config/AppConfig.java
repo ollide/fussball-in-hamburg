@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import okhttp3.OkHttpClient;
+import org.jspecify.annotations.NonNull;
 import org.ollide.fussifinder.api.MatchClient;
 import org.ollide.fussifinder.http.HeaderInterceptor;
 import org.ollide.fussifinder.http.converter.TextConverterFactory;
@@ -11,7 +12,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.Formatter;
-import org.springframework.lang.NonNull;
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
