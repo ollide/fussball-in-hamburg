@@ -30,7 +30,7 @@
         <jsoup.version>1.21.2</jsoup.version>
         <guava.version>33.5.0-jre</guava.version>
 
-        <sonar.plugin.version>5.2.0.4988</sonar.plugin.version>
+        <sonar.plugin.version>5.5.0.6356</sonar.plugin.version>
         <jacoco.plugin.version>0.8.14</jacoco.plugin.version>
     </properties>
 
