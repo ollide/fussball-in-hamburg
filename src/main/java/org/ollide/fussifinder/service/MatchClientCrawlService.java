@@ -29,7 +29,7 @@ public class MatchClientCrawlService implements MatchCrawlService {
     }
 
     @Override
-    @Cacheable(value = "matchCalendar", sync = true)
+    @Cacheable(value = "matchCalendar", sync = true, unless = "#result == null")
     public String getMatchCalendar(String dateFrom, String dateTo, String zip) {
         return getMatchCalendar(dateFrom, dateTo, zip, DEFAULT_TEAM_TYPES);
     }
@@ -71,7 +71,7 @@ public class MatchClientCrawlService implements MatchCrawlService {
     }
 
     @Override
-    @Cacheable(value = "matchDetails", sync = true)
+    @Cacheable(value = "matchDetails", sync = true, unless = "#result == null")
     public String getMatchDetails(String id) {
         RATE_LIMITER.acquire();
         return matchClient.matchDetails(id);
