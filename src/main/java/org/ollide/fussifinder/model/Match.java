@@ -1,9 +1,9 @@
 package org.ollide.fussifinder.model;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.jspecify.annotations.NonNull;
 import org.ollide.fussifinder.http.serializer.IsoLocalDateTimeSerializer;
 import org.ollide.fussifinder.http.serializer.KickoffTimeSerializer;
+import tools.jackson.databind.annotation.JsonSerialize;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;

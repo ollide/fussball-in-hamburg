@@ -32,7 +32,7 @@ class MockDataServiceTest {
 
     @Test
     void getRandomMatches() {
-        final String dateTo = "2019-10-28";
+        final String dateTo = "2019-10-27";
         final String dateFrom = "2019-10-21";
         List<MatchDay> randomMatches = mockDataService100.getRandomMatches(dateTo, dateFrom);
         assertEquals(7, randomMatches.size());

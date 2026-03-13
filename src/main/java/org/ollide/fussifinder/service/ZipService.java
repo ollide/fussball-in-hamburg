@@ -1,8 +1,6 @@
 package org.ollide.fussifinder.service;
 
-import com.fasterxml.jackson.databind.MappingIterator;
-import com.fasterxml.jackson.databind.ObjectReader;
-import com.fasterxml.jackson.dataformat.csv.CsvMapper;
+import org.jspecify.annotations.NonNull;
 import org.ollide.fussifinder.api.OverpassClient;
 import org.ollide.fussifinder.model.Region;
 import org.ollide.fussifinder.model.RegionType;
@@ -13,8 +11,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import retrofit2.Response;
+import tools.jackson.databind.MappingIterator;
+import tools.jackson.databind.ObjectReader;
+import tools.jackson.dataformat.csv.CsvMapper;
 
 import java.io.IOException;
 import java.util.*;
@@ -69,17 +70,11 @@ public class ZipService {
 
         final String query = buildNearbyZipcodesOverpassQuery(zip, distance);
 
-        Response<OverpassResponse> response;
-        try {
-            LOG.info("Querying Overpass. Distance: '{}'", distance);
-            response = overpassClient.query(query).execute();
-        } catch (IOException e) {
-            LOG.error("Error querying Overpass.", e);
-            return Collections.emptyList();
-        }
+        LOG.info("Querying Overpass. Distance: '{}'", distance);
+        ResponseEntity<@NonNull OverpassResponse> response = overpassClient.query(query);
 
-        if (response.isSuccessful()) {
-            OverpassResponse body = response.body();
+        if (response.getStatusCode().is2xxSuccessful()) {
+            OverpassResponse body = response.getBody();
             if (body != null) {
 
                 final List<OverpassElement> elements = body.getElements();
@@ -117,9 +112,9 @@ public class ZipService {
 
     private void validateZips(String fileName, List<String> zips) {
         // 3-digit ZIP
-        List<String> zip3 = zips.stream().filter(z -> z.length() == 3).collect(Collectors.toList());
+        List<String> zip3 = zips.stream().filter(z -> z.length() == 3).toList();
         // Full ZIPs
-        List<String> zip4or5 = zips.stream().filter(z -> z.length() > 3).collect(Collectors.toList());
+        List<String> zip4or5 = zips.stream().filter(z -> z.length() > 3).toList();
 
         // Look for matching 3-digit/full ZIP (eg. 315 & 31511)
         zip4or5.stream().filter(z -> zip3.stream().anyMatch(z::startsWith))

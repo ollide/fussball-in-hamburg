@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.ollide.fussifinder.ResourceHelper;
 import org.ollide.fussifinder.api.MatchClient;
 import org.ollide.fussifinder.model.AjaxModel;
-import retrofit2.mock.Calls;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -30,12 +29,12 @@ class MatchClientCrawlServiceTest {
         // 2 Matches
         response2Matches = ResourceHelper.readMatches("2_matches_2_days.html");
         when(matchClient.matchCalendar(anyString(), anyString(), eq(TWO_MATCHES_ZIP), anyString()))
-                .thenReturn(Calls.response(response2Matches));
+                .thenReturn(response2Matches);
 
         // 2 Matches load more
         response2MatchesLoadMore = ResourceHelper.readMatches("2_matches_2_days_load_more.html");
         when(matchClient.matchCalendar(anyString(), anyString(), eq(TWO_MATCHES_LOAD_MORE_ZIP), anyString()))
-                .thenReturn(Calls.response(response2MatchesLoadMore));
+                .thenReturn(response2MatchesLoadMore);
 
 
         responseLoadMore = ResourceHelper.readMatches("load_more.html");
@@ -46,7 +45,7 @@ class MatchClientCrawlServiceTest {
         ajaxModel.setFinalResponse(true);
         ajaxModel.setHtml(responseLoadMore);
         when(matchClient.loadMoreMatches(anyString(), anyString(), anyString(), anyString(), anyInt()))
-                .thenReturn(Calls.response(ajaxModel));
+                .thenReturn(ajaxModel);
 
         matchClientCrawlService = new MatchClientCrawlService(matchClient);
     }

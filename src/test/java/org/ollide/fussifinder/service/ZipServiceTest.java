@@ -1,6 +1,5 @@
 package org.ollide.fussifinder.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.ollide.fussifinder.ResourceHelper;
@@ -9,9 +8,11 @@ import org.ollide.fussifinder.model.Region;
 import org.ollide.fussifinder.model.RegionType;
 import org.ollide.fussifinder.model.overpass.OverpassResponse;
 import org.ollide.fussifinder.repository.NearbyZipRepository;
-import retrofit2.mock.Calls;
+import org.springframework.http.ResponseEntity;
+import tools.jackson.databind.ObjectMapper;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -38,8 +39,9 @@ class ZipServiceTest {
         final int distance = 10000;
 
         String responseJson = ResourceHelper.readFile("/overpass/20359_success.json");
+        OverpassResponse overpassResponse = objectMapper.readValue(responseJson, OverpassResponse.class);
         when(overpassClient.query(zipService.buildNearbyZipcodesOverpassQuery(zip, distance)))
-                .thenReturn(Calls.response(objectMapper.readValue(responseJson, OverpassResponse.class)));
+                .thenReturn(ResponseEntity.of(Optional.of(overpassResponse)));
 
         List<String> nearbyZips = zipService.getNearbyZips(zip, distance);
         assertEquals(87, nearbyZips.size());
@@ -51,8 +53,9 @@ class ZipServiceTest {
         final int distance = 50000;
 
         String responseJson = ResourceHelper.readFile("/overpass/timeout.json");
+        OverpassResponse overpassResponse = objectMapper.readValue(responseJson, OverpassResponse.class);
         when(overpassClient.query(zipService.buildNearbyZipcodesOverpassQuery(zip, distance)))
-                .thenReturn(Calls.response(objectMapper.readValue(responseJson, OverpassResponse.class)));
+                .thenReturn(ResponseEntity.of(Optional.of(overpassResponse)));
 
         List<String> nearbyZips = zipService.getNearbyZips(zip, distance);
         assertEquals(0, nearbyZips.size());

@@ -61,7 +61,7 @@ public class MockDataService {
             throw new IllegalArgumentException("Invalid dates requested.");
         }
 
-        while (!localDateFrom.isEqual(localDateTo)) {
+        while (!localDateFrom.isAfter(localDateTo)) {
 
             MatchDay matchDay = new MatchDay();
             matchDay.setDay(localDateFrom);

@@ -1,6 +1,5 @@
 package org.ollide.fussifinder.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -11,8 +10,9 @@ import org.ollide.fussifinder.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.json.JsonMapper;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -22,11 +22,11 @@ import java.util.stream.Collectors;
 @Service
 public class ParseService {
 
-    private final ObjectMapper objectMapper;
+    private final JsonMapper jsonMapper;
 
     @Autowired
-    public ParseService(ObjectMapper objectMapper) {
-        this.objectMapper = objectMapper;
+    public ParseService(JsonMapper jsonMapper) {
+        this.jsonMapper = jsonMapper;
     }
 
     public List<String> parseZipsWithMatches(String html) {
@@ -43,9 +43,9 @@ public class ParseService {
             String plzJson = district.attr("data-ajax-forced");
             ZIPCode zipCode;
             try {
-                zipCode = objectMapper.readValue(plzJson, ZIPCode.class);
+                zipCode = jsonMapper.readValue(plzJson, ZIPCode.class);
                 zipsWithMatches.add(zipCode.getPlz());
-            } catch (IOException e) {
+            } catch (JacksonException e) {
                 // ignore
             }
         }

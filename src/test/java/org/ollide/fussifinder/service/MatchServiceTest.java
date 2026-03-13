@@ -1,6 +1,5 @@
 package org.ollide.fussifinder.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.ollide.fussifinder.ResourceHelper;
@@ -8,6 +7,7 @@ import org.ollide.fussifinder.config.AppConfig;
 import org.ollide.fussifinder.model.Match;
 import org.ollide.fussifinder.model.Period;
 import org.ollide.fussifinder.model.Team;
+import tools.jackson.databind.json.JsonMapper;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -29,7 +29,7 @@ class MatchServiceTest {
     @BeforeEach
     void setUp() {
         matchCrawlService = mock(MatchCrawlService.class);
-        ObjectMapper objectMapper = new AppConfig().objectMapper();
+        JsonMapper objectMapper = new AppConfig().jsonMapper();
         matchService = new MatchService(matchCrawlService, new ParseService(objectMapper),
                 mock(ZipService.class));
     }

@@ -1,12 +1,12 @@
 package org.ollide.fussifinder.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.ollide.fussifinder.ResourceHelper;
 import org.ollide.fussifinder.config.AppConfig;
 import org.ollide.fussifinder.model.Match;
 import org.ollide.fussifinder.util.DateUtil;
+import tools.jackson.databind.json.JsonMapper;
 
 import java.io.IOException;
 import java.util.List;
@@ -22,7 +22,7 @@ class ParseServiceTest {
 
     @BeforeEach
     void setUp() {
-        ObjectMapper mapper = new AppConfig().objectMapper();
+        JsonMapper mapper = new AppConfig().jsonMapper();
         parseService = new ParseService(mapper);
     }
 

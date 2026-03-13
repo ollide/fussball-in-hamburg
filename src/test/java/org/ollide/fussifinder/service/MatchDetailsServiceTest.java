@@ -6,7 +6,6 @@ import org.ollide.fussifinder.ResourceHelper;
 import org.ollide.fussifinder.api.MatchClient;
 import org.ollide.fussifinder.model.MatchDetails;
 import org.ollide.fussifinder.model.Pitch;
-import retrofit2.mock.Calls;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -50,7 +49,7 @@ class MatchDetailsServiceTest {
     @Test
     void testGetMatchDetails() throws Exception {
         String html = ResourceHelper.readMatchDetails("matchdetails_1.html");
-        when(matchClient.matchDetails(anyString())).thenReturn(Calls.response(html));
+        when(matchClient.matchDetails(anyString())).thenReturn(html);
 
         MatchDetails matchDetails = matchDetailsService.getMatchDetails("234345423");
         assertEquals(Pitch.ARTIFICIAL, matchDetails.getPitch());
@@ -62,7 +61,7 @@ class MatchDetailsServiceTest {
     @Test
     void testGetMatchDetailsError() throws Exception {
         String html = ResourceHelper.readMatchDetails("matchdetails_1.html");
-        when(matchClient.matchDetails(anyString())).thenReturn(Calls.response(html));
+        when(matchClient.matchDetails(anyString())).thenReturn(html);
 
         MatchDetails matchDetails = matchDetailsService.getMatchDetails("234345423");
         assertEquals(Pitch.ARTIFICIAL, matchDetails.getPitch());
