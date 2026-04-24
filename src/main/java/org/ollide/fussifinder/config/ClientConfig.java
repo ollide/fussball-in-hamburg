@@ -6,12 +6,15 @@ import org.ollide.fussifinder.http.HeaderInterceptor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.MediaType;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.client.JdkClientHttpRequestFactory;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.JacksonJsonHttpMessageConverter;
 import org.springframework.web.client.support.RestClientHttpServiceGroupConfigurer;
 import org.springframework.web.service.registry.ImportHttpServices;
+
+import java.util.List;
 
 import java.time.Duration;
 
@@ -38,9 +41,16 @@ public class ClientConfig {
                             .baseUrl(crawlUrl)
                             .requestInterceptor(headerInterceptor)
                             .configureMessageConverters(clientBuilder -> {
+                                JacksonJsonHttpMessageConverter jsonConverter = new JacksonJsonHttpMessageConverter();
+                                jsonConverter.setSupportedMediaTypes(List.of(
+                                        MediaType.APPLICATION_JSON,
+                                        new MediaType("application", "*+json"),
+                                        // Some JSON responses are returned with the wrong mime-type
+                                        MediaType.TEXT_HTML
+                                ));
                                 clientBuilder
                                         .addCustomConverter(new StringHttpMessageConverter())
-                                        .addCustomConverter(new JacksonJsonHttpMessageConverter());
+                                        .addCustomConverter(jsonConverter);
                             }));
 
             groups.filterByName("overpass").forEachClient((group, builder) ->
