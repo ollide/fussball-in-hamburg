@@ -14,9 +14,9 @@ import org.springframework.http.converter.json.JacksonJsonHttpMessageConverter;
 import org.springframework.web.client.support.RestClientHttpServiceGroupConfigurer;
 import org.springframework.web.service.registry.ImportHttpServices;
 
-import java.util.List;
-
+import java.net.http.HttpClient;
 import java.time.Duration;
+import java.util.List;
 
 @Configuration
 @ImportHttpServices(group = "matches", types = { MatchClient.class })
@@ -62,7 +62,10 @@ public class ClientConfig {
     }
 
     ClientHttpRequestFactory matchesRequestFactory() {
-        JdkClientHttpRequestFactory jdkRequestFactory = new JdkClientHttpRequestFactory();
+        HttpClient httpClient = HttpClient.newBuilder()
+                .followRedirects(HttpClient.Redirect.NORMAL)
+                .build();
+        JdkClientHttpRequestFactory jdkRequestFactory = new JdkClientHttpRequestFactory(httpClient);
         jdkRequestFactory.setReadTimeout(Duration.ofMinutes(1));
         return jdkRequestFactory;
     }
