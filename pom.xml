@@ -14,7 +14,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>4.0.6</version>
+        <version>4.1.1</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -27,11 +27,11 @@
         <sonar.organization>ollide</sonar.organization>
         <sonar.projectKey>ollide_fussball-in-hamburg</sonar.projectKey>
 
-        <jsoup.version>1.21.2</jsoup.version>
-        <guava.version>33.5.0-jre</guava.version>
+        <jsoup.version>1.23.2</jsoup.version>
+        <guava.version>33.7.1-jre</guava.version>
 
-        <sonar.plugin.version>5.5.0.6356</sonar.plugin.version>
-        <jacoco.plugin.version>0.8.14</jacoco.plugin.version>
+        <sonar.plugin.version>5.8.0.7211</sonar.plugin.version>
+        <jacoco.plugin.version>0.8.15</jacoco.plugin.version>
     </properties>
 
     <dependencies>
