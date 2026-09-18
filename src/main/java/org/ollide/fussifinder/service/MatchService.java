@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -42,62 +43,114 @@ public class MatchService {
     }
 
     public List<MatchDay> getNearbyMatches(String zip, int distance, Period period) {
-        // find nearby zips
-        List<String> zip5 = zipService.getNearbyZips(zip, distance);
-
-        // build 3-digit zips
-        List<String> zip3 = zip5.stream()
-                .map(z -> z.substring(0, 3))
-                .distinct()
-                .collect(Collectors.toList());
-
-        // find matches
-        List<Match> matches = getMatches(zip3, period);
-
-        // filter with original 5-digit zips
-        matches = matches.stream().filter(m -> zip5.contains(m.getZip()))
-                .collect(Collectors.toList());
-
+        List<Match> matches = collect(listener -> streamNearbyMatches(zip, distance, period, listener));
         return MatchUtils.splitIntoMatchDays(matches);
     }
 
     public List<Match> getMatches(Region region, Period period) {
-        List<String> zips = zipService.getZipsForRegion(region);
-        return getMatches(zips, period);
+        return collect(listener -> streamMatches(region, period, listener));
     }
 
-    public List<Match> getMatches(Collection<String> zips, Period period) {
-        String dateFrom = DateUtil.formatLocalDateForAPI(period.getStart());
-        String dateTo = DateUtil.formatLocalDateForAPI(period.getEnd());
+    public void streamMatches(Region region, Period period, MatchStreamListener listener) {
+        List<String> zips = zipService.getZipsForRegion(region);
+        streamMatchesInternal(zips, zips, period, listener);
+    }
 
-        return zips.stream()
-                .map(zip5 -> zip5.substring(0, 3)).distinct()
-                .map(zip3 -> matchCrawlService.getMatchCalendar(dateFrom, dateTo, zip3))
-                .map(parseService::parseZipsWithMatches)
-                .flatMap(Collection::stream)
-                .filter(z -> zips.contains(z) || zips.stream().anyMatch(z::startsWith))
-                .map(zip5 -> {
-                    String matchCalendarHtml = matchCrawlService.getMatchCalendar(dateFrom, dateTo, zip5);
-                    List<Match> matches = parseService.parseMatchesForZip(matchCalendarHtml);
-                    matches.forEach(m -> m.setZip(zip5));
-                    return matches;
-                })
-                .flatMap(Collection::stream)
-                // Run required filters
-                .filter(MatchService::isNotSpecialClass)
-                .filter(MatchService::isNotFutsal)
-                .filter(MatchService::isNotEFoot)
-                .filter(MatchService::isNotCancelled)
-                .filter(MatchService::isNotIndoor)
-                // Beautify/shorten some things
-                .map(this::shortenLeague)
-                .map(this::shortenTeamType)
-                .map(this::shortenTeamNames)
-                // Set team & league keys
-                .map(this::applyFilterKeys)
-                // sort and collect
-                .sorted()
-                .collect(Collectors.toList());
+    public void streamNearbyMatches(String zip, int distance, Period period, MatchStreamListener listener) {
+        List<String> zip5 = zipService.getNearbyZips(zip, distance);
+        List<String> zip3 = zip5.stream().map(z -> z.substring(0, 3)).distinct().collect(Collectors.toList());
+        streamMatchesInternal(zip3, zip5, period, listener);
+    }
+
+    /**
+     * Runs a streaming crawl to completion and returns the sorted result. Any crawl error is propagated.
+     */
+    private List<Match> collect(Consumer<MatchStreamListener> crawl) {
+        List<Match> matches = new ArrayList<>();
+        crawl.accept(new MatchStreamListener() {
+            @Override
+            public void onTotal(int total) {
+            }
+
+            @Override
+            public void onMatches(List<Match> batch) {
+                matches.addAll(batch);
+            }
+
+            @Override
+            public void onZip3Done() {
+            }
+
+            @Override
+            public void onError(String zip, Exception e) {
+                throw e instanceof RuntimeException re ? re : new IllegalStateException(e);
+            }
+
+            @Override
+            public boolean isCancelled() {
+                return false;
+            }
+        });
+        matches.sort(Comparator.naturalOrder());
+        return matches;
+    }
+
+    private void streamMatchesInternal(Collection<String> lookupZips, Collection<String> allowedZips,
+                                       Period period, MatchStreamListener listener) {
+        String dateFrom = DateUtil.formatLocalDateForAPI(period.getStart());
+        String dateTo   = DateUtil.formatLocalDateForAPI(period.getEnd());
+
+        List<String> zip3s = lookupZips.stream()
+                .map(z -> z.substring(0, 3)).distinct()
+                .toList();
+
+        listener.onTotal(zip3s.size());
+
+        for (String zip3 : zip3s) {
+            if (listener.isCancelled()) {
+                return;
+            }
+
+            List<String> zip5s;
+            try {
+                String calHtml = matchCrawlService.getMatchCalendar(dateFrom, dateTo, zip3);
+                zip5s = parseService.parseZipsWithMatches(calHtml).stream()
+                        .filter(z -> allowedZips.contains(z) || allowedZips.stream().anyMatch(z::startsWith))
+                        .distinct()
+                        .toList();
+            } catch (Exception e) {
+                listener.onError(zip3, e);
+                listener.onZip3Done();
+                continue;
+            }
+
+            for (String zip5 : zip5s) {
+                if (listener.isCancelled()) {
+                    return;
+                }
+                try {
+                    String html = matchCrawlService.getMatchCalendar(dateFrom, dateTo, zip5);
+                    List<Match> batch = parseService.parseMatchesForZip(html).stream()
+                            .peek(m -> m.setZip(zip5))
+                            .filter(MatchService::isNotSpecialClass)
+                            .filter(MatchService::isNotFutsal)
+                            .filter(MatchService::isNotEFoot)
+                            .filter(MatchService::isNotCancelled)
+                            .filter(MatchService::isNotIndoor)
+                            .map(this::shortenLeague)
+                            .map(this::shortenTeamType)
+                            .map(this::shortenTeamNames)
+                            .map(this::applyFilterKeys)
+                            .collect(Collectors.toList());
+                    if (!batch.isEmpty()) {
+                        listener.onMatches(batch);
+                    }
+                } catch (Exception e) {
+                    listener.onError(zip5, e);
+                }
+            }
+            listener.onZip3Done();
+        }
     }
 
     Match shortenLeague(Match match) {

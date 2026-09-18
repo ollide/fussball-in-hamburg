@@ -10,8 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
-import java.time.Duration;
-
 @Service
 public class MatchClientCrawlService implements MatchCrawlService {
 
@@ -19,7 +17,7 @@ public class MatchClientCrawlService implements MatchCrawlService {
 
     private static final String DEFAULT_TEAM_TYPES = Team.getDefaultTeamsQuery();
 
-    private static final RateLimiter RATE_LIMITER = RateLimiter.create(2.5, Duration.ofMinutes(1));
+    private static final RateLimiter RATE_LIMITER = RateLimiter.create(2.4);
 
     private final MatchClient matchClient;
 

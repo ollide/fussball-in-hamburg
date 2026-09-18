@@ -137,15 +137,15 @@ public class ZipService {
     }
 
     String buildNearbyZipcodesOverpassQuery(String zip, int distance) {
-        return "[out:json][timeout:60];\n" +
-                "\n" +
-                "rel[postal_code=" + zip + "];\n" +
-                "rel(around:" + distance + ")[boundary=postal_code];\n" +
-                "convert result\n" +
-                "    ::id = id(),\n" +
-                "    postal_code = t[\"postal_code\"];\n" +
-                "\n" +
-                "out qt;";
+        return """
+               [out:json][timeout:60];
+               rel[postal_code=%s];
+               rel(around:%d)[boundary=postal_code];
+               convert result
+                 ::id = id(),
+                 postal_code = t["postal_code"];
+               out qt;
+               """.formatted(zip, distance);
     }
 
 }
