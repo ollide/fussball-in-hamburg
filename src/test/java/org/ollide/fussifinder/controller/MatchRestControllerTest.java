@@ -5,6 +5,7 @@ import org.ollide.fussifinder.model.Period;
 import org.ollide.fussifinder.model.Region;
 import org.ollide.fussifinder.model.RegionType;
 import org.ollide.fussifinder.service.MatchDayService;
+import org.ollide.fussifinder.service.MatchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
@@ -25,6 +26,12 @@ class MatchRestControllerTest {
 
     @MockitoBean
     private MatchDayService service;
+
+    @MockitoBean
+    private MatchService matchService;
+
+    @MockitoBean
+    private StreamLimiter streamLimiter;
 
     @Test
     void getMatchDays_DefaultRequest() throws Exception {
