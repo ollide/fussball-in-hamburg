@@ -27,6 +27,9 @@ import java.util.function.Consumer;
  * <code>error</code> {zip,message} (non-fatal, crawl continues) and finally exactly one
  * <code>complete</code> {partial} or <code>error</code> {fatal:true}. The server closes the connection after
  * the final event; clients (e.g. <code>EventSource</code>) should close on it to avoid auto-reconnects.
+ * <p>
+ * Lines starting with <code>:</code> (an initial <code>connected</code> and periodic <code>ping</code> comments)
+ * are not events; they flush the response headers early and keep the connection alive.
  */
 class SseStream implements MatchStreamListener {
 
@@ -98,6 +101,8 @@ class SseStream implements MatchStreamListener {
                 TimeUnit.SECONDS);
         Thread.ofVirtual().start(() -> {
             try {
+                // commits the response right away, so clients see the connection open
+                comment("connected");
                 crawl.accept(this);
                 complete();
             } catch (Exception e) {
@@ -152,9 +157,13 @@ class SseStream implements MatchStreamListener {
 
     /** Sends an SSE comment, which clients ignore. A failed write marks the stream as cancelled. */
     void heartbeat() {
+        comment("ping");
+    }
+
+    void comment(String text) {
         if (!active.get()) return;
         try {
-            emitter.send(SseEmitter.event().comment("ping"));
+            emitter.send(SseEmitter.event().comment(text));
         } catch (IOException | IllegalStateException e) {
             active.set(false);
             stopHeartbeat();

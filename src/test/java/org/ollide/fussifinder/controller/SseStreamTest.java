@@ -57,4 +57,11 @@ class SseStreamTest {
         sse.heartbeat();
         assertFalse(sse.isCancelled());
     }
+
+    @Test
+    void commentAfterCompletionIsIgnored() {
+        SseStream sse = new SseStream();
+        sse.complete();
+        assertDoesNotThrow(() -> sse.comment("connected"));
+    }
 }
