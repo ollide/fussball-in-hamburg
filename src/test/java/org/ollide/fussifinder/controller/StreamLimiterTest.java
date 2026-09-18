@@ -30,9 +30,10 @@ class StreamLimiterTest {
     }
 
     @Test
-    void tooBusyIs503WithRetryAfter() {
+    void tooBusyIsAnEventStreamNotA503() {
         var response = StreamLimiter.tooBusy();
-        assertEquals(503, response.getStatusCode().value());
-        assertEquals("5", response.getHeaders().getFirst("Retry-After"));
+        assertEquals(200, response.getStatusCode().value());
+        assertNotNull(response.getBody());
+        assertEquals("no", response.getHeaders().getFirst("X-Accel-Buffering"));
     }
 }

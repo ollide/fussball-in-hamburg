@@ -28,6 +28,10 @@ import java.util.function.Consumer;
  * <code>complete</code> {partial} or <code>error</code> {fatal:true}. The server closes the connection after
  * the final event; clients (e.g. <code>EventSource</code>) should close on it to avoid auto-reconnects.
  * <p>
+ * If too many streams are running, the only event is <code>busy</code> {retryAfter} (seconds). It is sent with
+ * status 200 rather than 503, because <code>EventSource</code> exposes neither status nor headers of a failed
+ * connection, so a client could not tell "busy" from "unreachable".
+ * <p>
  * Lines starting with <code>:</code> (an initial <code>connected</code> and periodic <code>ping</code> comments)
  * are not events; they flush the response headers early and keep the connection alive.
  */
@@ -92,6 +96,14 @@ class SseStream implements MatchStreamListener {
     static SseEmitter empty() {
         SseStream sse = new SseStream();
         sse.complete();
+        return sse.emitter;
+    }
+
+    /** A stream that immediately tells the client to retry later, see {@link StreamLimiter}. */
+    static SseEmitter busy(int retryAfterSeconds) {
+        SseStream sse = new SseStream();
+        sse.send("busy", Map.of("retryAfter", retryAfterSeconds));
+        sse.finish();
         return sse.emitter;
     }
 

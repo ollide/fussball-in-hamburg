@@ -16,7 +16,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 @Component
 public class StreamLimiter {
 
-    static final String RETRY_AFTER_SECONDS = "5";
+    static final int RETRY_AFTER_SECONDS = 5;
 
     private final Semaphore permits;
 
@@ -40,7 +40,8 @@ public class StreamLimiter {
         return permits.availablePermits();
     }
 
+    /** Answers with a <code>busy</code> event instead of a 503, which browsers' EventSource can't interpret. */
     static ResponseEntity<SseEmitter> tooBusy() {
-        return ResponseEntity.status(503).header("Retry-After", RETRY_AFTER_SECONDS).build();
+        return SseStream.response(SseStream.busy(RETRY_AFTER_SECONDS));
     }
 }
