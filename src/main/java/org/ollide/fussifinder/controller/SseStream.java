@@ -12,6 +12,10 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
@@ -31,6 +35,17 @@ class SseStream implements MatchStreamListener {
     /** Upper bound for a stream; protects against leaked connections when the remote hangs. */
     static final long TIMEOUT_MILLIS = 10 * 60 * 1000L;
 
+    /**
+     * Interval of keep-alive comments. Crawls can be silent for long while waiting on the rate limiter.
+     */
+    static final long HEARTBEAT_SECONDS = 15;
+
+    private static final ScheduledExecutorService HEARTBEATS = Executors.newSingleThreadScheduledExecutor(r -> {
+        Thread t = new Thread(r, "sse-heartbeat");
+        t.setDaemon(true);
+        return t;
+    });
+
     private static final String ERROR_MESSAGE = "Failed to load matches";
 
     final SseEmitter emitter = new SseEmitter(TIMEOUT_MILLIS);
@@ -40,6 +55,7 @@ class SseStream implements MatchStreamListener {
     private final AtomicInteger total = new AtomicInteger(0);
 
     private final Runnable onClose;
+    private volatile ScheduledFuture<?> heartbeat;
 
     SseStream() {
         this(() -> {});
@@ -54,6 +70,7 @@ class SseStream implements MatchStreamListener {
 
     private void closed() {
         active.set(false);
+        stopHeartbeat();
         onClose.run();
     }
 
@@ -77,6 +94,8 @@ class SseStream implements MatchStreamListener {
 
     /** Runs the crawl on a virtual thread and returns the emitter to hand back to Spring. */
     SseEmitter start(Consumer<SseStream> crawl) {
+        heartbeat = HEARTBEATS.scheduleAtFixedRate(this::heartbeat, HEARTBEAT_SECONDS, HEARTBEAT_SECONDS,
+                TimeUnit.SECONDS);
         Thread.ofVirtual().start(() -> {
             try {
                 crawl.accept(this);
@@ -85,7 +104,7 @@ class SseStream implements MatchStreamListener {
                 LOGGER.warn("SSE stream failed", e);
                 fail();
             } finally {
-                // safety net
+                stopHeartbeat();
                 onClose.run();
             }
         });
@@ -131,7 +150,26 @@ class SseStream implements MatchStreamListener {
         finish();
     }
 
+    /** Sends an SSE comment, which clients ignore. A failed write marks the stream as cancelled. */
+    void heartbeat() {
+        if (!active.get()) return;
+        try {
+            emitter.send(SseEmitter.event().comment("ping"));
+        } catch (IOException | IllegalStateException e) {
+            active.set(false);
+            stopHeartbeat();
+        }
+    }
+
+    private void stopHeartbeat() {
+        ScheduledFuture<?> h = heartbeat;
+        if (h != null) {
+            h.cancel(false);
+        }
+    }
+
     private void finish() {
+        stopHeartbeat();
         if (active.getAndSet(false)) {
             emitter.complete();
         }

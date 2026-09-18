@@ -43,4 +43,18 @@ class SseStreamTest {
         assertEquals("no", response.getHeaders().getFirst("X-Accel-Buffering"));
         assertEquals("no-cache", response.getHeaders().getCacheControl());
     }
+
+    @Test
+    void heartbeatAfterCompletionIsIgnored() {
+        SseStream sse = new SseStream();
+        sse.complete();
+        assertDoesNotThrow(sse::heartbeat);
+    }
+
+    @Test
+    void heartbeatKeepsActiveStreamOpen() {
+        SseStream sse = new SseStream();
+        sse.heartbeat();
+        assertFalse(sse.isCancelled());
+    }
 }
