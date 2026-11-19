@@ -25,6 +25,6 @@ public class MatchDayKeyGenerator implements KeyGenerator {
     }
 
     public String generateKey(Region r, Period p) {
-        return String.format("%s:%s::%s:%s", r.getType(), r.getName(), p.getStart().toString(), p.getEnd().toString());
+        return String.format("%s:%s::%s:%s", r.getType(), r.getName(), p.start(), p.end());
     }
 }

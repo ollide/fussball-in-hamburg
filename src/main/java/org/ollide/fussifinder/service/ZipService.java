@@ -19,7 +19,6 @@ import tools.jackson.dataformat.csv.CsvMapper;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class ZipService {
@@ -53,7 +52,7 @@ public class ZipService {
     @Cacheable(value = "zips", key = "#region.toString()", condition = "#region.type.name() != 'ZIP'")
     public List<String> getZipsForRegion(Region region) {
         if (RegionType.ZIP.equals(region.getType())) {
-            return Collections.singletonList(region.getName());
+            return List.of(region.getName());
         }
 
         String resourceDir = RESOURCE_MAP.get(region.getType());
@@ -86,15 +85,15 @@ public class ZipService {
                 List<String> zipList = elements.stream().map(OverpassElement::getTags)
                         .filter(it -> it.containsKey("postal_code"))
                         .map(it -> it.get("postal_code"))
-                        .map(it -> (String) it)
-                        .distinct().collect(Collectors.toList());
+                        .map(String.class::cast)
+                        .distinct().toList();
 
                 nearbyZipRepository.saveZipEntries(zip, distance, zipList);
                 return zipList;
             }
         }
 
-        return Collections.emptyList();
+        return List.of();
     }
 
     private List<String> readZipsFromResources(String fileName) {
@@ -105,8 +104,8 @@ public class ZipService {
             validateZips(fileName, zips);
             return zips;
         } catch (IOException e) {
-            LOG.error("Error occurred while loading ZIPs from " + fileName, e);
-            return Collections.emptyList();
+            LOG.error("Error occurred while loading ZIPs from {}", fileName, e);
+            return List.of();
         }
     }
 

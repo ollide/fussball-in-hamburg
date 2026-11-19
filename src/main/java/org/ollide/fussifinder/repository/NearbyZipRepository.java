@@ -7,7 +7,6 @@ import tools.jackson.core.JacksonException;
 import tools.jackson.databind.ObjectReader;
 import tools.jackson.databind.json.JsonMapper;
 
-import java.util.Collections;
 import java.util.List;
 
 @Repository
@@ -27,7 +26,7 @@ public class NearbyZipRepository {
         String zipJson;
         try {
             zipJson = jsonMapper.writeValueAsString(zips);
-        } catch (JacksonException e) {
+        } catch (JacksonException _) {
             return;
         }
         final String finalZipJson = zipJson;
@@ -52,13 +51,13 @@ public class NearbyZipRepository {
                 });
 
         if (json == null) {
-            return Collections.emptyList();
+            return List.of();
         }
 
         try {
             return zipReader.readValue(json);
-        } catch (JacksonException e) {
-            return Collections.emptyList();
+        } catch (JacksonException _) {
+            return List.of();
         }
     }
 

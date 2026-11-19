@@ -118,7 +118,7 @@ public class MatchDayService {
             if (cachedMatchDays != null) {
                 List<MatchDay> resultList = new ArrayList<>();
                 for (MatchDay cachedMatchDay : cachedMatchDays) {
-                    if (cachedMatchDay.getDay().isAfter(period.getEnd())) {
+                    if (cachedMatchDay.getDay().isAfter(period.end())) {
                         break;
                     }
                     resultList.add(cachedMatchDay);

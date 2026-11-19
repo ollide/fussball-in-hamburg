@@ -14,10 +14,8 @@ import tools.jackson.core.JacksonException;
 import tools.jackson.databind.json.JsonMapper;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Collectors;
 
 @Service
 public class ParseService {
@@ -45,7 +43,7 @@ public class ParseService {
             try {
                 zipCode = jsonMapper.readValue(plzJson, ZIPCode.class);
                 zipsWithMatches.add(zipCode.getPlz());
-            } catch (JacksonException e) {
+            } catch (JacksonException _) {
                 // ignore
             }
         }
@@ -54,7 +52,7 @@ public class ParseService {
 
     public List<Match> parseMatchesForZip(String html) {
         if (!StringUtils.hasText(html)) {
-            return Collections.emptyList();
+            return List.of();
         }
 
         Document matches = Jsoup.parse(html);
@@ -96,6 +94,6 @@ public class ParseService {
 
                     return m;
                 })
-                .collect(Collectors.toList());
+                .toList();
     }
 }

@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
-import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -31,7 +30,7 @@ public class NearbyController {
                                        @RequestParam(value = "distance", defaultValue = "10000") int distance,
                                        @RequestParam(value = "period", required = false) String period) {
         if (!isValidZip(zip)) {
-            return Collections.emptyList();
+            return List.of();
         }
 
         Period p = Period.fromString(period);
@@ -63,13 +62,13 @@ public class NearbyController {
         try {
             Integer.parseInt(zip);
             return true;
-        } catch (NumberFormatException nfe) {
+        } catch (NumberFormatException _) {
             return false;
         }
     }
 
     // Allowed values [1000-100000] (1km - 100km)
     private static int clampDistance(int distance) {
-        return Math.min(Math.max(distance, 1000), 100000);
+        return Math.clamp(distance, 1000, 100000);
     }
 }

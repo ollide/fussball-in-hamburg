@@ -32,7 +32,7 @@ class MatchTest {
 
         List<Match> sorted = Stream.of(matchNow, matchLater, matchNow2).sorted().toList();
 
-        assertEquals("0", sorted.get(0).getId());
+        assertEquals("0", sorted.getFirst().getId());
         assertEquals("1", sorted.get(1).getId());
         assertEquals("2", sorted.get(2).getId());
     }

@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -39,7 +38,7 @@ public class MatchRestController {
                                        @RequestParam(value = "period", required = false) String period) {
 
         if (!PATTERN_ALLOWED_NAMES.matcher(name).matches()) {
-            return Collections.emptyList();
+            return List.of();
         }
 
         Period p = Period.fromString(period);

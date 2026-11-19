@@ -39,7 +39,7 @@ class ParseServiceTest {
         List<Match> matches = parseService.parseMatchesForZip(html);
         assertEquals(2, matches.size(), "ParseService should find 2 matches");
 
-        Match match1 = matches.get(0);
+        Match match1 = matches.getFirst();
         assertEquals(MATCH_ID, match1.getId());
         assertEquals("09.06.18 12:30", DateUtil.formatLocalDateTime(match1.getDate()));
         assertEquals("D-Junioren", match1.getTeamType());
@@ -71,7 +71,7 @@ class ParseServiceTest {
         List<Match> matches = parseService.parseMatchesForZip(html);
 
         assertEquals(3, matches.size(), "ParseService should find 3 matches");
-        assertEquals("09.06.18 12:30", DateUtil.formatLocalDateTime(matches.get(0).getDate()));
+        assertEquals("09.06.18 12:30", DateUtil.formatLocalDateTime(matches.getFirst().getDate()));
         // Raw data only says '18:00', we derive the date from the previous match
         assertEquals("09.06.18 18:00", DateUtil.formatLocalDateTime(matches.get(1).getDate()));
     }

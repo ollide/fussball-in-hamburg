@@ -1,6 +1,5 @@
 package org.ollide.fussifinder.model;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,7 +27,7 @@ public class Team {
     }
 
     public static List<Team> getAllTeams() {
-        return Arrays.asList(HERREN, FRAUEN, JUNIOREN_A, JUNIORINNEN_A, JUNIOREN_B, JUNIORINNEN_B, HERREN_FREIZEIT, HERREN_U32);
+        return List.of(HERREN, FRAUEN, JUNIOREN_A, JUNIORINNEN_A, JUNIOREN_B, JUNIORINNEN_B, HERREN_FREIZEIT, HERREN_U32);
     }
 
     public static String getDefaultTeamsQuery() {

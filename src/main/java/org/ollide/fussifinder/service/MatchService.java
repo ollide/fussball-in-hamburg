@@ -11,7 +11,6 @@ import java.util.*;
 import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 @Service
 public class MatchService {
@@ -29,7 +28,7 @@ public class MatchService {
 
     private static final String MATCH_EFOOT = "eFoot";
 
-    private static final Collection<String> MATCH_CANCELLED = Arrays.asList("Absetzung", "Nichtantritt", "Ausfall");
+    private static final Collection<String> MATCH_CANCELLED = List.of("Absetzung", "Nichtantritt", "Ausfall");
 
     private final MatchCrawlService matchCrawlService;
     private final ParseService parseService;
@@ -58,7 +57,7 @@ public class MatchService {
 
     public void streamNearbyMatches(String zip, int distance, Period period, MatchStreamListener listener) {
         List<String> zip5 = zipService.getNearbyZips(zip, distance);
-        List<String> zip3 = zip5.stream().map(z -> z.substring(0, 3)).distinct().collect(Collectors.toList());
+        List<String> zip3 = zip5.stream().map(z -> z.substring(0, 3)).distinct().toList();
         streamMatchesInternal(zip3, zip5, period, listener);
     }
 
@@ -97,8 +96,8 @@ public class MatchService {
 
     private void streamMatchesInternal(Collection<String> lookupZips, Collection<String> allowedZips,
                                        Period period, MatchStreamListener listener) {
-        String dateFrom = DateUtil.formatLocalDateForAPI(period.getStart());
-        String dateTo   = DateUtil.formatLocalDateForAPI(period.getEnd());
+        String dateFrom = DateUtil.formatLocalDateForAPI(period.start());
+        String dateTo   = DateUtil.formatLocalDateForAPI(period.end());
 
         List<String> zip3s = lookupZips.stream()
                 .map(z -> z.substring(0, 3)).distinct()
@@ -141,7 +140,7 @@ public class MatchService {
                             .map(this::shortenTeamType)
                             .map(this::shortenTeamNames)
                             .map(this::applyFilterKeys)
-                            .collect(Collectors.toList());
+                            .toList();
                     if (!batch.isEmpty()) {
                         listener.onMatches(batch);
                     }

@@ -28,7 +28,7 @@ class MatchUtilsTest {
 
         List<MatchDay> matchDays = MatchUtils.splitIntoMatchDays(matches);
         assertEquals(2, matchDays.size());
-        assertEquals(2, matchDays.get(0).getMatches().size());
+        assertEquals(2, matchDays.getFirst().getMatches().size());
         assertEquals(1, matchDays.get(1).getMatches().size());
     }
 

@@ -94,7 +94,7 @@ class ZipServiceTest {
         List<String> zipsForRegion = zipService.getZipsForRegion(region);
 
         assertEquals(1, zipsForRegion.size());
-        assertEquals("20359", zipsForRegion.get(0));
+        assertEquals("20359", zipsForRegion.getFirst());
     }
 
     @Test
