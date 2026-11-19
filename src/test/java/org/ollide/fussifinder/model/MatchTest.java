@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -31,7 +30,7 @@ class MatchTest {
         matchLater.setClubHome("Home late");
         matchLater.setDate(now.plusHours(2));
 
-        List<Match> sorted = Stream.of(matchNow, matchLater, matchNow2).sorted().collect(Collectors.toList());
+        List<Match> sorted = Stream.of(matchNow, matchLater, matchNow2).sorted().toList();
 
         assertEquals("0", sorted.get(0).getId());
         assertEquals("1", sorted.get(1).getId());

@@ -7,7 +7,6 @@ import org.ollide.fussifinder.api.MatchClient;
 import org.ollide.fussifinder.model.AjaxModel;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 class MatchClientCrawlServiceTest {

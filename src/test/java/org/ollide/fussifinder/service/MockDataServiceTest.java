@@ -21,7 +21,7 @@ class MockDataServiceTest {
         final String zip3 = "202";
         List<ZIPCode> randomZips = mockDataService100.getRandomZips(zip3);
 
-        assertTrue(randomZips.size() > 0);
+        assertFalse(randomZips.isEmpty());
         assertTrue(randomZips.size() < 8);
         assertTrue(randomZips.stream()
                 .map(ZIPCode::getPlz)

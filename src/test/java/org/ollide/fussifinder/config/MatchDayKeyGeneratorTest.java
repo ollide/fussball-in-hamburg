@@ -28,7 +28,7 @@ class MatchDayKeyGeneratorTest {
         assertNotNull(method);
         String key = keyGenerator.generate(new Object(), method, hamburg, period);
 
-        assertEquals(RegionType.CITY.name() + ":" + "Hamburg" + "::" + start.toString() + ":" + end.toString(), key);
+        assertEquals(RegionType.CITY.name() + ":" + "Hamburg" + "::" + start + ":" + end, key);
     }
 
 }
