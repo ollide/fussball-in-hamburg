@@ -9,8 +9,7 @@ import org.springframework.util.StringUtils;
 import java.time.LocalDate;
 import java.util.List;
 
-import static org.junit.Assert.*;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 class MockDataServiceTest {
 
@@ -22,7 +21,7 @@ class MockDataServiceTest {
         final String zip3 = "202";
         List<ZIPCode> randomZips = mockDataService100.getRandomZips(zip3);
 
-        assertTrue(randomZips.size() > 0);
+        assertFalse(randomZips.isEmpty());
         assertTrue(randomZips.size() < 8);
         assertTrue(randomZips.stream()
                 .map(ZIPCode::getPlz)
@@ -33,7 +32,7 @@ class MockDataServiceTest {
 
     @Test
     void getRandomMatches() {
-        final String dateTo = "2019-10-28";
+        final String dateTo = "2019-10-27";
         final String dateFrom = "2019-10-21";
         List<MatchDay> randomMatches = mockDataService100.getRandomMatches(dateTo, dateFrom);
         assertEquals(7, randomMatches.size());
@@ -68,11 +67,11 @@ class MockDataServiceTest {
 
     @Test
     void getRandomLocation() {
-        assertFalse(StringUtils.isEmpty(mockDataService100.getRandomLocation()));
+        assertTrue(StringUtils.hasLength(mockDataService100.getRandomLocation()));
     }
 
     @Test
     void getRandomCompetition() {
-        assertFalse(StringUtils.isEmpty(mockDataService100.getRandomCompetition()));
+        assertTrue(StringUtils.hasLength(mockDataService100.getRandomCompetition()));
     }
 }

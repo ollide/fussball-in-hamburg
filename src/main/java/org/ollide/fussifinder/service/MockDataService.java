@@ -16,20 +16,20 @@ import java.util.*;
 @Service
 public class MockDataService {
 
-    private static final List<String> LOCATIONS = Arrays.asList(
+    private static final List<String> LOCATIONS = List.of(
             "Kunstrasenplatz, Sachsenweg 2 (Kunstrasen), Sachsenweg 78, 22455 Hamburg",
             "Kunstrasenplatz, Langenfort 1, Langenfort 70, 22307 Hamburg",
             "Rasenplatz, Edmund-Plambeck-Stadion, Ochsenzoller Str. 58, 22848 Norderstedt",
             "Hartplatz, Grunewaldstr.61/I, Grunewaldstr. 61, 22149 Hamburg",
             "Kunstrasenplatz, Stadion Hoheluft, Lokstedter Steindamm 87, 22529 Hamburg");
 
-    private static final List<String> LEAGUES = Arrays.asList("Verbandsliga", "Landesliga", "Bezirksliga", "Kreisliga",
+    private static final List<String> LEAGUES = List.of("Verbandsliga", "Landesliga", "Bezirksliga", "Kreisliga",
             "Kreisklasse", "FS");
 
-    private static final List<String> COMPETITIONS = Arrays.asList("Freundschaftsspiele Hamburg", "Oberliga",
+    private static final List<String> COMPETITIONS = List.of("Freundschaftsspiele Hamburg", "Oberliga",
             "Hammonia", "Bezirksliga Nord", "Bezirksliga Süd", "Kreisliga");
 
-    private Random random = new Random();
+    private final Random random = new Random();
 
     private final double probabilityMod;
 
@@ -61,7 +61,7 @@ public class MockDataService {
             throw new IllegalArgumentException("Invalid dates requested.");
         }
 
-        while (!localDateFrom.isEqual(localDateTo)) {
+        while (!localDateFrom.isAfter(localDateTo)) {
 
             MatchDay matchDay = new MatchDay();
             matchDay.setDay(localDateFrom);

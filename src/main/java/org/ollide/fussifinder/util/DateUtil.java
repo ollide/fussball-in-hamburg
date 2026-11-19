@@ -8,8 +8,8 @@ import java.util.regex.Pattern;
 
 public final class DateUtil {
 
-    private static final Pattern DATE_PATTERN = Pattern.compile(".*([0-9]{2}\\.[0-9]{2}\\.[0-9]{2}).*");
-    private static final Pattern HOUR_PATTERN = Pattern.compile(".*([0-9]{2}:[0-9]{2}).*");
+    private static final Pattern DATE_PATTERN = Pattern.compile(".*(\\d{2}\\.\\d{2}\\.\\d{2}).*");
+    private static final Pattern HOUR_PATTERN = Pattern.compile(".*(\\d{2}:\\d{2}).*");
     private static final String NO_KICKOFF_TIME_PUBLISHED = "**";
     private static final String DEFAULT_KICKOFF_TIME = "00:00";
 

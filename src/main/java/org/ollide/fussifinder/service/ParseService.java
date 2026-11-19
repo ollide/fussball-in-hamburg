@@ -1,6 +1,5 @@
 package org.ollide.fussifinder.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -11,28 +10,27 @@ import org.ollide.fussifinder.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.json.JsonMapper;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Collectors;
 
 @Service
 public class ParseService {
 
-    private final ObjectMapper objectMapper;
+    private final JsonMapper jsonMapper;
 
     @Autowired
-    public ParseService(ObjectMapper objectMapper) {
-        this.objectMapper = objectMapper;
+    public ParseService(JsonMapper jsonMapper) {
+        this.jsonMapper = jsonMapper;
     }
 
     public List<String> parseZipsWithMatches(String html) {
         List<String> zipsWithMatches = new ArrayList<>();
 
-        if (StringUtils.isEmpty(html)) {
+        if (!StringUtils.hasText(html)) {
             return zipsWithMatches;
         }
 
@@ -43,9 +41,9 @@ public class ParseService {
             String plzJson = district.attr("data-ajax-forced");
             ZIPCode zipCode;
             try {
-                zipCode = objectMapper.readValue(plzJson, ZIPCode.class);
+                zipCode = jsonMapper.readValue(plzJson, ZIPCode.class);
                 zipsWithMatches.add(zipCode.getPlz());
-            } catch (IOException e) {
+            } catch (JacksonException _) {
                 // ignore
             }
         }
@@ -53,8 +51,8 @@ public class ParseService {
     }
 
     public List<Match> parseMatchesForZip(String html) {
-        if (StringUtils.isEmpty(html)) {
-            return Collections.emptyList();
+        if (!StringUtils.hasText(html)) {
+            return List.of();
         }
 
         Document matches = Jsoup.parse(html);
@@ -74,9 +72,16 @@ public class ParseService {
 
                     m.setTeamType(matchRow.select("td.column-team").text());
                     m.setLeague(matchRow.select("td.column-league").text());
-                    m.setClubHome(matchRow.select("td.column-club div.club-name").text());
-                    m.setClubHome(matchRow.select("td.column-club").first().select("div.club-name").text());
-                    m.setClubAway(matchRow.select("td.column-club").last().select("div.club-name").text());
+
+                    Elements clubElements = matchRow.select("td.column-club");
+                    Element clubHomeEl = clubElements.first();
+                    if (clubHomeEl != null) {
+                        m.setClubHome(clubHomeEl.select("div.club-name").text());
+                    }
+                    Element clubAwayEl = clubElements.last();
+                    if (clubAwayEl != null) {
+                        m.setClubAway(clubAwayEl.select("div.club-name").text());
+                    }
 
                     Elements matchScoreLinkTag = matchRow.select("td.column-score a");
                     m.setScore(matchScoreLinkTag.text());
@@ -89,6 +94,6 @@ public class ParseService {
 
                     return m;
                 })
-                .collect(Collectors.toList());
+                .toList();
     }
 }

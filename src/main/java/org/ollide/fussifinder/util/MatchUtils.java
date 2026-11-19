@@ -86,6 +86,9 @@ public final class MatchUtils {
         if (team.contains("c-jun")) {
             return "C-Jun";
         }
+        if (team.contains("ü32")) {
+            return "Ü32";
+        }
 
         LOGGER.warn("No team key found for team '{}'", fullTeam);
         return fullTeam;

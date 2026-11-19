@@ -1,29 +1,27 @@
 package org.ollide.fussifinder.http.serializer;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.module.SimpleModule;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import tools.jackson.databind.json.JsonMapper;
+import tools.jackson.databind.module.SimpleModule;
 
 import java.time.LocalDateTime;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class IsoLocalDateTimeSerializerTest {
+class IsoLocalDateTimeSerializerTest {
 
-    private ObjectMapper mapper;
+    private static JsonMapper mapper;
 
-    @Before
-    public void setUp() {
-        mapper = new ObjectMapper();
+    @BeforeAll
+    static void setUp() {
         SimpleModule module = new SimpleModule();
         module.addSerializer(LocalDateTime.class, new IsoLocalDateTimeSerializer());
-        mapper.registerModule(module);
+        mapper = JsonMapper.builder().addModule(module).build();
     }
 
     @Test
-    public void serialize() throws JsonProcessingException {
+    void serialize() {
         LocalDateTime localDateTime = LocalDateTime.of(2019, 1, 12, 15, 30);
         assertEquals("\"2019-01-12T15:30:00\"", mapper.writeValueAsString(localDateTime));
     }

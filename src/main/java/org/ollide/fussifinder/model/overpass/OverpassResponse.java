@@ -1,6 +1,5 @@
 package org.ollide.fussifinder.model.overpass;
 
-import java.util.Collections;
 import java.util.List;
 
 public class OverpassResponse {
@@ -8,7 +7,7 @@ public class OverpassResponse {
     private String version;
     private String generator;
     private OSM3S osm3s;
-    private List<OverpassElement> elements = Collections.emptyList();
+    private List<OverpassElement> elements = List.of();
     private String remark;
 
     public String getVersion() {

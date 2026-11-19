@@ -1,17 +1,15 @@
 package org.ollide.fussifinder.http.serializer;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.SerializerProvider;
+import tools.jackson.databind.SerializationContext;
+import tools.jackson.databind.ValueSerializer;
 
-import java.io.IOException;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 
 import static java.time.temporal.ChronoField.*;
 
-public class KickoffTimeSerializer extends JsonSerializer<LocalTime> {
+public class KickoffTimeSerializer extends ValueSerializer<LocalTime> {
 
     private static final DateTimeFormatter KICKOFF_TIME_FORMAT;
     static {
@@ -23,7 +21,7 @@ public class KickoffTimeSerializer extends JsonSerializer<LocalTime> {
     }
 
     @Override
-    public void serialize(LocalTime time, JsonGenerator generator, SerializerProvider sp) throws IOException {
+    public void serialize(LocalTime time, tools.jackson.core.JsonGenerator generator, SerializationContext context) {
         String formattedDateTime = time.format(KICKOFF_TIME_FORMAT);
         generator.writeString(formattedDateTime);
     }

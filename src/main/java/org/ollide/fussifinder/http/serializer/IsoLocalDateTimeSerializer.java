@@ -1,17 +1,16 @@
 package org.ollide.fussifinder.http.serializer;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.SerializerProvider;
+import tools.jackson.core.JsonGenerator;
+import tools.jackson.databind.SerializationContext;
+import tools.jackson.databind.ValueSerializer;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class IsoLocalDateTimeSerializer extends JsonSerializer<LocalDateTime> {
+public class IsoLocalDateTimeSerializer extends ValueSerializer<LocalDateTime> {
 
     @Override
-    public void serialize(LocalDateTime dateTime, JsonGenerator generator, SerializerProvider sp) throws IOException {
+    public void serialize(LocalDateTime dateTime, JsonGenerator generator, SerializationContext context) {
         String formattedDateTime = dateTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
         generator.writeString(formattedDateTime);
     }

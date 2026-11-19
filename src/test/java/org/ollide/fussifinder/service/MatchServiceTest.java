@@ -1,64 +1,62 @@
 package org.ollide.fussifinder.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.ollide.fussifinder.ResourceHelper;
 import org.ollide.fussifinder.config.AppConfig;
-import org.ollide.fussifinder.model.Match;
-import org.ollide.fussifinder.model.Period;
-import org.ollide.fussifinder.model.Team;
+import org.ollide.fussifinder.model.*;
+import tools.jackson.databind.json.JsonMapper;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class MatchServiceTest {
+class MatchServiceTest {
 
     private MatchService matchService;
     private MatchCrawlService matchCrawlService;
+    private ZipService zipService;
 
-    @Before
-    public void setUp() {
+    @BeforeEach
+    void setUp() {
         matchCrawlService = mock(MatchCrawlService.class);
-        ObjectMapper objectMapper = new AppConfig().objectMapper();
-        matchService = new MatchService(matchCrawlService, new ParseService(objectMapper),
-                mock(ZipService.class));
+        zipService = mock(ZipService.class);
+        JsonMapper objectMapper = new AppConfig().jsonMapper();
+        matchService = new MatchService(matchCrawlService, new ParseService(objectMapper), zipService);
     }
 
     @Test
-    public void getMatches() throws IOException {
-        Collection<String> zips = Arrays.asList("20359", "22525");
+    void getMatches() throws IOException {
+        Region region = new Region(RegionType.CITY, "test");
+        when(zipService.getZipsForRegion(region)).thenReturn(Arrays.asList("20359", "22525"));
 
         String htmlOverview = ResourceHelper.readOverview("2_results.html");
         when(matchCrawlService.getMatchCalendar(anyString(), anyString(), eq("203"))).thenReturn(htmlOverview);
         String htmlMatches = ResourceHelper.readMatches("2_matches_2_days.html");
         when(matchCrawlService.getMatchCalendar(anyString(), anyString(), eq("20359"))).thenReturn(htmlMatches);
 
-        List<Match> matches = matchService.getMatches(zips, new Period());
+        List<Match> matches = matchService.getMatches(region, new Period());
         assertEquals(2, matches.size());
     }
 
     @Test
-    public void getMatches_WithFreizeit() throws IOException {
-        Collection<String> zips = Arrays.asList("20359", "22525");
+    void getMatches_WithFreizeit() throws IOException {
+        Region region = new Region(RegionType.CITY, "test");
+        when(zipService.getZipsForRegion(region)).thenReturn(Arrays.asList("20359", "22525"));
 
         String htmlOverview = ResourceHelper.readOverview("2_results.html");
         when(matchCrawlService.getMatchCalendar(anyString(), anyString(), eq("203"))).thenReturn(htmlOverview);
         String htmlMatches = ResourceHelper.readMatches("3_matches_1_day.html");
         when(matchCrawlService.getMatchCalendar(anyString(), anyString(), eq("20359"))).thenReturn(htmlMatches);
 
-        List<Match> matches = matchService.getMatches(zips, new Period());
+        List<Match> matches = matchService.getMatches(region, new Period());
         assertEquals(3, matches.size());
 
         // Test the Freizeitliga match to have the correct league and team type
@@ -68,7 +66,7 @@ public class MatchServiceTest {
     }
 
     @Test
-    public void getMatchesWithShortZip() throws IOException {
+    void getMatchesWithShortZip() throws IOException {
         final String shortZip3 = "203";
         final String shortZip4 = "2035";
         final String fullZip = "20359";
@@ -79,17 +77,21 @@ public class MatchServiceTest {
         String htmlMatches = ResourceHelper.readMatches("2_matches_2_days.html");
         when(matchCrawlService.getMatchCalendar(anyString(), anyString(), eq(fullZip))).thenReturn(htmlMatches);
 
-        // query with 3-digits zip
-        List<Match> matches = matchService.getMatches(Collections.singleton(shortZip3), new Period());
+        // query with 3-digit zip
+        Region region3 = new Region(RegionType.ZIP, shortZip3);
+        when(zipService.getZipsForRegion(region3)).thenReturn(Collections.singletonList(shortZip3));
+        List<Match> matches = matchService.getMatches(region3, new Period());
         assertEquals(2, matches.size());
 
-        // query with 4-digits zip
-        matches = matchService.getMatches(Collections.singleton(shortZip4), new Period());
+        // query with 4-digit zip
+        Region region4 = new Region(RegionType.ZIP, shortZip4);
+        when(zipService.getZipsForRegion(region4)).thenReturn(Collections.singletonList(shortZip4));
+        matches = matchService.getMatches(region4, new Period());
         assertEquals(2, matches.size());
     }
 
     @Test
-    public void shortenLeague() {
+    void shortenLeague() {
         Match kFS = new Match();
         kFS.setLeague("Kreisfreundschaftsspiele");
         assertEquals("K-FS", matchService.shortenLeague(kFS).getLeague());
@@ -146,7 +148,7 @@ public class MatchServiceTest {
     }
 
     @Test
-    public void shortenTeamTypes() {
+    void shortenTeamTypes() {
         Match freizeit = new Match();
         freizeit.setTeamType(Team.HERREN_FREIZEIT.getName());
         freizeit = matchService.shortenTeamType(freizeit);
@@ -154,7 +156,7 @@ public class MatchServiceTest {
     }
 
     @Test
-    public void shortenTeamNames() {
+    void shortenTeamNames() {
         Match j1 = new Match();
         j1.setClubHome("Walddörfer 1.A (J1)");
         j1.setClubAway("Rahlstedt 1.A (J1)");
@@ -185,7 +187,7 @@ public class MatchServiceTest {
     }
 
     @Test
-    public void isNotSpecialClass7Players() {
+    void isNotSpecialClass7Players() {
         Match normalMatch = new Match();
         normalMatch.setClubHome("TUS Altertal");
         normalMatch.setClubAway("SC Victoria");
@@ -217,7 +219,7 @@ public class MatchServiceTest {
     }
 
     @Test
-    public void isNotFutsal() {
+    void isNotFutsal() {
         Match normalMatch = new Match();
         normalMatch.setLeague("Verbandsliga");
         assertTrue(MatchService.isNotFutsal(normalMatch));
@@ -228,7 +230,7 @@ public class MatchServiceTest {
     }
 
     @Test
-    public void isNotEFoot() {
+    void isNotEFoot() {
         Match normalMatch = new Match();
         normalMatch.setClubHome("Viktoria Harburg 1.");
         normalMatch.setClubAway("TSG Bergedorf 2.");
@@ -241,7 +243,7 @@ public class MatchServiceTest {
     }
 
     @Test
-    public void isNotCancelled() {
+    void isNotCancelled() {
         Match normalMatch = new Match();
         normalMatch.setScore("");
         assertTrue(MatchService.isNotCancelled(normalMatch));
@@ -256,7 +258,7 @@ public class MatchServiceTest {
     }
 
     @Test
-    public void testIsNotIndoor() {
+    void testIsNotIndoor() {
         Match normalMatch = new Match();
         normalMatch.setScore("");
         assertTrue(MatchService.isNotIndoor(normalMatch));
@@ -274,4 +276,58 @@ public class MatchServiceTest {
         assertFalse(MatchService.isNotIndoor(indoorAwayTeamMatch));
     }
 
+
+    @Test
+    void streamMatches_ContinuesAfterFailedZipAndReportsError() throws IOException {
+        Region region = new Region(RegionType.CITY, "test");
+        when(zipService.getZipsForRegion(region)).thenReturn(Arrays.asList("20359", "30001"));
+
+        when(matchCrawlService.getMatchCalendar(anyString(), anyString(), eq("203")))
+                .thenReturn(ResourceHelper.readOverview("2_results.html"));
+        when(matchCrawlService.getMatchCalendar(anyString(), anyString(), eq("300")))
+                .thenThrow(new IllegalStateException("boom"));
+        when(matchCrawlService.getMatchCalendar(anyString(), anyString(), eq("20359")))
+                .thenReturn(ResourceHelper.readMatches("2_matches_2_days.html"));
+
+        List<Match> received = new java.util.ArrayList<>();
+        List<String> errors = new java.util.ArrayList<>();
+        int[] done = {0};
+        matchService.streamMatches(region, new Period(), new MatchStreamListener() {
+            public void onTotal(int total) { assertEquals(2, total); }
+            public void onMatches(List<Match> batch) { received.addAll(batch); }
+            public void onZip3Done() { done[0]++; }
+            public void onError(String zip, Exception e) { errors.add(zip); }
+            public boolean isCancelled() { return false; }
+        });
+
+        assertEquals(2, received.size());
+        assertEquals(List.of("300"), errors);
+        assertEquals(2, done[0]);
+    }
+
+    @Test
+    void streamMatches_StopsWhenCancelled() {
+        Region region = new Region(RegionType.CITY, "test");
+        when(zipService.getZipsForRegion(region)).thenReturn(Arrays.asList("20359", "30001"));
+
+        matchService.streamMatches(region, new Period(), new MatchStreamListener() {
+            public void onTotal(int total) { }
+            public void onMatches(List<Match> batch) { }
+            public void onZip3Done() { }
+            public void onError(String zip, Exception e) { }
+            public boolean isCancelled() { return true; }
+        });
+
+        org.mockito.Mockito.verifyNoInteractions(matchCrawlService);
+    }
+
+    @Test
+    void getMatches_PropagatesCrawlErrors() {
+        Region region = new Region(RegionType.CITY, "test");
+        when(zipService.getZipsForRegion(region)).thenReturn(List.of("20359"));
+        when(matchCrawlService.getMatchCalendar(anyString(), anyString(), anyString()))
+                .thenThrow(new IllegalStateException("boom"));
+
+        assertThrows(IllegalStateException.class, () -> matchService.getMatches(region, new Period()));
+    }
 }

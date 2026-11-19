@@ -1,0 +1,62 @@
+name: Java CI with Maven
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+      - develop
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+    - uses: actions/checkout@v7
+    - name: Set up JDK
+      uses: actions/setup-java@v6
+      with:
+        java-version-file: .java-version
+        distribution: 'temurin'
+        cache: 'maven'
+    - name: Build with Maven
+      run: ./mvnw -B clean org.jacoco:jacoco-maven-plugin:prepare-agent package org.jacoco:jacoco-maven-plugin:report --file pom.xml
+    - name: Coverage summary
+      if: ${{ !cancelled() && hashFiles('target/site/jacoco/jacoco.csv') != '' }}
+      run: .github/scripts/coverage-summary.sh >> "$GITHUB_STEP_SUMMARY"
+    - name: Archive coverage report
+      if: ${{ !cancelled() && hashFiles('target/site/jacoco/index.html') != '' }}
+      uses: actions/upload-artifact@v7
+      with:
+        name: coverage-report
+        path: target/site/jacoco/
+    - name: Archive app
+      uses: actions/upload-artifact@v7
+      with:
+        name: fussifinder-jar
+        path: target/fussifinder-*.jar
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    if: ${{ github.event_name == 'push' }}
+    steps:
+      - name: Download app
+        uses: actions/download-artifact@v8
+        with:
+          name: fussifinder-jar
+      - name: Install SSH Key
+        uses: shimataro/ssh-key-action@87a8f067114a8ce263df83e9ed5c849953548bc3 # v2.8.1
+        with:
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          known_hosts: ${{ secrets.SSH_KNOWN_HOSTS }}
+      - name: 'Transfer and run app (develop)'
+        if: ${{ github.ref == 'refs/heads/develop' }}
+        run: rsync -avz fussifinder-*.jar ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:fussifinder-dev.jar && ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} './install_fih_dev.sh'
+      - name: 'Transfer and run app (main)'
+        if: ${{ github.ref == 'refs/heads/main' }}
+        run: rsync -avz fussifinder-*.jar ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:fussifinder-prod.jar && ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} './install_fih.sh'

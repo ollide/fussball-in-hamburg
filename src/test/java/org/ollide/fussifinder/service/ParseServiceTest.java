@@ -1,45 +1,45 @@
 package org.ollide.fussifinder.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.ollide.fussifinder.ResourceHelper;
 import org.ollide.fussifinder.config.AppConfig;
 import org.ollide.fussifinder.model.Match;
 import org.ollide.fussifinder.util.DateUtil;
+import tools.jackson.databind.json.JsonMapper;
 
 import java.io.IOException;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class ParseServiceTest {
+class ParseServiceTest {
 
     private ParseService parseService;
 
     private static final String MATCH_ID = "0568E7K90O003330VS5489B3VVRESQAR";
     private static final String MATCH_UTL = "http://www.example.org/spiel/abc1-def2/-/spiel/" + MATCH_ID;
 
-    @Before
-    public void setUp() {
-        ObjectMapper mapper = new AppConfig().objectMapper();
+    @BeforeEach
+    void setUp() {
+        JsonMapper mapper = new AppConfig().jsonMapper();
         parseService = new ParseService(mapper);
     }
 
     @Test
-    public void parseZipsWithMatches() throws IOException {
+    void parseZipsWithMatches() throws IOException {
         String html = ResourceHelper.readOverview("2_results.html");
         List<String> zips = parseService.parseZipsWithMatches(html);
-        assertEquals("ParseService should find 2 ZIP results", 2, zips.size());
+        assertEquals(2, zips.size(), "ParseService should find 2 ZIP results");
     }
 
     @Test
-    public void parseMatchesForZip() throws IOException {
+    void parseMatchesForZip() throws IOException {
         String html = ResourceHelper.readMatches("2_matches_2_days.html");
         List<Match> matches = parseService.parseMatchesForZip(html);
-        assertEquals("ParseService should find 2 matches", 2, matches.size());
+        assertEquals(2, matches.size(), "ParseService should find 2 matches");
 
-        Match match1 = matches.get(0);
+        Match match1 = matches.getFirst();
         assertEquals(MATCH_ID, match1.getId());
         assertEquals("09.06.18 12:30", DateUtil.formatLocalDateTime(match1.getDate()));
         assertEquals("D-Junioren", match1.getTeamType());
@@ -59,19 +59,19 @@ public class ParseServiceTest {
     }
 
     @Test
-    public void parseMatchesWithoutKickOffTime() throws IOException {
+    void parseMatchesWithoutKickOffTime() throws IOException {
         String html = ResourceHelper.readMatches("matches_no_kickoff_time.html");
         List<Match> matches = parseService.parseMatchesForZip(html);
         assertEquals(10, matches.size());
     }
 
     @Test
-    public void parseMatchesForZipSameDay() throws IOException {
+    void parseMatchesForZipSameDay() throws IOException {
         String html = ResourceHelper.readMatches("3_matches_1_day.html");
         List<Match> matches = parseService.parseMatchesForZip(html);
 
-        assertEquals("ParseService should find 3 matches", 3, matches.size());
-        assertEquals("09.06.18 12:30", DateUtil.formatLocalDateTime(matches.get(0).getDate()));
+        assertEquals(3, matches.size(), "ParseService should find 3 matches");
+        assertEquals("09.06.18 12:30", DateUtil.formatLocalDateTime(matches.getFirst().getDate()));
         // Raw data only says '18:00', we derive the date from the previous match
         assertEquals("09.06.18 18:00", DateUtil.formatLocalDateTime(matches.get(1).getDate()));
     }

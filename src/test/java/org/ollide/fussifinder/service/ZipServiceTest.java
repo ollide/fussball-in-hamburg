@@ -1,68 +1,74 @@
 package org.ollide.fussifinder.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.ollide.fussifinder.ResourceHelper;
 import org.ollide.fussifinder.api.OverpassClient;
 import org.ollide.fussifinder.model.Region;
 import org.ollide.fussifinder.model.RegionType;
 import org.ollide.fussifinder.model.overpass.OverpassResponse;
-import retrofit2.mock.Calls;
+import org.ollide.fussifinder.repository.NearbyZipRepository;
+import org.springframework.http.ResponseEntity;
+import tools.jackson.databind.ObjectMapper;
 
 import java.util.List;
+import java.util.Optional;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class ZipServiceTest {
+class ZipServiceTest {
 
     private OverpassClient overpassClient;
     private ZipService zipService;
 
+    private final NearbyZipRepository nearbyZipRepository = mock(NearbyZipRepository.class);
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    @Before
-    public void setUp() {
+    @BeforeEach
+    void setUp() {
         overpassClient = mock(OverpassClient.class);
-        zipService = new ZipService(overpassClient);
+        zipService = new ZipService(nearbyZipRepository, overpassClient);
     }
 
     @Test
-    public void getNearbyZips() throws Exception {
+    void getNearbyZips() throws Exception {
         final String zip = "20359";
         final int distance = 10000;
 
         String responseJson = ResourceHelper.readFile("/overpass/20359_success.json");
+        OverpassResponse overpassResponse = objectMapper.readValue(responseJson, OverpassResponse.class);
         when(overpassClient.query(zipService.buildNearbyZipcodesOverpassQuery(zip, distance)))
-                .thenReturn(Calls.response(objectMapper.readValue(responseJson, OverpassResponse.class)));
+                .thenReturn(ResponseEntity.of(Optional.of(overpassResponse)));
 
         List<String> nearbyZips = zipService.getNearbyZips(zip, distance);
         assertEquals(87, nearbyZips.size());
     }
 
     @Test
-    public void getNearbyZipsOverpassTimeout() throws Exception {
+    void getNearbyZipsOverpassTimeout() throws Exception {
         final String zip = "20359";
         final int distance = 50000;
 
         String responseJson = ResourceHelper.readFile("/overpass/timeout.json");
+        OverpassResponse overpassResponse = objectMapper.readValue(responseJson, OverpassResponse.class);
         when(overpassClient.query(zipService.buildNearbyZipcodesOverpassQuery(zip, distance)))
-                .thenReturn(Calls.response(objectMapper.readValue(responseJson, OverpassResponse.class)));
+                .thenReturn(ResponseEntity.of(Optional.of(overpassResponse)));
 
         List<String> nearbyZips = zipService.getNearbyZips(zip, distance);
         assertEquals(0, nearbyZips.size());
     }
 
     @Test
-    public void getZipsForCity() {
+    void getZipsForCity() {
         // testcity.txt
         Region region = new Region(RegionType.CITY, "Testcity1");
         List<String> testCities = zipService.getZipsForRegion(region);
-        assertEquals("testcity.txt should contain 2 ZIP codes", 2, testCities.size());
-        assertTrue("testcity.txt should contain '11111'", testCities.contains("11111"));
-        assertTrue("testcity.txt should contain '22222'", testCities.contains("22222"));
+        assertEquals(2, testCities.size(), "testcity.txt should contain 2 ZIP codes");
+        assertTrue(testCities.contains("11111"), "testcity.txt should contain '11111'");
+        assertTrue(testCities.contains("22222"), "testcity.txt should contain '22222'");
 
         // unknown city
         List<String> unknown = zipService.getZipsForRegion(new Region(RegionType.CITY, "unknown-city"));
@@ -70,12 +76,12 @@ public class ZipServiceTest {
     }
 
     @Test
-    public void getZipsForDistrict() {
+    void getZipsForDistrict() {
         // testdistrict2.txt
         Region region = new Region(RegionType.DISTRICT, "testdistrict2");
         List<String> testDistricts = zipService.getZipsForRegion(region);
-        assertEquals("testdistrict2.txt should contain 1 ZIP code", 1, testDistricts.size());
-        assertTrue("testdistrict2.txt should contain '11111'", testDistricts.contains("11111"));
+        assertEquals(1, testDistricts.size(), "testdistrict2.txt should contain 1 ZIP code");
+        assertTrue(testDistricts.contains("11111"), "testdistrict2.txt should contain '11111'");
 
         // unknown district
         List<String> unknown = zipService.getZipsForRegion(new Region(RegionType.DISTRICT, "unknown-district"));
@@ -83,16 +89,16 @@ public class ZipServiceTest {
     }
 
     @Test
-    public void getZipsForRegionZip() {
+    void getZipsForRegionZip() {
         Region region = new Region(RegionType.ZIP, "20359");
         List<String> zipsForRegion = zipService.getZipsForRegion(region);
 
         assertEquals(1, zipsForRegion.size());
-        assertEquals("20359", zipsForRegion.get(0));
+        assertEquals("20359", zipsForRegion.getFirst());
     }
 
     @Test
-    public void getZipsWithDuplicates() {
+    void getZipsWithDuplicates() {
         Region region = new Region(RegionType.CITY, "duplicates");
         List<String> zipsForRegion = zipService.getZipsForRegion(region);
 

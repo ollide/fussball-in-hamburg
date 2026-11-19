@@ -1,23 +1,24 @@
 package org.ollide.fussifinder.service;
 
-import com.fasterxml.jackson.databind.MappingIterator;
-import com.fasterxml.jackson.databind.ObjectReader;
-import com.fasterxml.jackson.dataformat.csv.CsvMapper;
+import org.jspecify.annotations.NonNull;
 import org.ollide.fussifinder.api.OverpassClient;
 import org.ollide.fussifinder.model.Region;
 import org.ollide.fussifinder.model.RegionType;
 import org.ollide.fussifinder.model.overpass.OverpassElement;
 import org.ollide.fussifinder.model.overpass.OverpassResponse;
+import org.ollide.fussifinder.repository.NearbyZipRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import retrofit2.Response;
+import tools.jackson.databind.MappingIterator;
+import tools.jackson.databind.ObjectReader;
+import tools.jackson.dataformat.csv.CsvMapper;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class ZipService {
@@ -31,10 +32,12 @@ public class ZipService {
 
     private static final Map<RegionType, String> RESOURCE_MAP = new EnumMap<>(RegionType.class);
 
+    private final NearbyZipRepository nearbyZipRepository;
     private final ObjectReader stringReader;
     private final OverpassClient overpassClient;
 
-    public ZipService(OverpassClient overpassClient) {
+    public ZipService(NearbyZipRepository nearbyZipRepository, OverpassClient overpassClient) {
+        this.nearbyZipRepository = nearbyZipRepository;
         this.overpassClient = overpassClient;
 
         CsvMapper csvMapper = new CsvMapper();
@@ -49,28 +52,28 @@ public class ZipService {
     @Cacheable(value = "zips", key = "#region.toString()", condition = "#region.type.name() != 'ZIP'")
     public List<String> getZipsForRegion(Region region) {
         if (RegionType.ZIP.equals(region.getType())) {
-            return Collections.singletonList(region.getName());
+            return List.of(region.getName());
         }
 
         String resourceDir = RESOURCE_MAP.get(region.getType());
         return readZipsFromResources(resourceDir + region.getName().toLowerCase() + ".txt");
     }
 
-    @Cacheable(value = "nearbyZips")
+    @Cacheable(value = "nearbyZips", unless = "#result.isEmpty()")
     public List<String> getNearbyZips(String zip, int distance) {
-        final String query = buildNearbyZipcodesOverpassQuery(zip, distance);
 
-        Response<OverpassResponse> response;
-        try {
-            LOG.info("Querying Overpass. Distance: '{}'", distance);
-            response = overpassClient.query(query).execute();
-        } catch (IOException e) {
-            LOG.error("Error querying Overpass.", e);
-            return Collections.emptyList();
+        List<String> zipEntries = nearbyZipRepository.readZipEntries(zip, distance);
+        if (!zipEntries.isEmpty()) {
+            return zipEntries;
         }
 
-        if (response.isSuccessful()) {
-            OverpassResponse body = response.body();
+        final String query = buildNearbyZipcodesOverpassQuery(zip, distance);
+
+        LOG.info("Querying Overpass. Distance: '{}'", distance);
+        ResponseEntity<@NonNull OverpassResponse> response = overpassClient.query(query);
+
+        if (response.getStatusCode().is2xxSuccessful()) {
+            OverpassResponse body = response.getBody();
             if (body != null) {
 
                 final List<OverpassElement> elements = body.getElements();
@@ -79,15 +82,18 @@ public class ZipService {
                     LOG.warn("Encountered possible Overpass query timeout: {}", body.getRemark());
                 }
 
-                return elements.stream().map(OverpassElement::getTags)
+                List<String> zipList = elements.stream().map(OverpassElement::getTags)
                         .filter(it -> it.containsKey("postal_code"))
                         .map(it -> it.get("postal_code"))
-                        .map(it -> (String) it)
-                        .distinct().collect(Collectors.toList());
+                        .map(String.class::cast)
+                        .distinct().toList();
+
+                nearbyZipRepository.saveZipEntries(zip, distance, zipList);
+                return zipList;
             }
         }
 
-        return Collections.emptyList();
+        return List.of();
     }
 
     private List<String> readZipsFromResources(String fileName) {
@@ -98,16 +104,16 @@ public class ZipService {
             validateZips(fileName, zips);
             return zips;
         } catch (IOException e) {
-            LOG.error("Error occurred while loading ZIPs from " + fileName, e);
-            return Collections.emptyList();
+            LOG.error("Error occurred while loading ZIPs from {}", fileName, e);
+            return List.of();
         }
     }
 
     private void validateZips(String fileName, List<String> zips) {
         // 3-digit ZIP
-        List<String> zip3 = zips.stream().filter(z -> z.length() == 3).collect(Collectors.toList());
+        List<String> zip3 = zips.stream().filter(z -> z.length() == 3).toList();
         // Full ZIPs
-        List<String> zip4or5 = zips.stream().filter(z -> z.length() > 3).collect(Collectors.toList());
+        List<String> zip4or5 = zips.stream().filter(z -> z.length() > 3).toList();
 
         // Look for matching 3-digit/full ZIP (eg. 315 & 31511)
         zip4or5.stream().filter(z -> zip3.stream().anyMatch(z::startsWith))
@@ -130,15 +136,15 @@ public class ZipService {
     }
 
     String buildNearbyZipcodesOverpassQuery(String zip, int distance) {
-        return "[out:json][timeout:60];\n" +
-                "\n" +
-                "rel[postal_code=" + zip + "];\n" +
-                "rel(around:" + distance + ")[boundary=postal_code];\n" +
-                "convert result\n" +
-                "    ::id = id(),\n" +
-                "    postal_code = t[\"postal_code\"];\n" +
-                "\n" +
-                "out qt;";
+        return """
+               [out:json][timeout:60];
+               rel[postal_code=%s];
+               rel(around:%d)[boundary=postal_code];
+               convert result
+                 ::id = id(),
+                 postal_code = t["postal_code"];
+               out qt;
+               """.formatted(zip, distance);
     }
 
 }
