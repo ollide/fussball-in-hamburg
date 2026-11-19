@@ -14,10 +14,10 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
     - uses: actions/checkout@v7
-      with:
-        fetch-depth: 0
     - name: Set up JDK
       uses: actions/setup-java@v6
       with:
@@ -25,10 +25,16 @@ jobs:
         distribution: 'temurin'
         cache: 'maven'
     - name: Build with Maven
-      run: ./mvnw -B clean org.jacoco:jacoco-maven-plugin:prepare-agent package org.jacoco:jacoco-maven-plugin:report sonar:sonar -Dsonar.branch.name=$BRANCH_NAME --file pom.xml
-      env:
-        BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      run: ./mvnw -B clean org.jacoco:jacoco-maven-plugin:prepare-agent package org.jacoco:jacoco-maven-plugin:report --file pom.xml
+    - name: Coverage summary
+      if: ${{ !cancelled() && hashFiles('target/site/jacoco/jacoco.csv') != '' }}
+      run: .github/scripts/coverage-summary.sh >> "$GITHUB_STEP_SUMMARY"
+    - name: Archive coverage report
+      if: ${{ !cancelled() && hashFiles('target/site/jacoco/index.html') != '' }}
+      uses: actions/upload-artifact@v7
+      with:
+        name: coverage-report
+        path: target/site/jacoco/
     - name: Archive app
       uses: actions/upload-artifact@v7
       with:
